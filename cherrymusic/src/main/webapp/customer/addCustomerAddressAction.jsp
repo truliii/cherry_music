@@ -85,5 +85,5 @@
 	}
 
 	//주소추가action 후 주소목록으로 리다이렉션
-	response.sendRedirect(request.getContextPath() + "/customer/addCustomerAddress.jsp");
+	response.sendRedirect(request.getContextPath() + "/customer/customerAddress.jsp");
 %>

@@ -43,104 +43,136 @@
 	//리뷰이미지 저장위치
 	String dir = request.getServletContext().getRealPath("/review/reviewImg");
 %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Review One</title>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
+    <jsp:include page="/inc/head.jsp"></jsp:include>
+
 </head>
 <body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
-
-<!-- -----------------------------메인 시작----------------------------------------------- -->
-<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- 마이페이지 -->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/customer/customerOne.jsp">마이페이지</a></li>
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/customer/customerOrderList.jsp">주문목록</a></li>
-                  <li aria-current="page" class="breadcrumb-item active">리뷰보기</li>
-                </ol>
-              </nav>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        리뷰 상세보기
+                    </h1>
+                    <p class="lead">
+                        Update Your Account Info
+                    </p>
+                </div>
             </div>
-            <div class="col-lg-3">
-             <!-- 고객메뉴 시작 -->
-              <jsp:include page="/inc/customerSideMenu.jsp"></jsp:include>
-            <!-- 고객메뉴 끝 -->
-            </div>
-            <div class="col-lg-9">
-              <div class="box">
-              	<table class="table">
-              	<h1>나의 리뷰</h1>
-                	<hr>
-              		<thead>
-              			<tr>
-              				<th>주문번호</th>
-              				<th>리뷰사진</th>
-              				<th>제목</th>
-              				<th>내용</th>
-              				<th>작성일</th>
-              				<th>수정일</th>
-              			</tr>
-              		</thead>
-              		<tbody>
-              			<tr>
-              				<td><%=review.get("orderNo")%></td>
-              				<td><img src="<%=request.getContextPath()%>/review/reviewImg/<%=(String)review.get("reviewSaveFilename")%>" alt="준비중" width="auto" height="100px"></td>
-              				<td><%=review.get("reviewTitle")%></td>
-              				<td><%=review.get("reviewContent")%></td>
-              				<td><%=review.get("createdate").toString().substring(0, 10)%></td>
-              				<td><%=review.get("updatedate").toString().substring(0, 10)%></td>
-              			</tr>
-              		</tbody>
-              	</table>
-              	<br>
-                 <table class="table"><!-- 관리자답변 -->
-                 	<thead>
-                 		<tr>
-							<th>관리자답변</th>
-	                 		<th>답변일</th>
-                 		</tr>
-                 	</thead>
-                 	<tbody>
-						<%
-							for(ReviewAnswer a : aList){	
-						%>
-								<tr>
-									<td><%=a.getReviewAContent()%></td>
-									<td><%=a.getCreatedate().toString().substring(0,10)%></td>
-								</tr>
-						<%
-							}
-						%>
-					</tbody>
-				  </table>
-				  <!-- 수정, 삭제, 돌아가기 버튼 -->
-				  <div class="box-footer d-flex justify-content-between">
-                    <div class="col-md-6 text-center">
-                     	<a class="btn btn-primary" href="<%=request.getContextPath()%>/review/modifyReview.jsp?reviewNo=<%=reviewNo%>"><i class="fa fa-save"></i>수정하기</a> 
-                    </div>
-                    <div class="col-md-6 text-center">
-                     	<a class="btn btn-primary" href="<%=request.getContextPath()%>/review/removeReviewAction.jsp?reviewNo=<%=reviewNo%>"><i class="fa fa-save"></i>삭제하기</a>
-                  </div>
-                 </div>
-				</div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-	
-	<!-- -----------------------------메인 끝----------------------------------------------- -->
-<!-- copy -->
-<jsp:include page="/inc/copy.jsp"></jsp:include>
-<!-- 자바스크립트 -->
-<jsp:include page="/inc/script.jsp"></jsp:include>
+
+        <section id="checkout">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xs-12 col-sm-8">
+                        <h5 class="mb-3">계정 정보</h5>
+                        <!-- 리뷰 상세정보 시작 -->
+                        <div class="row mb-2"><!-- 1행 -->
+                        	<div class="col-3">
+                        		주문번호
+                        	</div>
+                        	<div class="col-9">
+                        		<%=review.get("orderNo")%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 2행 -->
+                        	<div class="col-3">
+                        		리뷰사진
+                        	</div>
+                        	<div class="col-9">
+                        		<img src="<%=request.getContextPath()%>/review/reviewImg/<%=(String)review.get("reviewSaveFilename")%>" alt="준비중" width="auto" height="100px">
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 3행 -->
+                        	<div class="col-3">
+                        		제목
+                        	</div>
+                        	<div class="col-6">
+                        		<%=review.get("reviewTitle")%>
+                        	</div>
+                        	<div class="col-3">
+                        		<a class="btn btn-default" href="<%=request.getContextPath()%>/customer/customerAddress.jsp">주소목록</a>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 4행 -->
+                        	<div class="col-3">
+                        		내용
+                        	</div>
+                        	<div class="col-9">
+                        		<%=review.get("reviewContent")%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 5행 -->
+                        	<div class="col-3">
+                        		작성일
+                        	</div>
+                        	<div class="col-9">
+                        		<%=review.get("createdate").toString().substring(0, 10)%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 6행 -->
+                        	<div class="col-3">
+                        		수정일
+                        	</div>
+                        	<div class="col-9">
+                        		<%=review.get("updatedate").toString().substring(0, 10)%>
+                        	</div>
+                        </div>
+                        <!-- 리뷰 상세정보 끝 -->
+                	</div>
+                	<div class="row justify-content-center"><!-- 관리자 답변 -->
+	            		<div class="col-md-12">
+		            		<div class="card mb-5">
+		                        <div class="card-body">
+		                            <table class="table"><!-- 관리자답변 -->
+					                 	<thead>
+					                 		<tr>
+												<th>관리자답변</th>
+						                 		<th>답변일</th>
+					                 		</tr>
+					                 	</thead>
+					                 	<tbody>
+											<%
+												for(ReviewAnswer a : aList){	
+											%>
+													<tr>
+														<td><%=a.getReviewAContent()%></td>
+														<td><%=a.getCreatedate().toString().substring(0,10)%></td>
+													</tr>
+											<%
+												}
+											%>
+										</tbody>
+								  </table>
+		                        </div>
+		                    </div>
+	                    </div>
+            		</div>
+            		<div class="row"><!-- 버튼 -->
+                       	<div class="col-4">
+                           	<a href="<%=request.getContextPath()%>/review/modifyReview.jsp?reviewNo=<%=reviewNo%>" class="btn btn-primary" >리뷰수정</a> 
+                           	<div class="clearfix"></div>
+                       	</div>
+                       	<div class="col-4">
+                           	<a href="<%=request.getContextPath()%>/review/removeReviewAction.jsp?reviewNo=<%=reviewNo%>" class="btn btn-primary" >리뷰삭제</a>
+                           	<div class="clearfix"></div>
+                       	</div>
+                   	</div>
+            	</div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
+
+    <jsp:include page="/inc/script.jsp"></jsp:include>
 </body>
-</html>	
+</html>

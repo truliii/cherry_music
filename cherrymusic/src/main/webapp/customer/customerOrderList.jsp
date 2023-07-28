@@ -56,200 +56,192 @@
 		endPage = lastPage; 
 	}
 %>
+
 <!DOCTYPE html>
 <html>
-
 <head>
-  <jsp:include page="/inc/head.jsp"></jsp:include>
-
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
-
-<body class="sub_page">
-
-  <div class="hero_area">
-    <div class="bg-box">
-      <img src="<%=request.getContextPath()%>/resources/images/hero-bg.jpg" alt="">
-    </div>
-    <!-- header section strats -->
+<body>
     <jsp:include page="/inc/header.jsp"></jsp:include>
-    <!-- end header section -->
-  </div>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        고객 주문목록
+                    </h1>
+                    <p class="lead">
+                        주문목록을 확인하세요!
+                    </p>
+                </div>
+            </div>
+        </div>
 
-  <!-- mypage section -->
+        <section id="cart">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="5%"></th>
+                                        <th>주문번호</th>
+                                        <th>주문상품</th>
+                                        <th>주문수량</th>
+                                        <th>주문일자</th>
+                                        <th>결제금액</th>
+                                        <th>결제상태</th>
+                                        <th>배송상태</th>
+                                        <th>상품후기</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+                                    	int num = 0;
+				                   		for(HashMap<String, Object> m : list){
+				                   			int reviewCnt = rDao.selectReviewCntByOrderNo((Integer)m.get("orderNo"));
+				                   			num += 1;
+				                   	%>
+				                   			<tr>
+				                   				<td><%=num%></td>
+				                   				<td><%=m.get("orderNo")%></td>
+				                   				<td>
+													<!-- <img src="<%=request.getContextPath()%>/product/productImg/" alt="이미지준비중"> -->
+													<%=(String)m.get("productName")%>
+												</td>
+												<td><%=(Integer)m.get("orderCnt")%></td>
+				                   				<td><%=m.get("createdate").toString().substring(0, 11)%></td>
+												<td><%=(Integer)m.get("orderPrice")%></td>
+												<td><span id="paymentStatus" class="badge"><%=(String)m.get("paymentStatus")%></span></td>
+												<td><span id="deliveryStatus" class="badge"><%=(String)m.get("deliveryStatus")%></span></td>
+												<%
+													if(reviewCnt == 0){ //해당 주문번호의 리뷰 수가 0일 경우에는 리뷰작성 출력
+												%>
+														<td><a class="btn btn-primary" href="<%=request.getContextPath()%>/review/addReview.jsp?orderNo=<%=(Integer)m.get("orderNo")%>">리뷰작성</a></td>
+												<%
+													} else {
+														HashMap<String, Object> review = rDao.selectReviewByOrderNo((Integer)m.get("orderNo"));
+														int reviewNo = (Integer)review.get("reviewNo");
+												%>
+														<td><a class="btn btn-default" href="<%=request.getContextPath()%>/review/reviewOne.jsp?reviewNo=<%=reviewNo%>&id=<%=loginId%>">리뷰보기</a></td>
+												<%
+													}
+												%>
+											</tr>
+				                   	<%
+				                   		}
+				                   	%>
+                                </tbody>
+                            </table>
+                        </div>
 
-  <section class="food_section layout_padding">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          My page
-        </h2>
-      </div>
-
-      <ul class="filters_menu">
-        <li><a href="<%=request.getContextPath()%>/customer/customerOne.jsp">profile</a></li>
-        <li class="active"><a href="<%=request.getContextPath()%>/customer/customerOrderList.jsp">Order List</a></li>
-      </ul>
-
-      <div class="filters-content">
-        <div class="row grid">
-        	<div class="col-sm-6 col-lg-12 all pizza">
-	          <table class="table table-hover">
-                    <thead>
-                      <tr>
-						<td colspan="2">주문상품</td>
-						<td>주문수량</td>
-						<td>주문금액</td>
-						<td>결제상태</td>
-						<td>배송상태</td>
-						<td>주문일자</td>
-						<td>리뷰작성</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                   	<%
-                   		for(HashMap<String, Object> m : list){
-                   			int orderNo = rDao.selectReviewCntByOrderNo((Integer)m.get("orderNo"));
-                   	%>
-                   			<tr>
-								<td colspan="2">
-									<!-- <img src="<%=request.getContextPath()%>/product/productImg/" alt="이미지준비중"> -->
-									<%=(String)m.get("productName")%>
-								</td>
-								<td><%=(Integer)m.get("orderCnt")%></td>
-								<td><%=(Integer)m.get("orderPrice")%></td>
-								<td><span id="paymentStatus" class="badge"><%=(String)m.get("paymentStatus")%></span></td>
-								<td><span id="deliveryStatus" class="badge"><%=(String)m.get("deliveryStatus")%></span></td>
-								<td><%=m.get("createdate").toString().substring(0, 11)%></td>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <!-- 첫페이지 -->
+								<li class="page-item">
+									<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=1">&#60;&#60;</a>
+								</li>
+								<!-- 이전 페이지블럭 (startPage - 1) -->
 								<%
-									if(orderNo == 0){ //해당 주문번호의 리뷰 수가 0일 경우에는 리뷰작성 출력
+									if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
 								%>
-										<td><a class="btn btn-primary" href="<%=request.getContextPath()%>/review/addReview.jsp?orderNo=<%=(Integer)m.get("orderNo")%>">리뷰작성</a></td>
-								<%
+										<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
+								<%	
 									} else {
-										HashMap<String, Object> review = rDao.selectReviewByOrderNo((Integer)m.get("orderNo"));
-										int reviewNo = (Integer)review.get("reviewNo");
 								%>
-										<td><a class="btn btn-outline-primary" href="<%=request.getContextPath()%>/review/reviewOne.jsp?reviewNo=<%=reviewNo%>&id=<%=loginId%>">리뷰보기</a></td>
+										<li class="page-item">
+											<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=startPage-1%>">&#60;</a>
+										</li>
 								<%
 									}
 								%>
-							</tr>
-                   	<%
-                   		}
-                   	%>
-                    </tbody>
-                  </table>
-			</div>
-        </div>
-      </div>
-      <div>
-      <!-- 페이지네이션 -->
-		<ul class="pagination">
-			<!-- 첫페이지 -->
-			<li class="page-item">
-				<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=1">&#60;&#60;</a>
-			</li>
-			<!-- 이전 페이지블럭 (startPage - 1) -->
-			<%
-				if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
-			%>
-					<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
-			<%	
-				} else {
-			%>
-					<li class="page-item">
-						<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=startPage-1%>">&#60;</a>
-					</li>
-			<%
-				}
-			%>
-			
-			<!-- 현재페이지 -->
-			<%
-				for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
-					if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
-			%>
-					<li class="page-item active">
-						<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=i%>">
-							<%=i%>
-						</a>
-					</li>
-			<%
-					} else {
-			%>
-					<li class="page-item">
-						<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=i%>">
-							<%=i%>
-						</a>
-					</li>
-			<%	
-					}
-				}
-			%>
-			<!-- 다음 페이지블럭 (endPage + 1) -->
-			<%
-				if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
-			%>
-					<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
-			<%	
-				} else {
-			%>
-					<li class="page-item">
-						<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=endPage+1%>">&#62;</a>
-					</li>
-			<%
-				}
-			%>
-			
-			<!-- 마지막페이지 -->
-			<li class="page-item">
-				<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=lastPage%>">&#62;&#62;</a>
-				</li>
-			</ul>
-		</div>
-		<!-- 페이지네이션 끝 -->
-      </div>
-  </section>
+								
+								<!-- 현재페이지 -->
+								<%
+									for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
+										if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
+								%>
+										<li class="page-item active">
+											<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=i%>">
+												<%=i%>
+											</a>
+										</li>
+								<%
+										} else {
+								%>
+										<li class="page-item">
+											<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=i%>">
+												<%=i%>
+											</a>
+										</li>
+								<%	
+										}
+									}
+								%>
+								<!-- 다음 페이지블럭 (endPage + 1) -->
+								<%
+									if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
+								%>
+										<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
+								<%	
+									} else {
+								%>
+										<li class="page-item">
+											<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=endPage+1%>">&#62;</a>
+										</li>
+								<%
+									}
+								%>
+								
+								<!-- 마지막페이지 -->
+								<li class="page-item">
+									<a class="page-link" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp?id=<%=loginId%>&currentPage=<%=lastPage%>">&#62;&#62;</a>
+								</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
 
-  <!-- end mypage section -->
-
-  <!-- footer section -->
-  <jsp:include page="/inc/footer.jsp"></jsp:include>
-  <!-- footer section -->
-
-<jsp:include page="/inc/script.jsp"></jsp:include>
-
+    <jsp:include page="/inc/script.jsp"></jsp:include>
+    <script>
+		//결제상태, 배송상태 색 바꾸기
+		const payStat = document.querySelectorAll("#paymentStatus");
+		const delStat = document.querySelectorAll("#deliveryStatus");
+		payStat.forEach(function(item, index){
+			if(item.innerHTML === '결제대기'){
+				item.classList.add('badge-warning');
+			} else if (item.innerHTML === '결제완료'){
+				item.classList.add("badge-success");
+			} else if (item.innerHTML === '취소'){
+				item.classList.add('badge badge-danger');
+			} else {
+				item.classList.add('badge badge-info');
+			}
+		})
+		
+		delStat.forEach(function(item, index){
+			if(item.innerHTML === '발송준비'){
+				item.classList.add('badge-secondary');
+			} else if (item.innerHTML === '발송완료'){
+				item.classList.add('badge-primary');
+			} else if (item.innerHTML === '배송중'){
+				item.classList.add('badge-warning');
+			} else if(item.innerHTML === '배송완료'){
+				item.classList.add('badge-info');
+			} else {
+				item.classList.add('badge-success');
+			}
+		})
+		
+	</script>
 </body>
-
-<script>
-	//결제상태, 배송상태 색 바꾸기
-	const payStat = document.querySelectorAll("#paymentStatus");
-	const delStat = document.querySelectorAll("#deliveryStatus");
-	payStat.forEach(function(item, index){
-		if(item.innerHTML === '결제대기'){
-			item.classList.add('badge-warning');
-		} else if (item.innerHTML === '결제완료'){
-			item.classList.add("badge-success");
-		} else if (item.innerHTML === '취소'){
-			item.classList.add('badge badge-danger');
-		} else {
-			item.classList.add('badge badge-info');
-		}
-	})
-	
-	delStat.forEach(function(item, index){
-		if(item.innerHTML === '발송준비'){
-			item.classList.add('badge-secondary');
-		} else if (item.innerHTML === '발송완료'){
-			item.classList.add('badge-primary');
-		} else if (item.innerHTML === '배송중'){
-			item.classList.add('badge-warning');
-		} else if(item.innerHTML === '배송완료'){
-			item.classList.add('badge-info');
-		} else {
-			item.classList.add('badge-success');
-		}
-	})
-</script>
-
 </html>

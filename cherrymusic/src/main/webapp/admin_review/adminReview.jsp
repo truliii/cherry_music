@@ -83,199 +83,196 @@
 	System.out.println(KMJ + startPage + " <--adminReview startPage" + RESET);
 	System.out.println(KMJ + lastPage + " <--adminReview endPage" + RESET);
 %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Admin Review</title>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
 <body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
+    <jsp:include page="/inc/header_admin.jsp"></jsp:include>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        고객 리뷰목록
+                    </h1>
+                    <p class="lead">
+                        고객이 작성한 리뷰를 확인하세요.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-<!-- -----------------------------메인 시작----------------------------------------------- -->
-	<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- 마이페이지 -->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/admin_category/adminCategoryList.jsp">관리페이지</a></li>
-                  <li aria-current="page" class="breadcrumb-item active">리뷰관리</li>
-                </ol>
-              </nav>
-            </div>
-            <div class="col-lg-3">
-              <!-- 고객메뉴 시작 -->
-             <jsp:include page="/inc/adminSideMenu.jsp"></jsp:include>
-              <!-- /.col-lg-3-->
-              <!-- 고객메뉴 끝 -->
-            </div>
-            <div class="col-lg-9">
-              <div class="box">
-              	<!-- 상세정보 -->
-				<div>
-					<form action="<%=request.getContextPath()%>/admin_review/adminReview.jsp">
-					<fieldset>
-						<legend>검색</legend>
-							<div class="d-flex justify-content-between">
-							<div class="content-lg-10">
-								<table class="table table-borderless"><!-- 검색조건 -->
-								<tr>
-								<th>답변여부</th>
-								<td>
-									<%
-										if(answer.equals("all")){
+        <section id="cart">
+            <div class="container">
+            	<div class="row justify-content-center"><!-- 검색조건 -->
+            		<div class="col-md-12">
+	            		<div class="card mb-5">
+	                        <div class="card-body">
+	                            <form class="form-horizontal" action="<%=request.getContextPath()%>/admin_review/adminReview.jsp" method="post">
+	                                <div class="form-group row mt-3">
+	                                	<div class="col-md-2 text-center">
+	                                		답변여부
+	                                	</div>
+	                                    <div class="col-md-10">
+	                                    	<div class="row">
+	                                    		<%
+													if(answer.equals("all")){
+												%>
+														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="all" checked>전체</div>
+														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="true">답변대기</div>
+														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="false">답변완료</div>
+												<%
+													} else if (answer.equals("true")){
+												%>
+														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="all">전체</div>
+														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="true" checked>답변대기</div>
+														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="false">답변완료</div>
+												<%
+													} else {
+												%>
+														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="all">전체</div>
+														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="true">답변대기</div>
+														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="false" checked>답변완료</div>
+												<%
+													}
+												%>
+	                                    	</div>
+	                                    </div>
+	                                    
+	                                </div>
+	                                <div class="form-group text-center">
+	                                    <button type="submit" class="btn btn-primary">검색</button>
+	                                    <div class="clearfix"></div>
+	                                </div>
+	                            </form>
+	                        </div>
+	                    </div>
+                    </div>
+            	</div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">후기번호</th>
+										<th>주문번호</th>
+										<th>제목</th>
+										<th>조회수</th>
+										<th>답변</th>
+										<th>작성일시</th>
+										<th>수정일시</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+										for(HashMap<String, Object> m : list){
 									%>
-											<input type="radio" name="answer" value="all" checked>전체
-											<input type="radio" name="answer" value="true">답변대기
-											<input type="radio" name="answer" value="false">답변완료
-									<%
-										} else if (answer.equals("true")){
-									%>
-											<input type="radio" name="answer" value="all">전체
-											<input type="radio" name="answer" value="true" checked>답변대기
-											<input type="radio" name="answer" value="false">답변완료
-									<%
-										} else {
-									%>
-											<input type="radio" name="answer" value="all">전체
-											<input type="radio" name="answer" value="true">답변대기
-											<input type="radio" name="answer" value="false" checked>답변완료
+											<tr>
+												<td><%=(Integer)m.get("reviewNo")%></td>
+												<td><%=(Integer)m.get("orderNo")%></td>
+												<td><%=m.get("reviewTitle").toString()%></td>
+												<td><%=(Integer)m.get("reviewCheckCnt")%></td>
+												<td>
+													<% 
+														if((Integer)m.get("cnt") > 0 ){
+													%>
+															<a class="btn btn-outline-primary btn-sm" href="<%=request.getContextPath()%>/admin_review/addReviewAnswer.jsp?reviewNo=<%=(Integer)m.get("reviewNo")%>">답변완료</a>
+													<%
+														} else {
+													%>
+															<a class="btn btn-primary btn-sm" href="<%=request.getContextPath()%>/admin_review/addReviewAnswer.jsp?reviewNo=<%=(Integer)m.get("reviewNo")%>">답변대기</a>
+													<%
+														}
+													%>
+												</td>
+												<td><%=(String)m.get("createdate").toString().substring(0,10)%></td>
+												<td><%=(String)m.get("updatedate").toString().substring(0,10)%></td>
+											</tr>
 									<%
 										}
 									%>
-								</td>
-								</tr>
-							 </table>
-							</div>
-							<div>
-								<button type="submit" class="btn btn-primary" >
-		                    	<i class="fa fa-save"></i>
-								검색</button>
-							</div>
-						</div>
-					  </fieldset>
-					</form>
-					<h1>리뷰목록</h1>
-					<hr>
-					<table class="table">
-						<tr>
-							<th>후기번호</th>
-							<th>주문번호</th>
-							<th>제목</th>
-							<th>조회수</th>
-							<th>답변</th>
-							<th>작성일시</th>
-							<th>수정일시</th>
-						</tr>
-						<%
-							for(HashMap<String, Object> m : list){
-						%>
-								<tr>
-									<td><%=(Integer)m.get("reviewNo")%></td>
-									<td><%=(Integer)m.get("orderNo")%></td>
-									<td><%=m.get("reviewTitle").toString()%></td>
-									<td><%=(Integer)m.get("reviewCheckCnt")%></td>
-									<td>
-										<% 
-											if((Integer)m.get("cnt") > 0 ){
-										%>
-												<a class="btn btn-outline-primary btn-sm" href="<%=request.getContextPath()%>/admin_review/addReviewAnswer.jsp?reviewNo=<%=(Integer)m.get("reviewNo")%>">답변완료</a>
-										<%
-											} else {
-										%>
-												<a class="btn btn-primary btn-sm" href="<%=request.getContextPath()%>/admin_review/addReviewAnswer.jsp?reviewNo=<%=(Integer)m.get("reviewNo")%>">답변대기</a>
-										<%
-											}
-										%>
-									</td>
-									<td><%=(String)m.get("createdate").toString().substring(0,10)%></td>
-									<td><%=(String)m.get("updatedate").toString().substring(0,10)%></td>
-								</tr>
-						<%
-							}
-						%>
-						</table>
-						<!-- 페이지네이션 -->
-						<div class="d-flex justify-content-center">
-						<ul class="pagination">
-							<!-- 첫페이지 -->
-							<li class="page-item">
-								<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=1">&#60;&#60;</a>
-							</li>
-							<!-- 이전 페이지블럭 (startPage - 1) -->
-							<%
-								if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
-							%>
-									<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
-							<%	
-								} else {
-							%>
-									<li class="page-item">
-										<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=startPage-1%>">&#60;</a>
-									</li>
-							<%
-								}
-							%>
-							
-							<!-- 현재페이지 -->
-							<%
-								for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
-									if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
-							%>
-									<li class="page-item active">
-										<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=i%>">
-											<%=i%>
-										</a>
-									</li>
-							<%
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+								<!-- 첫페이지 -->
+								<li class="page-item">
+									<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=1">&#60;&#60;</a>
+								</li>
+								<!-- 이전 페이지블럭 (startPage - 1) -->
+								<%
+									if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
+								%>
+										<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
+								<%	
 									} else {
-							%>
-									<li class="page-item">
-										<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=i%>">
-											<%=i%>
-										</a>
-									</li>
-							<%	
+								%>
+										<li class="page-item">
+											<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=startPage-1%>">&#60;</a>
+										</li>
+								<%
 									}
-								}
-							%>
-							<!-- 다음 페이지블럭 (endPage + 1) -->
-							<%
-								if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
-							%>
-									<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
-							<%	
-								} else {
-							%>
-									<li class="page-item">
-										<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=endPage+1%>">&#62;</a>
-									</li>
-							<%
-								}
-							%>
-							
-							<!-- 마지막페이지 -->
-							<li class="page-item">
-								<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=lastPage%>">&#62;&#62;</a>
-							</li>
-						</ul>
-					  </div>
-					</div>
-				</div>
-              </div>
+								%>
+								
+								<!-- 현재페이지 -->
+								<%
+									for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
+										if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
+								%>
+										<li class="page-item active">
+											<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=i%>">
+												<%=i%>
+											</a>
+										</li>
+								<%
+										} else {
+								%>
+										<li class="page-item">
+											<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=i%>">
+												<%=i%>
+											</a>
+										</li>
+								<%	
+										}
+									}
+								%>
+								<!-- 다음 페이지블럭 (endPage + 1) -->
+								<%
+									if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
+								%>
+										<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
+								<%	
+									} else {
+								%>
+										<li class="page-item">
+											<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=endPage+1%>">&#62;</a>
+										</li>
+								<%
+									}
+								%>
+								
+								<!-- 마지막페이지 -->
+								<li class="page-item">
+									<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=lastPage%>">&#62;&#62;</a>
+								</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-	<!-- -----------------------------메인 끝----------------------------------------------- -->
-<!-- copy -->
-<jsp:include page="/inc/copy.jsp"></jsp:include>
-<!-- 자바스크립트 -->
-<jsp:include page="/inc/script.jsp"></jsp:include>
+        </section>
+    </div>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
+
+    <jsp:include page="/inc/script.jsp"></jsp:include>
 </body>
-</html>	

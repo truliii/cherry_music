@@ -34,159 +34,174 @@
 	Customer customer = cDao.selectCustomer(loginId);
 
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>customerOne</title>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
+    <jsp:include page="/inc/head.jsp"></jsp:include>
+
 </head>
 <body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
-
-<!-- -----------------------------메인 시작----------------------------------------------- -->
-<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- 마이페이지 -->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li aria-current="page" class="breadcrumb-item active">마이페이지</li>
-                </ol>
-              </nav>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        Settings
+                    </h1>
+                    <p class="lead">
+                        Update Your Account Info
+                    </p>
+                </div>
             </div>
-            <div class="col-lg-3">
-              <!-- 고객메뉴 시작 -->
-              <jsp:include page="/inc/customerSideMenu.jsp"></jsp:include>
-            <!-- 고객메뉴 끝 -->
-            </div>
-            <div class="col-lg-9">
-              <div class="box">
-                <h1>My Account</h1>
-                	<form action="<%=request.getContextPath()%>/customer/modifyCustomerAction.jsp" method="post">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="id">아이디</label>
-                        <input id="id"  name="id" value="<%=customer.getId()%>" readonly type="text" class="form-control">
-                      </div>
-                    </div>
-                  </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="name">이름&nbsp;<span class="msg" id="nameMsg"></span></label>
-                        <input id="name" name="name" value="<%=customer.getCstmName()%>" type="text" class="form-control">
-                      </div>
-                    </div>
-                   </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="address">주소&nbsp;<span class="msg" id="addMsg"></span></label>
-                        <input id="address" name="address" value="<%=customer.getCstmAddress()%>" type="text" class="form-control"><p>
-                        <a class="btn btn-primary" id="addrPopup" href="<%=request.getContextPath()%>/customer/addCustomerAddress.jsp"><i class="fa fa-save"></i>주소추가</a>
-                    </div>
-                   </div>
-                   </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="email">이메일&nbsp;<span class="msg" id="emailMsg"></span></label>
-                        <input id="email" name="email" value="<%=customer.getCstmEmail()%>" type="email" class="form-control">
-                      </div>
-                    </div>
-                   </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="birth">생일&nbsp;<span class="msg" id="birthMsg"></span></label>
-                        <input id="birth" name="birth" value="<%=customer.getCstmBirth()%>" type="date" class="form-control">
-                      </div>
-                    </div>
-                   </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="phone">연락처&nbsp;<span class="msg" id="phoneMsg"></span></label>
-                        <input id="phone" name="phone" value="<%=customer.getCstmPhone()%>" type="text" class="form-control">
-                      </div>
-                    </div>
-                   </div>
-                    <div class="row">
-                    <div class="col-md-12">
-                      <div>
-                        <label for="gender">성별</label>
-                        <%
-                        	if(customer.getCstmGender().equals("M")){
-                        %>
-                        		<input id="gender" name="gender" value="M" type="radio" checked>남
-                       			<input id="gender" name="gender" value="F" type="radio">여
-                       			&nbsp;<span class="msg" id="genderMsg"></span>
-                        <%
-                        	} else {
-                        %>
-                        		<input id="gender" name="gender" value="M" type="radio">남
-                        		<input id="gender" name="gender" value="F" type="radio" checked>여
-                        		&nbsp;<span class="msg" id="genderMsg"></span>
-                        <%
-                        	}
-                        %>
-                        
-                      </div>
-                    </div>
-                   </div>
-                    <div class="box-footer d-flex justify-content-center">
-                     	<button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>수정하기</button>
-                    </div>
-                </form>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+
+        <section id="checkout">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xs-12 col-sm-8">
+                        <h5 class="mb-3">정보 수정</h5>
+                        <!-- 정보 수정폼 시작 -->
+                        <form action="<%=request.getContextPath()%>/customer/modifyCustomerAction.jsp" method="post" class="bill-detail">
+                            <fieldset>
+                                <div class="form-group row"><!-- 1행 -->
+                                	<input id="id" name="id" value="<%=customer.getId()%>" readonly type="hidden" class="form-control">
+                                </div>
+                                <div class="form-group row"><!-- 2행 -->
+	                                <div class="col-2">
+		                                <label for="name">이름&nbsp;</label>
+	                                </div>
+	                                <div class="col-10">
+	                                	<div>
+		                                    <input id="name" name="name" type="text" value="<%=customer.getCstmName()%>" type="text" class="form-control">
+		                                    <span class="msg" id="nameMsg"></span>
+	                                	</div>
+	                                </div>
+                                </div>
+                                <div class="form-group row">
+                                	<div class="col-2">
+                                		<label for="address">주소&nbsp;</label>
+                                	</div>
+                                	<div class="col-8">
+                                		<input id="address" name="address" value="<%=customer.getCstmAddress()%>" type="text" class="form-control">
+                                	</div>
+                                	<div class="col-2">
+                                		<div>
+                                			<a class="btn btn-default" id="addrPopup" href="<%=request.getContextPath()%>/customer/addCustomerAddress.jsp">주소 추가</a>
+                                			<span class="msg" id="addMsg"></span>
+                                		</div>
+                                	</div>
+                       			</div>
+                                <div class="form-group row">
+                                	<div class="col-2">
+                                		<label for="email">이메일&nbsp;</label>
+                                	</div>
+                                	<div class="col-10">
+                                		<div>
+					                        <input id="email" name="email" value="<%=customer.getCstmEmail()%>" type="email" class="form-control">
+											<span class="msg" id="emailMsg"></span>
+                                		</div>
+                                	</div>
+                                </div>
+                                <div class="form-group row">
+                                	<div class="col-2">
+		                                <label for="birth">생일&nbsp;</label>
+                                	</div>
+									<div class="col-10">
+										<div>
+				                        	<input id="birth" name="birth" value="<%=customer.getCstmBirth()%>" type="date" class="form-control">
+				                        	<span class="msg" id="birthMsg"></span>
+				                        </div>
+									</div>
+                                </div>
+                                <div class="form-group row">
+                                <div class="col-2">
+	                                <label for="phone">연락처&nbsp;</label>
+                                </div>
+								<div class="col-10">
+									<div>
+				                        <input id="phone" name="phone" value="<%=customer.getCstmPhone()%>" type="text" class="form-control">
+				                        <span class="msg" id="phoneMsg"></span>
+			                        </div>
+								</div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-2">
+                                    	<label for="gender">성별</label>
+                                    </div>
+                                    <div class="col-10">
+			                        <%
+			                        	if(customer.getCstmGender().equals("M")){
+			                        %>
+			                        		<div class="row">
+				                        		<div class="col-2"><input id="gender" name="gender" value="M" type="radio" checked class="form-control">&nbsp;남</div>
+				                       			<div class="col-2"><input id="gender" name="gender" value="F" type="radio">&nbsp;여</div>
+				                       			<div class="col-8"><span class="msg" id="genderMsg"></span></div>
+			                       			</div>
+			                        <%
+			                        	} else {
+			                        %>
+			                        		<div class="row">
+				                        		<div class="col-2"><input id="gender" name="gender" value="M" type="radio">&nbsp;남</div>
+				                       			<div class="col-2"><input id="gender" name="gender" value="F" type="radio" checked>&nbsp;여</div>
+				                       			<div class="col-8"><span class="msg" id="genderMsg"></span></div>
+			                       			</div>
+			                        <%
+			                        	}
+			                        %>
+                                    </div>
+                                </div>
+                                <div class="form-group text-right">
+                                    <button type="submit" class="btn btn-primary">수정하기</button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <!-- 정보 수정폼 끝 -->
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-	
-	<!-- -----------------------------메인 끝----------------------------------------------- -->
-<!-- copy -->
-<jsp:include page="/inc/copy.jsp"></jsp:include>
-<!-- 자바스크립트 -->
-<jsp:include page="/inc/script.jsp"></jsp:include>
-<script>
-	//입력값 유효성 검사
-	$("#name").blur(function(){
-		if($("#name").val()==""){
-			$("#nameMsg").text("이름을 입력하세요");
-		}
-	})
-	$("#address").blur(function(){
-		if($("#address").val()==""){
-			$("#addMsg").text("주소를 입력하세요");
-		}
-	})
-	$("#email").blur(function(){
-		if($("#email").val()==""){
-			$("#emailMsg").text("이메일을 입력하세요");
-		}
-	})
-	$("#birth").blur(function(){
-		if($("#birth").val()==""){
-			$("#birthMsg").text("생일을 입력하세요");
-		}
-	})
-	$("#phone").blur(function(){
-		if($("#phone").val()==""){
-			$("#phoneMsg").text("연락처를 입력하세요");
-		}
-	})
-	$("#gender").blur(function(){
-		if(!$("#gender").checked){
-			$("#genderMsg").text("성별을 선택하세요");
-		}
-	})
-</script>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
+
+    <jsp:include page="/inc/script.jsp"></jsp:include>
+    <script>
+		//입력값 유효성 검사
+		$("#name").blur(function(){
+			if($("#name").val()==""){
+				$("#nameMsg").text("이름을 입력하세요");
+			}
+		})
+		$("#address").blur(function(){
+			if($("#address").val()==""){
+				$("#addMsg").text("주소를 입력하세요");
+			}
+		})
+		$("#email").blur(function(){
+			if($("#email").val()==""){
+				$("#emailMsg").text("이메일을 입력하세요");
+			}
+		})
+		$("#birth").blur(function(){
+			if($("#birth").val()==""){
+				$("#birthMsg").text("생일을 입력하세요");
+			}
+		})
+		$("#phone").blur(function(){
+			if($("#phone").val()==""){
+				$("#phoneMsg").text("연락처를 입력하세요");
+			}
+		})
+		$("#gender").blur(function(){
+			if(!$("#gender").checked){
+				$("#genderMsg").text("성별을 선택하세요");
+			}
+		})
+	</script>
 </body>
 </html>

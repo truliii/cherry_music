@@ -60,137 +60,136 @@
 	System.out.println(KMJ + startPage + " <--pointHistory startPage" + RESET);
 	System.out.println(KMJ + lastPage + " <--pointHistory endPage" + RESET);
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Point History</title>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
+    <jsp:include page="/inc/head.jsp"></jsp:include>
+
 </head>
 <body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
-	<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- breadcrumb-->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/customer/customerOne.jsp?id=<%=loginId%>">마이페이지</a></li>
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/customer/customerOne.jsp?id=<%=loginId%>">프로필</a></li>
-                  <li aria-current="page" class="breadcrumb-item active">나의포인트</li>
-                </ol>
-              </nav>
-            </div>
-            <div class="col-lg-3">
-              <!-- 고객메뉴 시작 -->
-              <jsp:include page="/inc/customerSideMenu.jsp"></jsp:include>
-            <!-- 고객메뉴 끝 -->
-            </div>
-            <div id="customer-orders" class="col-lg-9">
-              <div class="box">
-                <h1>나의 포인트</h1>
-                <hr>
-                <div class="table-responsive">
-					<table class="table table-hover">
-						<tr>
-							<th>주문번호</th>
-							<th>포인트</th>
-							<th>날짜</th>
-						</tr>
-						<%
-							for(HashMap<String, Object> m : list){
-						%>
-							<tr>
-								<td><%=(Integer)m.get("orderNo")%></td>
-								<td><%=(String)m.get("point")%></td>
-								<td><%=(String)m.get("createdate")%></td>
-							</tr>
-						<%
-							}
-						%>
-					</table>
-					<!-- 페이지네이션 -->
-					<div class="d-flex justify-content-center">
-					<ul class="pagination">
-						<!-- 첫페이지 -->
-						<li class="page-item">
-							<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=1">&#60;&#60;</a>
-						</li>
-						<!-- 이전 페이지블럭 (startPage - 1) -->
-						<%
-							if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
-						%>
-								<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
-						<%	
-							} else {
-						%>
-								<li class="page-item">
-									<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=startPage-1%>">&#60;</a>
-								</li>
-						<%
-							}
-						%>
-						
-						<!-- 현재페이지 -->
-						<%
-							for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
-								if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
-						%>
-								<li class="page-item active">
-									<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=i%>">
-										<%=i%>
-									</a>
-								</li>
-						<%
-								} else {
-						%>
-								<li class="page-item">
-									<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=i%>">
-										<%=i%>
-									</a>
-								</li>
-						<%	
-								}
-							}
-						%>
-						<!-- 다음 페이지블럭 (endPage + 1) -->
-						<%
-							if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
-						%>
-								<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
-						<%	
-							} else {
-						%>
-								<li class="page-item">
-									<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=endPage+1%>">&#62;</a>
-								</li>
-						<%
-							}
-						%>
-						
-						<!-- 마지막페이지 -->
-						<li class="page-item">
-							<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=lastPage%>">&#62;&#62;</a>
-						</li>
-					</ul>
-					</div>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        나의 포인트
+                    </h1>
+                    <p class="lead">
+                        포인트 이력을 확인하세요!
+                    </p>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
 
-	
-	<!-- -----------------------------메인 끝----------------------------------------------- -->
-<!-- copy -->
-<jsp:include page="/inc/copy.jsp"></jsp:include>
-<!-- 자바스크립트 -->
-<jsp:include page="/inc/script.jsp"></jsp:include>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <section id="cart">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                    	<th width="5%"></th>
+                                        <th>주문번호</th>
+                                        <th>포인트</th>
+                                        <th>날짜</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+										int num=0;
+                                    	for(HashMap<String, Object> m : list){
+											num+=1;
+									%>
+										<tr>
+											<td><%=num%></td>
+											<td><%=(Integer)m.get("orderNo")%></td>
+											<td><%=(String)m.get("point")%></td>
+											<td><%=(String)m.get("createdate")%></td>
+										</tr>
+									<%
+										}
+									%>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <!-- 첫페이지 -->
+								<li class="page-item">
+									<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=1">&#60;&#60;</a>
+								</li>
+								<!-- 이전 페이지블럭 (startPage - 1) -->
+								<%
+									if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
+								%>
+										<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
+								<%	
+									} else {
+								%>
+										<li class="page-item">
+											<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=startPage-1%>">&#60;</a>
+										</li>
+								<%
+									}
+								%>
+								
+								<!-- 현재페이지 -->
+								<%
+									for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
+										if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
+								%>
+										<li class="page-item active">
+											<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=i%>">
+												<%=i%>
+											</a>
+										</li>
+								<%
+										} else {
+								%>
+										<li class="page-item">
+											<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=i%>">
+												<%=i%>
+											</a>
+										</li>
+								<%	
+										}
+									}
+								%>
+								<!-- 다음 페이지블럭 (endPage + 1) -->
+								<%
+									if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
+								%>
+										<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
+								<%	
+									} else {
+								%>
+										<li class="page-item">
+											<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=endPage+1%>">&#62;</a>
+										</li>
+								<%
+									}
+								%>
+								
+								<!-- 마지막페이지 -->
+								<li class="page-item">
+									<a class="page-link" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=<%=lastPage%>">&#62;&#62;</a>
+								</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
+
+	<jsp:include page="/inc/script.jsp"></jsp:include>
 </body>
 </html>

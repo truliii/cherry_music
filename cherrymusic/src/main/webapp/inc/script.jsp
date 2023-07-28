@@ -9,3 +9,4 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/assets/packages/thumbelina/thumbelina.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/assets/packages/bootstrap-touchspin/bootstrap-touchspin.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/assets/js/theme.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

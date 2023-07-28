@@ -25,108 +25,138 @@
 	Customer customer = cDao.selectCustomer(loginId);
 
 %>
+
 <!DOCTYPE html>
 <html>
-
 <head>
-  <jsp:include page="/inc/head.jsp"></jsp:include>
+    <jsp:include page="/inc/head.jsp"></jsp:include>
 
 </head>
-
-<body class="sub_page">
-
-  <div class="hero_area">
-    <div class="bg-box">
-      <img src="<%=request.getContextPath()%>/resources/images/hero-bg.jpg" alt="">
-    </div>
-    <!-- header section strats -->
+<body>
     <jsp:include page="/inc/header.jsp"></jsp:include>
-    <!-- end header section -->
-  </div>
-
-  <!-- mypage section -->
-
-  <section class="food_section layout_padding">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          My page
-        </h2>
-      </div>
-
-      <ul class="filters_menu">
-        <li class="active"><a href="<%=request.getContextPath()%>/customer/customerOne.jsp">profile</a></li>
-        <li><a href="<%=request.getContextPath()%>/customer/customerOrderList.jsp">Order List</a></li>
-      </ul>
-
-      <div class="filters-content">
-        <div class="row grid">
-        	<div class="col-sm-6 col-lg-12 all pizza">
-	          <table class="table">
-					<tr><!-- 1행 -->
-						<th>아이디</th>
-						<td colspan="2"><%=customer.getId()%></td>
-					</tr>
-					<tr><!-- 2행 -->
-						<th>이름</th>
-						<td colspan="2"><%=customer.getCstmName()%></td>
-					</tr>
-					<tr><!-- 3행 -->
-						<th>주소</th>
-						<td><%=customer.getCstmAddress()%></td>
-						<td>
-							<a href="<%=request.getContextPath()%>/customer/addCustomerAddress.jsp?&currentPage=1">주소목록</a>
-						</td>						
-					</tr>
-					<tr><!-- 4행 -->
-						<th>이메일</th>
-						<td colspan="2"><%=customer.getCstmEmail()%></td>
-					</tr>
-					<tr><!-- 5행 -->
-						<th>생일</th>
-						<td colspan="2"><%=customer.getCstmBirth()%></td>
-					</tr>
-					<tr><!-- 6행 -->
-						<th>연락처</th>
-						<td colspan="2"><%=customer.getCstmPhone()%></td>
-					</tr>
-					<tr><!-- 7행 -->
-						<th>성별</th>
-						<td colspan="2"><%=customer.getCstmGender()%></td>
-					</tr>
-					<tr><!-- 8행 -->
-						<th>회원등급</th>
-						<td colspan="2"><%=customer.getCstmRank()%></td>
-					</tr>
-					<tr><!-- 9행 -->
-						<th>포인트</th>
-						<td>
-							<%=customer.getCstmPoint()%>
-						</td>
-						<td>
-							<a href="<%=request.getContextPath()%>/customer/pointHistory.jsp?&currentPage=1">포인트이력확인</a> 
-						</td>
-					</tr>
-				</table>
-			</div>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        마이페이지
+                    </h1>
+                    <p class="lead">
+                        Update Your Account Info
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="btn-box">
-        <a href="<%=request.getContextPath()%>/customer/modifyCustomer.jsp?id=<%=customer.getId()%>" class="btn btn-primary">회원정보수정</a>
-       	<a href="<%=request.getContextPath()%>/customer/modifyPassword.jsp?id=<%=customer.getId()%>" class="btn btn-primary">비밀번호변경</a>
-       	<a href="#" class="btn btn-primary">회원탈퇴</a>
-      </div>
+
+        <section id="checkout">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xs-12 col-sm-8">
+                        <h5 class="mb-3">계정 정보</h5>
+                        <!-- 계정 상세정보 시작 -->
+                        <div class="row mb-2"><!-- 1행 -->
+                        	<div class="col-3">
+                        		아이디
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getId()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 2행 -->
+                        	<div class="col-3">
+                        		이름
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmName()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 3행 -->
+                        	<div class="col-3">
+                        		주소
+                        	</div>
+                        	<div class="col-6">
+                        		<%=customer.getCstmAddress()%>
+                        	</div>
+                        	<div class="col-3">
+                        		<a class="btn btn-default" href="<%=request.getContextPath()%>/customer/customerAddress.jsp">주소목록</a>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 4행 -->
+                        	<div class="col-3">
+                        		이메일
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmEmail()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 5행 -->
+                        	<div class="col-3">
+                        		생일
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmBirth()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 6행 -->
+                        	<div class="col-3">
+                        		성별
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getId()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 7행 -->
+                        	<div class="col-3">
+                        		연락처
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmPhone()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 8행 -->
+                        	<div class="col-3">
+                        		회원등급
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmRank()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-4"><!-- 9행 -->
+                        	<div class="col-3">
+                        		포인트
+                        	</div>
+                        	<div class="col-6">
+                        		<%=customer.getCstmPoint()%>
+                        	</div>
+                        	<div class="col-3">
+                        		<a class="btn btn-default" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=1">포인트확인</a> 
+                        	</div>
+                        </div>
+                        <div class="row">
+                        	<div class="col-4">
+	                           	<a href="<%=request.getContextPath()%>/customer/modifyCustomer.jsp?id=<%=customer.getId()%>" class="btn btn-primary">정보수정</a>
+	                           	<div class="clearfix"></div>
+                        	</div>
+                        	<div class="col-4">
+	                           	<a href="<%=request.getContextPath()%>/customer/modifyPassword.jsp?id=<%=customer.getId()%>" class="btn btn-primary">비밀번호변경</a>
+	                           	<div class="clearfix"></div>
+                        	</div>
+                        	<div class="col-4">
+	                           	<a href="#" class="btn btn-primary">회원탈퇴</a>
+	                           	<div class="clearfix"></div>
+                        	</div>
+                    	</div>
+                        <!-- 계정 상세정보 끝 -->
+                	</div>
+            	</div>
+            </div>
+        </section>
     </div>
-  </section>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
 
-  <!-- end mypage section -->
-
-  <!-- footer section -->
-  <jsp:include page="/inc/footer.jsp"></jsp:include>
-  <!-- footer section -->
-
-<jsp:include page="/inc/script.jsp"></jsp:include>
-
+    <jsp:include page="/inc/script.jsp"></jsp:include>
 </body>
-
 </html>
