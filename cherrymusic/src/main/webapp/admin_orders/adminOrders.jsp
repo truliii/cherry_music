@@ -103,7 +103,7 @@
 	<jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
 <body>
-    <jsp:include page="/inc/header_admin.jsp"></jsp:include>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
     
     <div id="page-content" class="page-content">
         <div class="banner">
