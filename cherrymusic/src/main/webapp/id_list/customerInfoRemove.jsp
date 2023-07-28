@@ -19,12 +19,8 @@
 <head>
 <meta charset="UTF-8">
 <title>customerInfoRemove</title>
-<jsp:include page="/inc/link.jsp"></jsp:include>
 </head>
 <body>
-	<!-- navbar-->
-    <jsp:include page="/inc/menu.jsp"></jsp:include>
-    
     <div id="all">
 		<div id="content">
 			<div class="container">
@@ -66,8 +62,6 @@
 			</div>
 		</div>
 	</div>  
-    <!-- COPYRIGHT -->
-    <jsp:include page="/inc/copy.jsp"></jsp:include>
     <!-- JavaScript files-->
     <jsp:include page="/inc/script.jsp"></jsp:include>
 </body>

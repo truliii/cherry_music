@@ -110,133 +110,165 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="UTF-8">
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <title>adminQnAList</title>
-<jsp:include page="/inc/link.jsp"></jsp:include>
 </head>
 <body>
-	<!-- 메뉴 -->
-	<jsp:include page="/inc/menu.jsp"></jsp:include>
+	<!-- header -->
+	<jsp:include page="/inc/header.jsp"></jsp:include>
 	
-	<!-- 메인 -->
-	<div id="all">
-		<div id="content">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<!-- breadcrumb -->
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li aria-current="page" class="breadcrumb-item active">관리자페이지</li>
-								<li aria-current="page" class="breadcrumb-item active">문의관리</li>
-							</ol>
-						</nav>
+	<!-- main -->
+	<div id="page-content" class="page-content">
+		<!-- banner -->
+		<div class="banner">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+				<div class="container">
+					<h1 class="pt-5">
+                        문의 관리
+                    </h1>
+                    <p class="lead">
+                        
+                    </p>
+				</div>
+			</div>
+		</div>
+		<!-- content -->
+		<div class="container" style="margin-top: 100px;">
+			<div class="row">
+				<div class="col-lg-12">
+					<!-- adminNav -->
+					<jsp:include page="/inc/adminNav.jsp"></jsp:include>
+				</div>
+				<!-- 문의 리스트 -->
+				<div class="col-lg-12" style="margin-top: 50px;">
+					<div class="box">
+						<div class="text-right">
+							<!-- 카테고리별 조회폼 -->
+							<form id="adminQnAListForm">
+								<select id="categoryName" name="categoryName">
+									<option value="">전체</option>
+									<option value="상품">상품</option>
+									<option value="교환환불">교환환불</option>
+									<option value="결제">결제</option>
+									<option value="기타">기타</option>
+								</select>
+							</form>
+						</div>
 					</div>
-					<!-- 관리자메뉴 시작 -->
-					<div class="col-lg-3">
-						<jsp:include page="/inc/adminSideMenu.jsp"></jsp:include>
-					</div>
-					<!-- 관리자메뉴 끝 -->
-					<div class="col-lg-9">
-              			<div class="box">
-							<div class="text-right">
-								<!-- 카테고리별 조회폼 -->
-								<form id="adminQnAListForm">
-									<select id="categoryName" name="categoryName">
-										<option value="">전체</option>
-										<option value="상품">상품</option>
-										<option value="교환환불">교환환불</option>
-										<option value="결제">결제</option>
-										<option value="기타">기타</option>
-									</select>
-								</form>
-							</div>
-							<br>
-							<div>
-								<table class="table">
-									<thead>
-										<tr>
-											<th>카테고리</th>
-											<th>번호</th>
-											<th>주문번호</th>
-											<th>문의제목</th>
-											<th>등록일</th>
-											<th>답변여부</th>
-										</tr>
-									</thead>
-							        <tbody>
-								        <%
-											for(HashMap<String, Object> m : qnaList){
-										%>
-												<tr onclick = "location.href='<%=request.getContextPath()%>/admin_question/adminQnADetail.jsp?qNo=<%=(Integer) m.get("qNo")%>&qCategory=<%=(String) m.get("qCategory")%>'">
-													<td><%=(String) m.get("qCategory")%></td>
-													<td><%=(Integer) m.get("rnum")%></td>
-													<td><%=(Integer) m.get("qNo")%></td>
-													<td><%=(String) m.get("qTitle")%></td>
-													<td><%=((String) m.get("qCreatedate")).substring(0,10)%></td>
-													<%
-														if((Integer) m.get("aNoCnt") > 0){
-													%>
-															<td>답변완료</td>
-													<%		
-														} else{
-													%>
-															<td>미답변</td>
-													<%		
-														}
-													%>
-												</tr>
-										<%		
-											}
-										%>
-							        </tbody>
-							    </table>
-						    </div>
-							<!-- 페이지 네비게이션 -->
-							<div class="pageNav">
-								<ul class="list-group list-group-horizontal">
-									<%
-										if(startPage > 1){
-									%>
-											<li class="list-group-item pageNavLi" onclick="location.href='<%=request.getContextPath()%>/admin_question/adminQnAList.jsp?currentPage=<%=startPage-pageLength%>&categoryName=<%=categoryName%>'">
-												<span>이전</span>
-											</li>
-									<%		
-										}
-											for(int i = startPage; i <= endPage; i++){
-												if(i == currentPage){
-									%>
-													<li class="list-group-item currentPageNav">
-														<span><%=i%></span>
-													</li>
-									<%
+					<!-- 문의 리스트 출력 -->
+					<div>
+						<table class="table" style="margin-top: 20px;">
+							<thead>
+								<tr>
+									<th>카테고리</th>
+									<th>번호</th>
+									<th>주문번호</th>
+									<th>문의제목</th>
+									<th>등록일</th>
+									<th>답변여부</th>
+								</tr>
+							</thead>
+					        <tbody>
+						        <%
+									for(HashMap<String, Object> m : qnaList){
+								%>
+										<tr onclick = "location.href='<%=request.getContextPath()%>/admin_question/adminQnADetail.jsp?qNo=<%=(Integer) m.get("qNo")%>&qCategory=<%=(String) m.get("qCategory")%>'">
+											<td><%=(String) m.get("qCategory")%></td>
+											<td><%=(Integer) m.get("rnum")%></td>
+											<td><%=(Integer) m.get("qNo")%></td>
+											<td><%=(String) m.get("qTitle")%></td>
+											<td><%=((String) m.get("qCreatedate")).substring(0,10)%></td>
+											<%
+												if((Integer) m.get("aNoCnt") > 0){
+											%>
+													<td>답변완료</td>
+											<%		
 												} else{
-									%>
-											<li class="list-group-item pageNavLi" onclick="location.href='<%=request.getContextPath()%>/admin_question/adminQnAList.jsp?currentPage=<%=i%>&categoryName=<%=categoryName%>'">
-												<span><%=i%></span>
-											</li>
-									<%			
-											}
-										}
-											if(endPage != lastPage){
-									%>
-												<li class="list-group-item pageNavLi" onclick="location.href='<%=request.getContextPath()%>/admin_question/adminQnAList.jsp?currentPage=<%=startPage+pageLength%>&categoryName=<%=categoryName%>'">
-													<span>다음</span>
-												</li>	
-									<%			
-											}
-									%>
-								</ul>
-							</div>	       
-              			</div>
-              		</div>	
+											%>
+													<td>미답변</td>
+											<%		
+												}
+											%>
+										</tr>
+								<%		
+									}
+								%>
+					        </tbody>
+					    </table>
+				    </div>
+				    <!-- 페이지 네비게이션 -->
+				    <div class="d-flex justify-content-center">
+						<ul class="pagination">
+							<!-- 첫페이지 -->
+							<li class="page-item">
+								<a class="page-link" href="<%=request.getContextPath()%>/admin_question/adminQnAList.jsp?currentPage=1&categoryName=<%=categoryName%>">&#60;&#60;</a>
+							</li>
+							<!-- 이전 페이지블럭 (startPage - 1) -->
+							<%
+								if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
+							%>
+									<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
+							<%	
+								} else {
+							%>
+									<li class="page-item">
+										<a class="page-link" href="<%=request.getContextPath()%>/admin_question/adminQnAList.jsp?currentPage=<%=startPage-1%>&categoryName=<%=categoryName%>">&#60;</a>
+									</li>
+							<%
+								}
+							%>
+							
+							<!-- 현재페이지 -->
+							<%
+								for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
+									if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
+							%>
+									<li class="page-item active">
+										<a class="page-link" href="<%=request.getContextPath()%>/admin_question/adminQnAList.jsp?currentPage=<%=i%>&categoryName=<%=categoryName%>">
+											<%=i%>
+										</a>
+									</li>
+							<%
+									} else {
+							%>
+									<li class="page-item">
+										<a class="page-link" href="<%=request.getContextPath()%>/admin_question/adminQnAList.jsp?currentPage=<%=i%>&categoryName=<%=categoryName%>">
+											<%=i%>
+										</a>
+									</li>
+							<%	
+									}
+								}
+							%>
+							<!-- 다음 페이지블럭 (endPage + 1) -->
+							<%
+								if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
+							%>
+									<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
+							<%	
+								} else {
+							%>
+									<li class="page-item">
+										<a class="page-link" href="<%=request.getContextPath()%>/admin_question/adminQnAList.jsp?currentPage=<%=endPage+1%>&categoryName=<%=categoryName%>">&#62;</a>
+									</li>
+							<%
+								}
+							%>
+							
+							<!-- 마지막페이지 -->
+							<li class="page-item">
+								<a class="page-link" href="<%=request.getContextPath()%>/admin_question/adminQnAList.jsp?currentPage=<%=lastPage%>&categoryName=<%=categoryName%>">&#62;&#62;</a>
+							</li>
+						</ul>	
+					</div> 
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<!-- copy -->
-	<jsp:include page="/inc/copy.jsp"></jsp:include>
+	<!-- footer -->		
+	 <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
 	<!-- 자바스크립트 -->
 	<jsp:include page="/inc/script.jsp"></jsp:include>	
                                             

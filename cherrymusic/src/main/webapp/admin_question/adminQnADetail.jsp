@@ -80,11 +80,10 @@
 <head>
 <meta charset="UTF-8">
 <title>adminQnADetail</title>
-<jsp:include page="/inc/link.jsp"></jsp:include>
+
 </head>
 <body>
-	<!-- 메뉴 -->
-	<jsp:include page="/inc/menu.jsp"></jsp:include>
+	
 	
 	<!-- 메인 -->
 	<div id="all">
@@ -101,11 +100,7 @@
 							</ol>
 						</nav>
 					</div>
-					<!-- 관리자메뉴 시작 -->
-					<div class="col-lg-3">
-						<jsp:include page="/inc/adminSideMenu.jsp"></jsp:include>
-					</div>
-					<!-- 관리자메뉴 끝 -->
+					
 					<div class="col-lg-9">
               			<div class="box">
 						<!-- 카테고리의 따라 상세페이지 내용 분기 -->
@@ -337,8 +332,7 @@
 			</div>
 		</div>
 					
-	<!-- copy -->
-	<jsp:include page="/inc/copy.jsp"></jsp:include>
+	
 	<!-- 자바스크립트 -->
 	<jsp:include page="/inc/script.jsp"></jsp:include>		
 </body>

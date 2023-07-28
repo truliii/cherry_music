@@ -48,91 +48,98 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>adminCategory</title>
-<jsp:include page="/inc/link.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
 <body>
-	<!-- 메뉴 -->
-	<jsp:include page="/inc/menu.jsp"></jsp:include>
-
-	<!-- 메인 -->
-	<div id="all">
-		<div id="content">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<!-- breadcrumb -->
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li aria-current="page" class="breadcrumb-item active">관리자페이지</li>
-								<li aria-current="page" class="breadcrumb-item active">카테고리관리</li>
-							</ol>
-						</nav>
+	<!-- header -->
+	<jsp:include page="/inc/header.jsp"></jsp:include>
+	
+	<!-- main -->
+	<div id="page-content" class="page-content">
+		<!-- banner -->
+		<div class="banner">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+				<div class="container">
+					<h1 class="pt-5">
+                        카테고리 관리
+                    </h1>
+                    <p class="lead">
+                        
+                    </p>
+				</div>
+			</div>
+		</div>
+		<!-- content -->
+		<div class="container" style="margin-top: 100px;">
+			<div class="row">
+				<div class="col-lg-12">	
+					<!-- adminNav -->
+					<jsp:include page="/inc/adminNav.jsp"></jsp:include>
+				</div>
+				<!-- 카테고리 리스트 -->
+				<div class="col-lg-12" style="margin-top: 50px;"a>
+					<div class="box">
+						<!-- 카테고리 등록 버튼 -->
+						<div>
+							<button type="button" id="addCategoryBtn" class="btn btn-primary">카테고리 등록</button>
+						</div>
+						<br>
+						<!-- 리스트 출력 -->
+						<div>
+							<table class="table">
+								<tr>
+									<th>카테고리</th>
+									<th>&nbsp;</th>
+								</tr>
+								<%
+								    int num = 0;
+									String categoryName = "";
+								    for (Category c : list) {
+								        num = num + 1;
+								        categoryName = "categoryName" +num;
+								%>
+							    <tr>
+							        <td>
+							            <form method="post" id="modifyCategoryForm">
+								            <span data-category-name="<%=categoryName%>"><%=c.getCategoryName()%></span>
+								            <input type="text" name="modifyCategoryName" id="<%=categoryName%>" class="form-control" value="<%=c.getCategoryName()%>" style="display:none">
+								            <input type="hidden" name="categoryName" value="<%=c.getCategoryName()%>">
+							            </form>
+							        </td>
+							        <td class="text-right">
+							            <button type="button" class="modifyBtn btn btn-primary" data-modify="<%=categoryName%>">수정</button>
+							            <button type="button" class="removeBtn btn btn-primary" data-modify="<%=categoryName%>" data-remove="<%=c.getCategoryName()%>">삭제</button>
+							            <button type="button" class="confirmBtn btn btn-primary" data-modify-confirm="<%=categoryName%>" style="display:none">확인</button>
+							            <button type="button" class="cancelBtn btn btn-primary" data-modify-cancel="<%=categoryName%>" style="display:none">취소</button>
+							        </td>
+							    </tr>    
+								<%
+								    }
+								%>
+								<tr id="addCategoryTr" style="display:none">
+									<td>
+										<form method="post" id="addCategoryForm">
+											<input type="text" name="addCategoryName" class="form-control">
+										</form>
+									</td>
+									<td class="text-right">
+										<button type="button" id="addBtn" class="btn btn-primary">등록</button>
+										<button type="button" class="cancelBtn btn btn-primary">취소</button>
+									</td>
+								</tr>
+							</table>
+						</div>
+						
 					</div>
-					<!-- 관리자메뉴 시작 -->
-					<div class="col-lg-3">
-						<jsp:include page="/inc/adminSideMenu.jsp"></jsp:include>
-					</div>
-					<!-- 관리자메뉴 끝 -->
-					<div class="col-lg-9">
-              			<div class="box">
-              				<div>
-								<table class="table">
-									<tr>
-										<th>카테고리</th>
-										<th>&nbsp;</th>
-									</tr>
-									<%
-									    int num = 0;
-										String categoryName = "";
-									    for (Category c : list) {
-									        num = num + 1;
-									        categoryName = "categoryName" +num;
-									%>
-								    <tr>
-								        <td>
-								            <form method="post" id="modifyCategoryForm">
-									            <span data-category-name="<%=categoryName%>"><%=c.getCategoryName()%></span>
-									            <input type="text" name="modifyCategoryName" id="<%=categoryName%>" class="form-control" value="<%=c.getCategoryName()%>" style="display:none">
-									            <input type="hidden" name="categoryName" value="<%=c.getCategoryName()%>">
-								            </form>
-								        </td>
-								        <td class="text-right">
-								            <button type="button" class="modifyBtn btn btn-primary" data-modify="<%=categoryName%>">수정</button>
-								            <button type="button" class="removeBtn btn btn-primary" data-modify="<%=categoryName%>" data-remove="<%=c.getCategoryName()%>">삭제</button>
-								            <button type="button" class="confirmBtn btn btn-primary" data-modify-confirm="<%=categoryName%>" style="display:none">확인</button>
-								            <button type="button" class="cancelBtn btn btn-primary" data-modify-cancel="<%=categoryName%>" style="display:none">취소</button>
-								        </td>
-								    </tr>    
-									<%
-									    }
-									%>
-									<tr id="addCategoryTr" style="display:none">
-										<td>
-											<form method="post" id="addCategoryForm">
-												<input type="text" name="addCategoryName" class="form-control">
-											</form>
-										</td>
-										<td class="text-right">
-											<button type="button" id="addBtn" class="btn btn-primary">등록</button>
-											<button type="button" class="cancelBtn btn btn-primary">취소</button>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="text-right">
-								<button type="button" id="addCategoryBtn" class="btn btn-primary">카테고리 등록</button>
-							</div>
-              			</div>
-              		</div>	
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<!-- copy -->
-	<jsp:include page="/inc/copy.jsp"></jsp:include>
+	<!-- footer -->		
+	 <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
 	<!-- 자바스크립트 -->
 	<jsp:include page="/inc/script.jsp"></jsp:include>
 </body>

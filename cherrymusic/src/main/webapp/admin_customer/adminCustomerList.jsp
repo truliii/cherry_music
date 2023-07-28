@@ -171,186 +171,236 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <title>adminCustomerList</title>
-<jsp:include page="/inc/link.jsp"></jsp:include>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-
 </head>
 <body>
-	<!-- 메뉴 -->
-	<jsp:include page="/inc/menu.jsp"></jsp:include>
+	<!-- header -->
+	<jsp:include page="/inc/header.jsp"></jsp:include>
 	
-	<!-- 메인 -->
-	<div id="all">
-		<div id="content">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<!-- breadcrumb -->
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li aria-current="page" class="breadcrumb-item active">관리자페이지</li>
-								<li aria-current="page" class="breadcrumb-item active">회원관리</li>
-							</ol>
-						</nav>
+	<!-- main -->
+	<div id="page-content" class="page-content">
+		<!-- banner -->
+		<div class="banner">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+				<div class="container">
+					<h1 class="pt-5">
+                        회원 관리
+                    </h1>
+                    <p class="lead">
+                        
+                    </p>
+				</div>
+			</div>
+		</div>
+		<!-- content -->
+		<div class="container" style="margin-top: 100px;">
+			<div class="row">
+				<div class="col-lg-12">
+					<!-- adminNav -->
+					<jsp:include page="/inc/adminNav.jsp"></jsp:include>
+				</div>
+				<!-- 회원 리스트 -->
+				<div class="col-lg-12" style="margin-top: 50px;">
+					<div class="card mb-5">
+						<!-- 선택 조회 체그박스 -->
+						<div class="card-body">
+							<form action="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp" method="post">
+								<div class="form-group row mt-3">
+	                                	<div class="col-md-2 text-right">
+	                                		<strong>회원</strong>
+	                                	</div>
+	                                    <div class="col-md-10">
+	                                    	<div class="row">
+	                                    		<div class="col-2">
+	                                    			<input type ="checkbox" name="ckIdLevel" value="0"> <label for="wait">고객</label>
+	                                    		</div>
+	                                    		<div class="col-2">
+			                                        <input type ="checkbox" name="ckIdLevel" value="1"> <label for="wait">사원</label>
+	                                    		</div>
+	                                    		<div class="col-2">
+			                                        <input type ="checkbox" name="ckIdLevel" value="2"> <label for="wait">관리자</label>
+	                                    		</div>
+	                                    	</div>
+	                                    </div>
+	                                </div>
+	                                <div class="form-group row mt-3">
+	                                	<div class="col-md-2 text-right">
+	                                		<strong>회원등급</strong>
+	                                	</div>
+	                                    <div class="col-md-10">
+	                                    	<div class="row">
+	                                    		<div class="col-2">
+	                                    			<input type ="checkbox" name="ckCstmRank" value="gold"> <label for="wait">Gold</label>
+	                                    		</div>
+	                                    		<div class="col-2">
+			                                        <input type ="checkbox" name="ckCstmRank" value="silver"> <label for="wait">Silver</label>
+	                                    		</div>
+	                                    		<div class="col-2">
+			                                        <input type ="checkbox" name="ckCstmRank" value="bronze"> <label for="wait">Bronze</label>
+	                                    		</div>
+	                                    	</div>
+	                                    </div>
+	                                </div>
+	                                <div class="form-group row mt-3">
+	                                	<div class="col-md-2 text-right">
+	                                		<strong>아이디 활성화</strong>
+	                                	</div>
+	                                    <div class="col-md-10">
+	                                    	<div class="row">
+	                                    		<div class="col-2">
+	                                    			<input type ="checkbox" name="ckActive" value="Y"> <label for="wait">활성화</label>
+	                                    		</div>
+	                                    		<div class="col-2">
+			                                        <input type ="checkbox" name="ckActive" value="N"> <label for="wait">비활성화</label>
+	                                    		</div>
+	                                    	</div>
+	                                    </div>
+	                                </div>
+									<div class="text-center">
+										<button type="submit" class="btn btn-primary">검색</button>
+									</div>
+							</form>
+						</div>
 					</div>
-					<!-- 관리자메뉴 시작 -->
-					<div class="col-lg-3">
-						<jsp:include page="/inc/adminSideMenu.jsp"></jsp:include>
+					<div style="margin-top: 50px;">
+						<!-- Id 검색 폼 -->
+						<div class="text-right">
+							<form action="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp" method="post">
+								<input type ="text" name="id">
+								<button type="submit" class="btn btn-primary">아이디 조회</button> 
+							</form>
+						</div>
 					</div>
-					<!-- 관리자메뉴 끝 -->
-					<div class="col-lg-9">
-              			<div class="box">
-              				<div class="box">
-	              				<!-- 리스트 조회 폼 -->
-								<div>
-									<form action="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp" method="post">
-										<div>
-											<table class="table-sm">
-												<tr>
-													<th>회원</th>
-													<td>
-														&nbsp;<input type ="checkbox" name="ckIdLevel" value="0"> 고객
-														&nbsp;<input type ="checkbox" name="ckIdLevel" value="1"> 사원
-														&nbsp;<input type ="checkbox" name="ckIdLevel" value="2"> 관리자
-													</td>
-												</tr>
-												<tr>
-													<th>회원등급</th>
-													<td>
-														&nbsp;<input type ="checkbox" name="ckCstmRank" value="gold"> Gold
-														&nbsp;<input type ="checkbox" name="ckCstmRank" value="silver"> Silver
-														&nbsp;<input type ="checkbox" name="ckCstmRank" value="bronze"> Bronze 
-													</td>
-												</tr>
-												<tr>
-													<th>아이디 활성화</th>
-													<td>
-														&nbsp;<input type ="checkbox" name="ckActive" value="Y"> 활성화
-														&nbsp;<input type ="checkbox" name="ckActive" value="N"> 비활성화
-													</td>
-												</tr>
-											</table>
-										</div>
-										<div class="text-right">
-											<button type="submit" class="btn btn-primary">검색</button>
-										</div>
-									</form>
-								</div>
+					<!-- 조회 리스트, Id검색 분기하여 출력 -->
+					<%
+						if(selectId == null){ // 조회 리스트 출력
+					%>
+							<div style="margin-top: 20px;">
+								<table class="table">
+									<tr>
+										<th>ID</th>
+										<th>성명</th>
+										<th>회원등급</th>
+										<th>활성화</th>
+									</tr>
+									<%
+										for(HashMap<String, Object> m : adminCustomerList){
+									%>
+										<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) m.get("id")%>'">
+											<td><%=(String) m.get("id")%></td>
+											<td><%=(String) m.get("cstmName")%></td>
+											<td><%=(String) m.get("cstmRank")%></td>
+											<td><%=(String) m.get("active")%></td>
+										</tr>
+									<%		
+										}
+									%>
+								</table>
 							</div>
-							<div class="col-lg-12">
-								<!-- Id 검색 폼 -->
-								<div class="text-right">
-									<form action="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp" method="post">
-										<input type ="text" name="id">
-										<button type="submit" class="btn btn-primary">아이디 조회</button> 
-									</form>
-								</div>
-								<br>
+					<%		
+						} else{ // 검색 Id 출력
+					%>
+							<div>
+								<table class="table">
+									<tr>
+										<th>ID</th>
+										<th>성명</th>
+										<th>회원등급</th>
+										<th>활성화</th>
+									</tr>
+									<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) selectId.get("id")%>'">
+										<td><%=(String) selectId.get("id")%></td>
+										<td><%=(String) selectId.get("cstmName")%></td>
+										<td><%=(String) selectId.get("cstmRank")%></td>
+										<td><%=(String) selectId.get("active")%></td>
+									</tr>
+								</table>
 							</div>
-							<!-- 조회 리스트, Id검색 분기하여 출력 -->
-							<%
-								if(selectId == null){ // 조회 리스트 출력
-							%>
-									<div>
-										<table class="table">
-											<tr>
-												<th>ID</th>
-												<th>성명</th>
-												<th>회원등급</th>
-												<th>활성화</th>
-											</tr>
-											<%
-												for(HashMap<String, Object> m : adminCustomerList){
-											%>
-												<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) m.get("id")%>'">
-													<td><%=(String) m.get("id")%></td>
-													<td><%=(String) m.get("cstmName")%></td>
-													<td><%=(String) m.get("cstmRank")%></td>
-													<td><%=(String) m.get("active")%></td>
-												</tr>
-											<%		
-												}
-											%>
-										</table>
-									</div>
-							<%		
-								} else{ // 검색 Id 출력
-							%>
-									<div>
-										<table class="table">
-											<tr>
-												<th>ID</th>
-												<th>성명</th>
-												<th>회원등급</th>
-												<th>활성화</th>
-											</tr>
-											<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) selectId.get("id")%>'">
-												<td><%=(String) selectId.get("id")%></td>
-												<td><%=(String) selectId.get("cstmName")%></td>
-												<td><%=(String) selectId.get("cstmRank")%></td>
-												<td><%=(String) selectId.get("active")%></td>
-											</tr>
-										</table>
-									</div>
-							<%		
-								}
-							%>
-							<!-- 페이지 네비게이션 
-							 * selectId가 null이 아닌경우만 페이지 네비게이션 출력
-							-->
-							<%
-								if(selectId == null){ 
-							%>
-									<div class="pageNav">
-										<ul class="list-group list-group-horizontal">
-											<%
-												if(startPage > 1){
-											%>
-													<li class="list-group-item pageNavLi" onclick="location.href='<%=request.getContextPath()%>
-													/admin_customer/adminCustomerList.jsp?currentPage=<%=startPage-pageLength%><%=ckIdLevelStr%><%=ckCstmRankStr%><%=ckActiveStr%>'">
-														<span>이전</span>
-													</li>
-											<%		
-												}
-													for(int i = startPage; i <= endPage; i++){
-														if(i == currentPage){
-											%>
-															<li class="list-group-item currentPageNav">
-																<span><%=i%></span>
-															</li>
-											<%
-														} else{
-											%>
-													<li class="list-group-item pageNavLi" onclick="location.href='<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp?currentPage=<%=i%><%=ckIdLevelStr%><%=ckCstmRankStr%><%=ckActiveStr%>'">
-														<span><%=i%></span>
-													</li>
-											<%			
-													}
-												}
-													if(endPage != lastPage){
-											%>
-														<li class="list-group-item pageNavLi" onclick="location.href='<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp?currentPage=<%=startPage+pageLength%><%=ckIdLevelStr%><%=ckCstmRankStr%><%=ckActiveStr%>'">
-															<span>다음</span>
-														</li>	
-											<%			
-													}
-											%>
-										</ul>
-									</div>
-							<%		
-								}
-							%>
-              			</div>
-              		</div>	
+					<%		
+						}
+					%>
+					<!-- 페이지 네비게이션 
+					 * selectId가 null이 아닌경우만 페이지 네비게이션 출력
+					-->
+					<%
+						if(selectId == null){ 
+					%>
+							<div class="d-flex justify-content-center">
+								<ul class="pagination">
+									<!-- 첫페이지 -->
+									<li class="page-item">
+										<a class="page-link" href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp?currentPage=1<%=ckIdLevelStr%><%=ckCstmRankStr%><%=ckActiveStr%>">&#60;&#60;</a>
+									</li>
+									<!-- 이전 페이지블럭 (startPage - 1) -->
+									<%
+										if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
+									%>
+											<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
+									<%	
+										} else {
+									%>
+											<li class="page-item">
+												<a class="page-link" href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp?currentPage=<%=startPage-1%><%=ckIdLevelStr%><%=ckCstmRankStr%><%=ckActiveStr%>">&#60;</a>
+											</li>
+									<%
+										}
+									%>
+									
+									<!-- 현재페이지 -->
+									<%
+										for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
+											if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
+									%>
+											<li class="page-item active">
+												<a class="page-link" href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp?currentPage=<%=i%><%=ckIdLevelStr%><%=ckCstmRankStr%><%=ckActiveStr%>">
+													<%=i%>
+												</a>
+											</li>
+									<%
+											} else {
+									%>
+											<li class="page-item">
+												<a class="page-link" href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp?currentPage=<%=i%><%=ckIdLevelStr%><%=ckCstmRankStr%><%=ckActiveStr%>">
+													<%=i%>
+												</a>
+											</li>
+									<%	
+											}
+										}
+									%>
+									<!-- 다음 페이지블럭 (endPage + 1) -->
+									<%
+										if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
+									%>
+											<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
+									<%	
+										} else {
+									%>
+											<li class="page-item">
+												<a class="page-link" href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp?currentPage=<%=endPage+1%><%=ckIdLevelStr%><%=ckCstmRankStr%><%=ckActiveStr%>">&#62;</a>
+											</li>
+									<%
+										}
+									%>
+									
+									<!-- 마지막페이지 -->
+									<li class="page-item">
+										<a class="page-link" href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp?currentPage=<%=lastPage%><%=ckIdLevelStr%><%=ckCstmRankStr%><%=ckActiveStr%>">&#62;&#62;</a>
+									</li>
+								</ul>	
+							</div> 
+					<%		
+						}
+					%>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<!-- copy -->
-	<jsp:include page="/inc/copy.jsp"></jsp:include>
+	<!-- footer -->		
+	 <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
 	<!-- 자바스크립트 -->
 	<jsp:include page="/inc/script.jsp"></jsp:include>
 </body>
@@ -390,4 +440,5 @@
 		});
 	}
 </script>
+
 </html>

@@ -111,20 +111,19 @@
 		<!-- banner -->
 		<div class="banner">
 			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+				<div class="container">
+					<h1 class="pt-5">
+                        문의 게시판
+                    </h1>
+                    <p class="lead">
+                        문의사항 작성
+                    </p>
+				</div>
 			</div>
 		</div>
 		<!-- content -->
 		<div class="container" style="margin-top: 100px;">
 			<div class="row">
-				<div class="col-lg-12">
-					<!-- breadcrumb-->
-					<nav aria-label="breadcrumb">
-						<ol class="breadcrumb">
-							<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home.jsp">홈</a></li>
-							<li aria-current="page" class="breadcrumb-item active">Q&A</li>
-						</ol>
-					</nav>
-				</div>
 				<!-- Q&A 리스트-->
 				<div class="col-lg-12">
 					<div class="box">
@@ -220,7 +219,7 @@
 							<ul class="pagination">
 								<!-- 첫페이지 -->
 								<li class="page-item">
-									<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=1">&#60;&#60;</a>
+									<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=1&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#60;&#60;</a>
 								</li>
 								<!-- 이전 페이지블럭 (startPage - 1) -->
 								<%
@@ -231,7 +230,7 @@
 									} else {
 								%>
 										<li class="page-item">
-											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=startPage-1%>">&#60;</a>
+											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=startPage-1%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#60;</a>
 										</li>
 								<%
 									}
@@ -243,7 +242,7 @@
 										if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
 								%>
 										<li class="page-item active">
-											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=i%>">
+											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=i%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">
 												<%=i%>
 											</a>
 										</li>
@@ -251,7 +250,7 @@
 										} else {
 								%>
 										<li class="page-item">
-											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=i%>">
+											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=i%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">
 												<%=i%>
 											</a>
 										</li>
@@ -268,7 +267,7 @@
 									} else {
 								%>
 										<li class="page-item">
-											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=endPage+1%>">&#62;</a>
+											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=endPage+1%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#62;</a>
 										</li>
 								<%
 									}
@@ -276,7 +275,7 @@
 								
 								<!-- 마지막페이지 -->
 								<li class="page-item">
-									<a class="page-link" href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?currentPage=<%=lastPage%>">&#62;&#62;</a>
+									<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=lastPage%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#62;&#62;</a>
 								</li>
 							</ul>	
 						</div> 
