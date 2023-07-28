@@ -52,94 +52,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>qnaModify</title>
-<jsp:include page="/inc/link.jsp"></jsp:include>
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
 <body>
-	<!-- navbar -->
-    <jsp:include page="/inc/menu.jsp"></jsp:include>
-    
-    <!-- 메인 -->
-	<div id="all">
-		<div id="content">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<!-- breadcrumb-->
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home.jsp">홈</a></li>
-								<li aria-current="page" class="breadcrumb-item active">Q&A</li>
-								<li aria-current="page" class="breadcrumb-item active">상세문의</li>
-								<li aria-current="page" class="breadcrumb-item active">문의수정</li>
-							</ol>
-						</nav>
+    <!-- header -->
+	<jsp:include page="/inc/header.jsp"></jsp:include>
+	
+    <!-- main -->
+    <div id="page-content" class="page-content">
+    	<!-- banner -->
+		<div class="banner">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+			</div>
+		</div>
+		<!-- content -->
+		<div class="container" style="margin-top: 100px;">
+			<div class="row">
+				<div class="col-lg-12">
+					<!-- breadcrumb-->
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home.jsp">홈</a></li>
+							<li aria-current="page" class="breadcrumb-item active">Q&A</li>
+							<li aria-current="page" class="breadcrumb-item active">상세문의</li>
+							<li aria-current="page" class="breadcrumb-item active">문의수정</li>
+						</ol>
+					</nav>
+				</div>
+				<!-- 수정 폼 -->
+				<div class="col-lg-12">
+					<div class="box">
+						<div>
+							<form method ="post" id="qnaModifyForm">
+								<table class="table">
+									<tr>
+										<th>문의번호</th>
+										<td>
+											<input type="hidden" name="boardQNo" value="<%=boardQuestion.getBoardQNo()%>">
+											<%=boardQuestion.getBoardQNo()%>
+										</td>
+									</tr>
+									<tr>
+										<th>작성자</th>
+										<td><%=boardQuestion.getId()%></td>
+									</tr>
+									<tr>
+										<th>카테고리</th>
+										<td>
+											<select name="category" id="category" class="form-control w-25">
+												<option value="상품">상품</option>
+												<option value="교환환불">교환환불</option>
+												<option value="결제">결제</option>
+												<option value="기타">기타</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>문의제목</th>
+										<td>
+											<input type="text" name="boardQTitle" id="boardQTitle" class="form-control" value="<%=boardQuestion.getBoardQTitle()%>">
+										</td>
+									</tr>
+									<tr>
+										<th>문의내용</th>
+										<td>
+											<textarea rows="25" name="boardQContent" id="boardQContent" class="form-control"><%=boardQuestion.getBoardQContent()%></textarea>
+										</td>
+									</tr>
+									<tr>
+										<th>작성일</th>
+										<td><%=boardQuestion.getCreatedate()%></td>
+									</tr>
+									<tr>
+										<th>수정일</th>
+										<td><%=boardQuestion.getUpdatedate()%></td>
+									</tr>
+								</table>
+								<div class="text-right">
+									<button type="button" id="qnaModifyBtn" class="btn btn-primary">수정</button>
+									<button type="button" id="cancelBtn" class="btn btn-primary">취소</button>
+								</div>
+							</form>
 						</div>
-						<div class="col-lg-12">
-							<div class="box">
-							<!-- 수정폼-->
-							<div>
-								<form method ="post" id="qnaModifyForm">
-									<table class="table">
-										<tr>
-											<th>문의번호</th>
-											<td>
-												<input type="hidden" name="boardQNo" value="<%=boardQuestion.getBoardQNo()%>">
-												<%=boardQuestion.getBoardQNo()%>
-											</td>
-										</tr>
-										<tr>
-											<th>작성자</th>
-											<td><%=boardQuestion.getId()%></td>
-										</tr>
-										<tr>
-											<th>카테고리</th>
-											<td>
-												<select name="category" id="category" class="form-control w-25">
-													<option value="상품">상품</option>
-													<option value="교환환불">교환환불</option>
-													<option value="결제">결제</option>
-													<option value="기타">기타</option>
-												</select>
-											</td>
-										</tr>
-										<tr>
-											<th>문의제목</th>
-											<td>
-												<input type="text" name="boardQTitle" id="boardQTitle" class="form-control" value="<%=boardQuestion.getBoardQTitle()%>">
-											</td>
-										</tr>
-										<tr>
-											<th>문의내용</th>
-											<td>
-												<textarea rows="2" cols="80" name="boardQContent" id="boardQContent" class="form-control"><%=boardQuestion.getBoardQContent()%></textarea>
-											</td>
-										</tr>
-										<tr>
-											<th>작성일</th>
-											<td><%=boardQuestion.getCreatedate()%></td>
-										</tr>
-										<tr>
-											<th>수정일</th>
-											<td><%=boardQuestion.getUpdatedate()%></td>
-										</tr>
-									</table>
-									<div class="text-right">
-										<button type="button" id="qnaModifyBtn" class="btn btn-primary">수정</button>
-										<button type="button" id="cancelBtn" class="btn btn-primary">취소</button>
-									</div>
-								</form>
-							</div>
-						</div>    
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	
-	<!-- copy -->
-	<jsp:include page="/inc/copy.jsp"></jsp:include>
+    </div>
+	<!-- footer -->		
+	 <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
 	<!-- 자바스크립트 -->
 	<jsp:include page="/inc/script.jsp"></jsp:include>
 	

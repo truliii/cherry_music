@@ -13,7 +13,6 @@
 <html>
 <head>
     <jsp:include page="/inc/head.jsp"></jsp:include>
-
 </head>
 <body>
     <jsp:include page="/inc/header.jsp"></jsp:include>
@@ -23,37 +22,33 @@
             <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
                 <div class="container">
                     <h1 class="pt-5">
-                        Login Page
+                        로그인
                     </h1>
                     <p class="lead">
                         Good music for Good moment!
                     </p>
 
-                    <div class="card card-login mb-5">
+                    <div class="card card-login mb-5" style="width: 450px; height: 250px;">
                         <div class="card-body">
-                            <form id="loginForm" class="form-horizontal" action="<%=request.getContextPath()%>/id_list/loginAction.jsp">
+                            <form id="loginForm">
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12">
-                                        <input id="id" name="id" class="form-control" type="text" placeholder="Username">
+                                        <input id="id" name="id" class="form-control" type="text" placeholder="아이디">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <input id="password" name="pw" class="form-control" type="password" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-12 d-flex justify-content-between align-items-center">
-                                        <div class="checkbox">
-                                            <input id="checkbox0" type="checkbox" name="remember">
-                                            <label for="checkbox0" class="mb-0"> Remember Me? </label>
-                                        </div>
-                                        <a href="login.html" class="text-light"><i class="fa fa-bell"></i> Forgot password?</a>
+                                        <input id="password" name="pw" class="form-control" type="password" placeholder="비밀번호">
                                     </div>
                                 </div>
                                 <div class="form-group row text-center mt-4">
                                     <div class="col-md-12">
-                                        <button id="loginBtn" type="button" class="btn btn-primary btn-block text-uppercase">Log In</button>
+                                        <button id="loginBtn" type="button" class="btn btn-primary btn-block text-uppercase">로그인</button>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-center">
+                                	<div class="col-md-12">
+                                        <button type="button" onclick="location.href='<%=request.getContextPath()%>/id_list/signUp.jsp'" class="btn btn-primary btn-block text-uppercase">회원가입</button>
                                     </div>
                                 </div>
                             </form>

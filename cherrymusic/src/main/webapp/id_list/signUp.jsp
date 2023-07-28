@@ -13,33 +13,33 @@
 <html>
 <head>
     <jsp:include page="/inc/head.jsp"></jsp:include>
-
 </head>
 <body>
+    
     <jsp:include page="/inc/header.jsp"></jsp:include>
     
     <div id="page-content" class="page-content">
         <div class="banner">
-            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-color: #191919;">
                 <div class="container">
                     <h1 class="pt-5">
-                        Register Page
+                        회원가입
                     </h1>
                     <p class="lead">
                         Good music for Good moment!
                     </p>
 
-                    <div class="card card-login mb-5">
+                    <div class="card card-login mb-5" style="width: 500px">
                         <div class="card-body">
-                            <form class="form-horizontal" action="index.html">
+                            <form id="signUpForm">
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12 text-left">
                                     	<label for="id">아이디</label>
                                     </div>
-                                    <div class="col-md-9">
-                                        <input id="id" name="id" type="text" placeholder="ID" class="form-control">
+                                    <div class="col-md-10">
+                                        <input id="id" name="id" type="text" placeholder="아이디" class="form-control">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div>
 										<button id="idCheck" type="button" class="btn btn-primary">중복확인</button>
 									</div>
                                 </div>
@@ -48,7 +48,7 @@
                                        <label for="password">비밀번호</label>
                                     </div>
                                     <div class="col-md-12">
-                                       <input id="password" name="pw" type="password" placeholder="Password" class="form-control">
+                                       <input id="password" name="pw" type="password" placeholder="비밀번호" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group row mt-3">
@@ -56,7 +56,7 @@
                                        <label for="pwCheck">비밀번호 확인</label>
                                     </div>
                                     <div class="col-md-12">
-                                        <input id="pwCheck" name="pwCheck" type="password" placeholder="Confirm Password" class="form-control">
+                                        <input id="pwCheck" name="pwCheck" type="password" placeholder="비밀번호 확인" class="form-control">
                                     </div>
                                     <div class="form-group col-lg-6">
 										<span id="passwordMatchMessage"></span>
@@ -67,19 +67,19 @@
                                 		<label for="cstmName">성명</label>
                                 	</div>
                                     <div class="col-md-12">
-                                        <input id="cstmName" name="cstmName"type="text" placeholder="Full Name" class="form-control">
+                                        <input id="cstmName" name="cstmName"type="text" placeholder="성명" class="form-control">
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row mt-3">
                                 	<div class="col-md-12 text-left">
                                 		<label for="cstmGender">성별</label>
                                 	</div>
                                     <div class="col-md-12 text-left">
-                                        <input type="radio" name="cstmGender" value="M"> Male
-										<input type="radio" name="cstmGender" value="F"> Female
+                                        <input type="radio" name="cstmGender" value="M"> 남
+										<input type="radio" name="cstmGender" value="F"> 여
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row mt-3">
                                 	<div class="col-md-12 text-left">
                                 		<label for="cstmBirth">생년월일</label>
                                 	</div>
@@ -87,52 +87,54 @@
                                         <input id="cstmBirth" name="cstmBirth" type="date" class="form-control">
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row mt-3">
                                 	<div class="col-md-12 text-left">
                                 		<label for="cstmPhone">연락처</label>
                                 	</div>
-                                    <div class="col-md-12 text-left">
-                                       <input id="cstmPhone" name="cstmPhone" type="tel" pattern="[0-9]{3}-[0-9]{3,4}-[0-9]{4}" placeholder="000-0000-0000" class="form-control">
-                                    </div>
-                                    <div class="form-group col-lg-6">
-										<span id="phoneMessage"></span>
-									</div>
-                                </div>
-                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                    	<input id="cstmPhone" name="cstmPhone" type="tel" pattern="[0-9]{3}-[0-9]{3,4}-[0-9]{4}" placeholder="000-0000-0000" class="form-control">
+                                    </div>	
+                                   	<div>
+                                   		<span id="phoneMessage"></span>
+                                   	</div>
+								</div>
+                                <div class="form-group row mt-3">
                                 	<div class="col-md-12 text-left">
                                 		<label for="cstmEmail">E-mail</label>
                                 	</div>
                                     <div class="col-md-12">
                                         <input id="cstmEmail" name="cstmEmail" type="email" placeholder="example@example.com" class="form-control">
                                     </div>
-									<div class="form-group col-lg-6">
+									<div>
 										<span id="emailMessage"></span>
 									</div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row mt-3">
                                 	<div class="col-md-12 text-left">
                                 		<label>주소</label>
                                 	</div>
+                                	<div class="form-group col-md-3">
+                                		<input type="text" name="zip" id="sample6_postcode" placeholder="우편번호" class="form-control">
+                                	</div>
                                     <div class="form-group col-md-12">
-										<input type="text" name="zip" id="sample6_postcode" placeholder="우편번호" class="form-control">
 										<input type="text" name="add1" id="sample6_address" placeholder="주소" class="form-control">
 										<input type="text" name="add2" id="sample6_detailAddress" placeholder="상세주소" class="form-control">
 										<input type="text" name="add3" id="sample6_extraAddress" placeholder="참고항목" class="form-control">
 									</div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row mt-3">
                                     <div class="col-md-12 text-left">
                                         <label for="cstmAgree">약관동의</label>
 										<textarea rows="5" cols="" class="form-control" readonly="readonly"></textarea>
                                     </div>
-                                    <div class="col-md-12 text-rigt">
+                                    <div class="col-md-12 text-right">
 										<input type="radio" name="cstmAgree" value ="Y"> 동의
 										<input type="radio" name="cstmAgree" value ="N"> 비동의
 									</div>
                                 </div>
-                                <div class="form-group row text-center mt-4">
-                                    <div class="col-md-12">
-                                        <button id="signUpBtn" type="button" class="btn btn-primary btn-block text-uppercase">Register</button>
+                                <div class="form-group row mt-3">
+                                    <div class="col-md-12 text-center">
+                                        <button id="signUpBtn" type="button" class="btn btn-primary">회원가입</button>
                                     </div>
                                 </div>
                             </form>

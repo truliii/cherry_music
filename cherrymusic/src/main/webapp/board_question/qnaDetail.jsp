@@ -61,106 +61,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>qnaDetail</title>
-<jsp:include page="/inc/link.jsp"></jsp:include>
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
 <body>
-	<!-- navbar -->
-    <jsp:include page="/inc/menu.jsp"></jsp:include>
-	<!-- 메인 -->
-	<div id="all">
-		<div id="content">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<!-- breadcrumb-->
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home.jsp">홈</a></li>
-								<li aria-current="page" class="breadcrumb-item active">Q&A</li>
-								<li aria-current="page" class="breadcrumb-item active">상세문의</li>
-							</ol>
-						</nav>
+	<!-- header -->
+	<jsp:include page="/inc/header.jsp"></jsp:include>
+
+	<!-- main-->
+	<div id="page-content" class="page-content">
+		<!-- banner -->
+		<div class="banner">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+			</div>
+		</div>
+		<!-- content -->
+		<div class="container" style="margin-top: 100px;">
+			<div class="row">
+				<div class="col-lg-12">
+				<!-- breadcrumb-->
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home.jsp">홈</a></li>
+							<li aria-current="page" class="breadcrumb-item active">Q&A</li>
+							<li aria-current="page" class="breadcrumb-item active">상세문의</li>
+						</ol>
+					</nav>
+				</div>
+				<!-- 상세문의 -->
+				<div class="col-lg-12">
+					<div class="box">
+						<div>
+							<table class="table">
+								<tr>
+									<th>문의번호</th>
+									<td><%=boardQuestion.getBoardQNo()%></td>
+								</tr>
+								<tr>
+									<th>작성자</th>
+									<td><%=boardQuestion.getId()%></td>
+								</tr>
+								<tr>
+									<th>카테고리</th>
+									<td><%=boardQuestion.getBoardQCategory()%></td>
+								</tr>
+								<tr>
+									<th>문의제목</th>
+									<td><%=boardQuestion.getBoardQTitle()%></td>
+								</tr>
+								<tr>
+									<th>문의내용</th>
+									<td><%=boardQuestion.getBoardQContent()%></td>
+								</tr>
+								<tr>
+									<th>작성일</th>
+									<td><%=boardQuestion.getCreatedate()%></td>
+								</tr>
+								<tr>
+									<th>수정일</th>
+									<td><%=boardQuestion.getUpdatedate()%></td>
+								</tr>
+							</table>
 						</div>
-						<div class="col-lg-12">
-							<div class="box">
+						<!-- 수정, 삭제, 목록 버튼 -->
+						<div class="text-right">
+							<button type="button" class="btn btn-primary" id="qnaModifyBtn">수정</button>
+							<button type="button" class="btn btn-primary" id="qnaRemoveBtn">삭제</button>
+							<button type="button" class="btn btn-primary" id="qnaListBtn">목록</button>
+						</div>
+						<br>
+						<!-- 관리자 답변 
+							* 값이 있을 경우만 답변 table 보여주기
+						-->
+						<%
+							if(boardAnswerList.size() != 0){
+						%>
 								<div>
 									<table class="table">
 										<tr>
-											<th>문의번호</th>
-											<td><%=boardQuestion.getBoardQNo()%></td>
+											<th>문의 답변</th>
+											<th class="text-right">작성자</th>
 										</tr>
-										<tr>
-											<th>작성자</th>
-											<td><%=boardQuestion.getId()%></td>
-										</tr>
-										<tr>
-											<th>카테고리</th>
-											<td><%=boardQuestion.getBoardQCategory()%></td>
-										</tr>
-										<tr>
-											<th>문의제목</th>
-											<td><%=boardQuestion.getBoardQTitle()%></td>
-										</tr>
-										<tr>
-											<th>문의내용</th>
-											<td><%=boardQuestion.getBoardQContent()%></td>
-										</tr>
-										<tr>
-											<th>작성일</th>
-											<td><%=boardQuestion.getCreatedate()%></td>
-										</tr>
-										<tr>
-											<th>수정일</th>
-											<td><%=boardQuestion.getUpdatedate()%></td>
-										</tr>
-									</table>
+										<%
+											for(BoardAnswer boardAnswer : boardAnswerList){
+										%>
+											<tr>
+												<td><%=boardAnswer.getBoardAContent()%></td>
+												<td class="text-right"><%=boardAnswer.getId()%></td>
+											</tr>
+										<%		
+											}
+										%>
+									</table>	
 								</div>
-								<!-- 수정, 삭제, 목록 버튼 -->
-								<div class="text-right">
-									<button type="button" class="btn btn-primary" id="qnaModifyBtn">수정</button>
-									<button type="button" class="btn btn-primary" id="qnaRemoveBtn">삭제</button>
-									<button type="button" class="btn btn-primary" id="qnaListBtn">목록</button>
-								</div>
-								
-								<br>
-								<!-- 관리자 답변 
-									* 값이 있을 경우만 답변 table 보여주기
-								-->
-								<%
-									if(boardAnswerList.size() != 0){
-								%>
-										<div>
-											<table class="table">
-												<tr>
-													<th>문의 답변</th>
-													<th class="text-right">작성자</th>
-												</tr>
-												<%
-													for(BoardAnswer boardAnswer : boardAnswerList){
-												%>
-													<tr>
-														<td><%=boardAnswer.getBoardAContent()%></td>
-														<td class="text-right"><%=boardAnswer.getId()%></td>
-													</tr>
-												<%		
-													}
-												%>
-											</table>	
-										</div>
-								<%		
-									}
-								%>
-							</div>	    
-						</div>
+						<%		
+							}
+						%>
 					</div>
 				</div>
 			</div>
 		</div>
-		
-	<!-- copy -->
-	<jsp:include page="/inc/copy.jsp"></jsp:include>
+	</div>
+	<!-- footer -->		
+	 <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>	
 	<!-- 자바스크립트 -->
 	<jsp:include page="/inc/script.jsp"></jsp:include>			
 </body>
