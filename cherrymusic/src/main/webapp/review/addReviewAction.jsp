@@ -22,7 +22,7 @@
 	if(o instanceof String){
 		loginId = (String)o;
 	}
-	System.out.println(KMJ + loginId + " <--addReviewAction loginId");
+	System.out.println(KMJ + loginId + " <--addReviewAction loginId" + RESET);
 	
 	//mRequest맵핑
 	String dir = request.getServletContext().getRealPath("/review/reviewImg");

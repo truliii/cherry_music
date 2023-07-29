@@ -59,8 +59,10 @@
                     <div class="col-xs-12 col-sm-8">
                         <h5 class="mb-3">리뷰 작성</h5>
                         <!-- 정보 수정폼 시작 -->
-                        <form action="<%=request.getContextPath()%>/customer/modifyCustomerAction.jsp" method="post" class="bill-detail">
+                        <form action="<%=request.getContextPath()%>/review/addReviewAction.jsp" method="post" enctype="multipart/form-data"" class="bill-detail">
                             <fieldset>
+                            	<!-- hidden으로 넘기는 값 -->
+                            	<input type="hidden" name="orderNo" value="<%=orderNo%>">
                                 <div class="form-group row">
 	                                <div class="col-2">
 		                                <label for="name">제목</label>
@@ -77,7 +79,7 @@
                                 	</div>
                                 	<div class="col-2">
                                 		<div>
-                                			<textarea id="reviewContent" class="form-control" name="content" style="width:100%" required></textarea>
+                                			<textarea id="reviewContent" class="form-control" name="content" required></textarea>
                                 		</div>
                                 	</div>
                        			</div>

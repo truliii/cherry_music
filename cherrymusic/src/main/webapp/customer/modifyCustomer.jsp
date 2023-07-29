@@ -136,17 +136,17 @@
 			                        	if(customer.getCstmGender().equals("M")){
 			                        %>
 			                        		<div class="row">
-				                        		<div class="col-2"><input id="gender" name="gender" value="M" type="radio" checked class="form-control">&nbsp;남</div>
-				                       			<div class="col-2"><input id="gender" name="gender" value="F" type="radio">&nbsp;여</div>
-				                       			<div class="col-8"><span class="msg" id="genderMsg"></span></div>
+				                        		<div class="col-3"><input class="mr-1" id="gender" name="gender" value="M" type="radio" checked class="form-control">남</div>
+				                       			<div class="col-3"><input class="mr-1" id="gender" name="gender" value="F" type="radio">여</div>
+				                       			<div class="col-6"><span class="msg" id="genderMsg"></span></div>
 			                       			</div>
 			                        <%
 			                        	} else {
 			                        %>
 			                        		<div class="row">
-				                        		<div class="col-2"><input id="gender" name="gender" value="M" type="radio">&nbsp;남</div>
-				                       			<div class="col-2"><input id="gender" name="gender" value="F" type="radio" checked>&nbsp;여</div>
-				                       			<div class="col-8"><span class="msg" id="genderMsg"></span></div>
+				                        		<div class="col-3"><input class="mr-1" id="gender" name="gender" value="M" type="radio">남</div>
+				                       			<div class="col-3"><input class="mr-1" id="gender" name="gender" value="F" type="radio" checked>여</div>
+				                       			<div class="col-6"><span class="msg" id="genderMsg"></span></div>
 			                       			</div>
 			                        <%
 			                        	}

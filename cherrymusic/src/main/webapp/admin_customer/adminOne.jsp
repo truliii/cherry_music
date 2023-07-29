@@ -47,95 +47,102 @@
 	EmployeesDao eDao = new EmployeesDao();
 	Employees employee = eDao.selectEmployee(id);
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Admin One</title>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
+    <jsp:include page="/inc/head.jsp"></jsp:include>
+
 </head>
 <body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
-
-<!-- -----------------------------메인 시작----------------------------------------------- -->
-<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- 마이페이지 -->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/admin_category/adminCategoryList.jsp">관리페이지</a></li>
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp">회원관리</a></li>
-                  <li aria-current="page" class="breadcrumb-item active">관리자 상세정보</li>
-                </ol>
-              </nav>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        관리자 상세정보
+                    </h1>
+                    <p class="lead">
+                        Update Your Account Info
+                    </p>
+                </div>
             </div>
-            <div class="col-lg-3">
-              <!-- 고객메뉴 시작 -->
-              <jsp:include page="/inc/adminSideMenu.jsp"></jsp:include>
-              <!-- /.col-lg-3-->
-              <!-- 고객메뉴 끝 -->
-            </div>
-            <div class="col-lg-9">
-              <div class="box">
-              	<!-- 상세정보 -->
-				<div>
-					<form action="<%=request.getContextPath()%>/admin_customer/modifyAdminLvAction.jsp" method="post">
-						<input type="hidden" name="id" value="<%=id%>">
-						<input type="hidden" name="idLevel" value="0">
-						<h1>관리자 상세정보</h1>
-						<hr>
-						<table class="table">
-							<tr>
-								<th>아이디</th>
-								<td><%=id%></td>
-							</tr>
-							<tr>
-								<th>이름</th>
-								<td><%=employee.getEmpName()%></td>
-							</tr>
-							<tr>
-								<th>등급</th>
-								<td><%=employee.getEmpLevel() %></td>
-							</tr>
-							<%
-								//관리자등급이 2인 경우에만 관리자등급 변경 가능
-								if(idLevel == 2){
-							%>
-									<tr>
-										<th>관리자권한삭제</th>
-										<td>
-											<!-- 관리자->회원 modifyAction으로 보내짐 -->
-											<button type="submit" class="btn btn-primary">권한회수</button>
-										</td>
-									</tr>
-							<%
-								}
-							%>
-							<tr>
-								<th>가입일</th>
-								<td><%=employee.getCreatedate()%></td>
-							</tr>
-							<tr>
-								<th>수정일</th>
-								<td><%=employee.getUpdatedate()%></td>
-							</tr>
-						</table>
-					</form>
-				</div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-	</div>
-	<!-- -----------------------------메인 끝----------------------------------------------- -->
-<!-- copy -->
-<jsp:include page="/inc/copy.jsp"></jsp:include>
-<!-- 자바스크립트 -->
-<jsp:include page="/inc/script.jsp"></jsp:include>
+
+        <section id="checkout">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xs-12 col-sm-8">
+                        <h5 class="mb-3">관리자 정보</h5>
+                        <!-- 계정 상세정보 시작 -->
+                        <div class="row mb-2"><!-- 1행 -->
+                        	<div class="col-3">
+                        		<strong>아이디</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=id%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 2행 -->
+                        	<div class="col-3">
+                        		<strong>이름</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=employee.getEmpName()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 3행 -->
+                        	<div class="col-3">
+                        		<strong>등급</strong>
+                        	</div>
+                        	<div class="col-6">
+                        		<%=employee.getEmpLevel() %>
+                        	</div>
+                        </div>
+                        <%
+							//관리자등급이 2인 경우에만 관리자등급 변경 가능
+							if(idLevel == 2){
+						%>
+								<div class="row mb-2">
+									<div class="col-3">
+										<strong>관리자 권한삭제</strong>
+									</div>
+									<div class="col-3">
+										<!-- 관리자->회원 modifyAction으로 보내짐 -->
+										<button type="submit" class="btn btn-primary">권한회수</button>
+									</div>
+								</div>
+						<%
+							}
+						%>
+                        <div class="row mb-2"><!-- 4행 -->
+                        	<div class="col-3">
+                        		<strong>가입일</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=employee.getCreatedate()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 5행 -->
+                        	<div class="col-3">
+                        		<strong>수정일</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=employee.getUpdatedate()%>
+                        	</div>
+                        </div>
+                        <!-- 계정 상세정보 끝 -->
+                	</div>
+            	</div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
+
+    <jsp:include page="/inc/script.jsp"></jsp:include>
 </body>
-</html>	
+</html>

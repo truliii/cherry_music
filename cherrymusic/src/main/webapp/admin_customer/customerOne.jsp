@@ -55,115 +55,142 @@
 	CustomerDao cDao = new CustomerDao();
 	Customer customer = cDao.selectCustomer(id);
 %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Admin Customer One</title>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
+    <jsp:include page="/inc/head.jsp"></jsp:include>
+
 </head>
 <body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
-
-<!-- -----------------------------메인 시작----------------------------------------------- -->
-<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- 마이페이지 -->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/admin_category/adminCategoryList.jsp">관리페이지</a></li>
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp">회원관리</a></li>
-                  <li aria-current="page" class="breadcrumb-item active">회원 상세정보</li>
-                </ol>
-              </nav>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        고객 상세정보
+                    </h1>
+                    <p class="lead">
+                        Update Your Account Info
+                    </p>
+                </div>
             </div>
-            <div class="col-lg-3">
-              <!-- 관리메뉴 시작 -->
-              <jsp:include page="/inc/adminSideMenu.jsp"></jsp:include>
-              <!-- /.col-lg-3-->
-              <!-- 관리메뉴 끝 -->
-            </div>
-            <div class="col-lg-9">
-              <div class="box">
-              	<!-- 상세정보 -->
-				<div>
-					<form action="<%=request.getContextPath()%>/admin_customer/modifyAdminCustomerLvAction.jsp" method="post">
-						<input type="hidden" name="id" value="<%=id%>">
-						<input type="hidden" name="name" value="<%=customer.getCstmName()%>">
-						<input type="hidden" name="idLevel" value="1">
-						<h1>회원 상세정보</h1>
-						<hr>
-						<table class="table">
-							<tr><!-- 1행 -->
-								<th>아이디</th>
-								<td><%=id%></td>
-							</tr>
-							<tr><!-- 2행 -->
-								<th>이름</th>
-								<td><%=customer.getCstmName()%></td>
-							</tr>
-							<tr><!-- 3행 -->
-								<th>주소</th>
-								<td><%=customer.getCstmAddress()%></td>
-							</tr>
-							<tr><!-- 4행 -->
-								<th>이메일</th>
-								<td><%=customer.getCstmEmail()%></td>
-							</tr>
-							<tr><!-- 5행 -->
-								<th>생일</th>
-								<td><%=customer.getCstmBirth()%></td>
-							</tr>
-							<tr><!-- 6행 -->
-								<th>연락처</th>
-								<td><%=customer.getCstmPhone()%></td>
-							</tr>
-							<tr><!-- 7행 -->
-								<th>성별</th>
-								<td><%=customer.getCstmGender()%></td>
-							</tr>
-							<tr><!-- 8행 -->
-								<th>회원등급</th>
-								<td><%=customer.getCstmRank()%></td>
-							</tr>
-							<%
-								//관리자등급이 2인 경우에만 회원등급 변경가능
-								if(idLevel == 2){
-							%>
-									<tr>
-										<th>관리자권한부여</th>
-										<td>
-											<button type="submit" class="btn btn-primary">권한주기</button>
-										</td>
-									</tr>
-							<%
-								}
-							%>
-							<tr><!-- 9행 -->
-								<th>포인트</th>
-								<td><%=customer.getCstmPoint()%></td>
-							</tr>
-							<tr><!-- 10행 -->
-								<th>총주문금액</th>
-								<td><%=customer.getCstmSumPrice()%></td>
-							</tr>
-						</table>
-					</form>
-				</div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-	</div>
-	<!-- -----------------------------메인 끝----------------------------------------------- -->
-<!-- copy -->
-<jsp:include page="/inc/copy.jsp"></jsp:include>
-<!-- 자바스크립트 -->
-<jsp:include page="/inc/script.jsp"></jsp:include>
+
+        <section id="checkout">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xs-12 col-sm-8">
+                        <h5 class="mb-3">고객 정보</h5>
+                        <!-- 고객 상세정보 시작 -->
+                        <div class="row mb-2"><!-- 1행 -->
+                        	<div class="col-3">
+                        		<strong>아이디</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=id%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 2행 -->
+                        	<div class="col-3">
+                        		<strong>이름</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmName()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 3행 -->
+                        	<div class="col-3">
+                        		<strong>주소</strong>
+                        	</div>
+                        	<div class="col-6">
+                        		<%=customer.getCstmAddress()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 4행 -->
+                        	<div class="col-3">
+                        		<strong>이메일</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmEmail()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 5행 -->
+                        	<div class="col-3">
+                        		<strong>생일</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmBirth()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 6행 -->
+                        	<div class="col-3">
+                        		<strong>성별</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmGender()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 7행 -->
+                        	<div class="col-3">
+                        		<strong>연락처</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmPhone()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 8행 -->
+                        	<div class="col-3">
+                        		<strong>회원등급</strong>
+                        	</div>
+                        	<div class="col-9">
+                        		<%=customer.getCstmRank()%>
+                        	</div>
+                        </div>
+                        <%
+							//관리자등급이 2인 경우에만 회원등급 변경가능
+							if(idLevel == 2){
+						%>
+								<div class="row mb-2">
+									<div class="col-3">
+										<strong>관리자권한 부여</strong>
+									</div>
+									<div class="col-9">
+										<button type="submit" class="btn btn-primary">권한주기</button>
+									</div>
+								</div>
+						<%
+							}
+						%>
+                        <div class="row mb-2"><!-- 9행 -->
+                        	<div class="col-3">
+                        		<strong>포인트</strong>
+                        	</div>
+                        	<div class="col-6">
+                        		<%=customer.getCstmPoint()%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 9행 -->
+                        	<div class="col-3">
+                        		<strong>총주문금액</strong>
+                        	</div>
+                        	<div class="col-6">
+                        		<%=customer.getCstmSumPrice()%>
+                        	</div>
+                        </div>
+                        <!-- 고객 상세정보 끝 -->
+                	</div>
+            	</div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
+
+    <jsp:include page="/inc/script.jsp"></jsp:include>
 </body>
-</html>	
+</html>

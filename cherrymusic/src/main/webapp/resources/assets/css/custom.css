@@ -3,3 +3,7 @@
 .hidden {
 	display: none;
 }
+
+.button {
+	font-family: 'NanumSquareRound', Arial, san-serif;
+}

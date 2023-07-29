@@ -67,12 +67,12 @@
                 </div>
             </div>
         </div>
-
+        
         <section id="checkout">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xs-12 col-sm-8">
-                        <h5 class="mb-3">계정 정보</h5>
+                        <h5 class="mb-3">리뷰 상세</h5>
                         <!-- 리뷰 상세정보 시작 -->
                         <div class="row mb-2"><!-- 1행 -->
                         	<div class="col-3">
@@ -96,9 +96,6 @@
                         	</div>
                         	<div class="col-6">
                         		<%=review.get("reviewTitle")%>
-                        	</div>
-                        	<div class="col-3">
-                        		<a class="btn btn-default" href="<%=request.getContextPath()%>/customer/customerAddress.jsp">주소목록</a>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 4행 -->
@@ -125,54 +122,65 @@
                         		<%=review.get("updatedate").toString().substring(0, 10)%>
                         	</div>
                         </div>
-                        <!-- 리뷰 상세정보 끝 -->
-                	</div>
-                	<div class="row justify-content-center"><!-- 관리자 답변 -->
-	            		<div class="col-md-12">
-		            		<div class="card mb-5">
-		                        <div class="card-body">
-		                            <table class="table"><!-- 관리자답변 -->
-					                 	<thead>
-					                 		<tr>
-												<th>관리자답변</th>
-						                 		<th>답변일</th>
-					                 		</tr>
-					                 	</thead>
-					                 	<tbody>
-											<%
+                        <%
+                        	//관리자 답변이 있는 경우
+                        	if(aList.size() != 0){
+                        %>
+                        <div class="row justify-content-center mt-3"><!-- 관리자 답변 -->
+		            		<div class="col-md-12">
+			            		<div class="card">
+			                        <div class="card-body">
+			                        	<div class="row">
+			                        		<div class="col-3">답변</div>
+			                        		<%
 												for(ReviewAnswer a : aList){	
 											%>
-													<tr>
-														<td><%=a.getReviewAContent()%></td>
-														<td><%=a.getCreatedate().toString().substring(0,10)%></td>
-													</tr>
+													<div class="col-6"><%=a.getReviewAContent()%></div>
+													<div class="col-3"><%=a.getCreatedate().toString().substring(0,10)%></div>
 											<%
 												}
 											%>
-										</tbody>
-								  </table>
-		                        </div>
+			                        	</div>
+			                        </div>
+			                    </div>
 		                    </div>
-	                    </div>
-            		</div>
-            		<div class="row"><!-- 버튼 -->
-                       	<div class="col-4">
-                           	<a href="<%=request.getContextPath()%>/review/modifyReview.jsp?reviewNo=<%=reviewNo%>" class="btn btn-primary" >리뷰수정</a> 
-                           	<div class="clearfix"></div>
-                       	</div>
-                       	<div class="col-4">
-                           	<a href="<%=request.getContextPath()%>/review/removeReviewAction.jsp?reviewNo=<%=reviewNo%>" class="btn btn-primary" >리뷰삭제</a>
-                           	<div class="clearfix"></div>
-                       	</div>
-                   	</div>
+		            	</div>
+		            	<%
+                        	}
+		            	%>
+                        <div class="row justify-content-center mt-3">
+                        	<div class="col-6 text-center">
+	                           	<a href="<%=request.getContextPath()%>/review/modifyReview.jsp?reviewNo=<%=reviewNo%>" class="btn btn-primary">리뷰수정</a>
+	                           	<div class="clearfix"></div>
+                        	</div>
+                        	<div class="col-6 text-center">
+	                           	<a href="<%=request.getContextPath()%>/review/removeReviewAction.jsp?reviewNo=<%=reviewNo%>" class="btn btn-primary">리뷰삭제</a>
+	                           	<div class="clearfix"></div>
+                        	</div>
+                    	</div>
+                        <!-- 리뷰 상세정보 끝 -->
+                	</div>
             	</div>
             </div>
         </section>
-    </div>
+       </div>
     <footer>
         <jsp:include page="/inc/footer.jsp"></jsp:include>
     </footer>
 
     <jsp:include page="/inc/script.jsp"></jsp:include>
+    <script>
+		//리뷰 입력폼 유효성 검사
+		$("#reviewTitle").blur(function(){
+			if($("#reviewTitle").val() == ""){
+				$("#reviewMsg").text("리뷰제목을 입력하세요.");
+			}
+		})
+		$("#reviewContent").blur(function(){
+			if($("#reviewContent").val() == ""){
+				$("#reviewMsg").text("리뷰내용을 입력하세요.");
+			}
+		})
+	</script>
 </body>
 </html>

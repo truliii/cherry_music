@@ -10,7 +10,7 @@
 	
 	//로그인 유효성 검사 : 로그아웃상태면 로그인창으로 리다이렉션
 	if(session.getAttribute("loginId") == null){
-		response.sendRedirect(request.getContextPath()+"/로그인.jsp");
+		response.sendRedirect(request.getContextPath()+"/id_list/login.jsp");
 		System.out.println(KMJ + "adminReview 로그인 필요" + RESET);
 		return;
 	}
@@ -84,14 +84,13 @@
 	System.out.println(KMJ + lastPage + " <--adminReview endPage" + RESET);
 %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
 	<jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
 <body>
-    <jsp:include page="/inc/header_admin.jsp"></jsp:include>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
     
     <div id="page-content" class="page-content">
         <div class="banner">
@@ -176,7 +175,7 @@
 											<tr>
 												<td><%=(Integer)m.get("reviewNo")%></td>
 												<td><%=(Integer)m.get("orderNo")%></td>
-												<td><%=m.get("reviewTitle").toString()%></td>
+												<td><%=m.get("reviewTitle").toString().substring(0)%></td>
 												<td><%=(Integer)m.get("reviewCheckCnt")%></td>
 												<td>
 													<% 

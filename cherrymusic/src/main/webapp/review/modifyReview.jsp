@@ -32,82 +32,111 @@
 	ReviewDao rDao = new ReviewDao();
 	HashMap<String, Object> review = rDao.selectReviewByReviewNo(reviewNo);
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Modify Review</title>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
+    <jsp:include page="/inc/head.jsp"></jsp:include>
+
 </head>
 <body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
-
-<!-- -----------------------------메인 시작----------------------------------------------- -->
-<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- 마이페이지 -->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li aria-current="page" class="breadcrumb-item active">마이페이지</li>
-                </ol>
-              </nav>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        Settings
+                    </h1>
+                    <p class="lead">
+                        Update Your Account Info
+                    </p>
+                </div>
             </div>
-            <div class="col-lg-3">
-             <!-- 고객메뉴 시작 -->
-              <jsp:include page="/inc/customerSideMenu.jsp"></jsp:include>
-            <!-- 고객메뉴 끝 -->
-            </div>
-            <div class="col-lg-9">
-              <div class="box">
-                <h1>리뷰 수정하기</h1>
-                <hr>
-                	<form action="<%=request.getContextPath()%>/review/modifyReviewAction.jsp" method="post" enctype="multipart/form-data">
-				<input type="hidden" name="reviewNo" value="<%=reviewNo%>">
-					<table class="table">
-						<tr>
-							<th>주문번호</th>
-							<td><input type="text" class="form-control" name="orderNo" value="<%=review.get("orderNo")%>" size="80" required readonly></td>
-						</tr>
-						<tr>
-							<th>제목</th>
-							<td><input type="text" class="form-control" name="title" value="<%=review.get("reviewTitle")%>" size="80" required></td>
-						</tr>
-						<tr>
-							<th>내용</th>
-							<td><textarea class="form-control" name="content" cols="80" rows="10" required><%=review.get("reviewContent")%></textarea></td>
-						</tr>
-						<tr>
-							<th>작성자</th>
-							<td><input type="text" class="form-control" name="id" value="<%=loginId%>" readonly required></td>
-						</tr>
-						<tr>
-							<th>등록이미지</th>
-							<td><img src="<%=request.getContextPath()%>/review/reviewImg/<%=review.get("reviewSaveFilename")%>" width="auto" height="100px"></td>
-						</tr>
-						<tr>
-							<th>이미지변경</th>
-							<td><input type="file" name="img"></td>
-						</tr>
-					</table>
-					<div class="box-footer d-flex justify-content-center">
-						<button class="btn btn-primary" type="submit"><i class="fa fa-save"></i>수정하기</button>
-					</div>
-				</form>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+
+        <section id="checkout">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xs-12 col-sm-8">
+                        <h5 class="mb-3">정보 수정</h5>
+                        <!-- 정보 수정폼 시작 -->
+                        <form action="<%=request.getContextPath()%>/review/modifyReviewAction.jsp" method="post" enctype="multipart/form-data" class="bill-detail">
+                            <fieldset>
+                            	<input type="hidden" name="reviewNo" value="<%=reviewNo%>">
+                                <div class="form-group row"><!-- 2행 -->
+	                                <div class="col-2">
+		                                <label for="name">주문번호</label>
+	                                </div>
+	                                <div class="col-10">
+	                                	<div>
+		                                    <input type="text" class="form-control" name="orderNo" value="<%=review.get("orderNo")%>" size="80" required readonly>
+	                                	</div>
+	                                </div>
+                                </div>
+                                <div class="form-group row">
+                                	<div class="col-2">
+                                		<label for="address">제목</label>
+                                	</div>
+                                	<div class="col-10">
+                                		<input type="text" class="form-control" name="title" value="<%=review.get("reviewTitle")%>" size="80" required>
+                                	</div>
+                       			</div>
+                                <div class="form-group row">
+                                	<div class="col-2">
+                                		<label for="email">내용</label>
+                                	</div>
+                                	<div class="col-10">
+                                		<div>
+					                        <textarea class="form-control" name="content" cols="80" rows="10" required><%=review.get("reviewContent")%></textarea>
+                                		</div>
+                                	</div>
+                                </div>
+                                <div class="form-group row">
+                                	<div class="col-2">
+		                                <label for="birth">작성자</label>
+                                	</div>
+									<div class="col-10">
+										<div>
+				                        	<input type="text" class="form-control" name="id" value="<%=loginId%>" readonly required>
+				                        </div>
+									</div>
+                                </div>
+                                <div class="form-group row">
+                                <div class="col-2">
+	                                <label for="phone">등록이미지</label>
+                                </div>
+								<div class="col-10">
+									<div>
+				                        <img src="<%=request.getContextPath()%>/review/reviewImg/<%=review.get("reviewSaveFilename")%>" width="auto" height="100px">
+			                        </div>
+								</div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-2">
+                                    	<label for="gender">사진 첨부</label>
+                                    </div>
+                                    <div class="col-10">
+                                    	<input type="file" name="img" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group text-right">
+                                    <button type="submit" class="btn btn-primary">수정하기</button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <!-- 정보 수정폼 끝 -->
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-	
-	<!-- -----------------------------메인 끝----------------------------------------------- -->
-<!-- copy -->
-<jsp:include page="/inc/copy.jsp"></jsp:include>
-<!-- 자바스크립트 -->
-<jsp:include page="/inc/script.jsp"></jsp:include>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
+
+    <jsp:include page="/inc/script.jsp"></jsp:include>
 </body>
 </html>

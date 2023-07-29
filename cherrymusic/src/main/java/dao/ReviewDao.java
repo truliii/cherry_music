@@ -95,6 +95,28 @@ public class ReviewDao {
 		return list;
 	}
 	
+	//조회: 상품별 리뷰의 수
+	public int selectReviewCntByProduct(int productNo) throws Exception {
+		int cnt = 0;
+		
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		//PreparedStatement
+		//답변여부에 따라 검색
+		String sql = "SELECT COUNT(*) cnt "
+				+ "FROM review r INNER JOIN orders o "
+				+ "ON r.order_no = o.order_no "
+				+ "WHERE o.order_no IN (SELECT order_no FROM orders WHERE product_no = ?) ";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, productNo);
+		System.out.println(stmt + " <--revieDao");
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			cnt = rs.getInt(1);
+		}
+		return cnt;
+	}
+	
 	//조회: 리뷰리스트 행의 수 조회
 	public int selectReviewCnt(int beginRow, int rowPerPage, String answer) throws Exception {
 		if(answer == null) {

@@ -48,18 +48,136 @@
 	ReviewAnswerDao aDao = new ReviewAnswerDao();
 	ArrayList<ReviewAnswer> aList = aDao.selectReviewAnswerList(reviewNo);
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Add Review Answer</title>
-	<style>
-		.hidden {
-			display: none;
-		}
-	</style>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
-	<script>
+    <jsp:include page="/inc/head.jsp"></jsp:include>
+
+</head>
+<body>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
+    
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        고객 후기 답변
+                    </h1>
+                    <p class="lead">
+                        Update Your Account Info
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <section id="checkout">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xs-12 col-sm-8">
+                        <h5 class="mb-3">후기 답변 작성</h5>
+                        <!-- 리뷰 상세정보 시작 -->
+                        <div class="row mb-2">
+                        	<div class="col-3">
+                        		후기 제목
+                        	</div>
+                        	<div class="col-9 text-left">
+                        		<%=review.get("reviewTitle")%>
+                        	</div>
+                        </div>
+                        <div class="row mb-2"><!-- 2행 -->
+                        	<div class="col-3">
+                        		후기 내용
+                        	</div>
+                        	<div class="col-9 text-left">
+                        		<%=review.get("reviewContent")%>
+                        	</div>
+                        </div>
+                	</div>
+                  <!-- 리뷰 상세정보 끝 -->
+                   <div class="col-xs-12 col-sm-8">
+                       <!-- 정보 수정폼 시작 -->
+                       <form method="post" class="bill-detail">
+                           <fieldset>
+                           	<input type="hidden" name="reviewNo" value="<%=reviewNo%>">
+                           	
+                           	
+                           	<%
+								if(aList.size() < 1){
+							%>
+									<div class="form-group row">
+		                                <div class="col-3">
+			                                <label for="name">답변</label>
+		                                </div>
+		                                <div class="col-7">
+		                                	<div class="row">
+		                                		<div class="col">
+				                                    <textarea id="addAContent" name="addAContent" cols="70" rows="2" class="form-control"></textarea>
+		                                		</div>
+												<div class="col text-right">
+													(<span id="addACnt">0</span>자/150자)
+												</div>
+		                                	</div>
+		                                </div>
+		                                <div class="col-2">
+		                                	<button class="btn btn-primary" type="submit" formaction="<%=request.getContextPath()%>/admin_review/addReviewAnswerAction.jsp">입력</button>
+		                                </div>
+	                                </div>
+							<%
+								} 
+								for(ReviewAnswer a : aList){	
+							%>
+									<div class="form-group row" id="viewAnswer">
+		                                <div class="col-3">
+			                                <label for="name">답변</label>
+		                                </div>
+		                                <div class="col-7">
+		                                	<%=a.getReviewAContent()%> (<%=a.getCreatedate()%>)
+		                                </div>
+		                                <div class="col-1">
+		                                	<button type="button" class="btn btn-primary" id="modBtn">수정</button>
+		                                </div>
+		                                <div class="col-1">
+		                                	<button class="btn btn-primary" formaction="<%=request.getContextPath()%>/admin_review/deleteReviewAnswerAction.jsp?reviewNo=<%=reviewNo%>">삭제</button>
+		                                </div>
+	                                </div>
+	                                <div class="hidden form-group row" id="modForm">
+		                                <div class="col-3">
+			                                <label for="name">답변수정</label>
+		                                </div>
+		                                <div class="col-7">
+		                                	<div class="row">
+		                                		<div class="col">
+				                                	<textarea id="modAContent" name="modAContent" class="form-control" cols="80" rows="2"><%=a.getReviewAContent()%></textarea>
+		                                		</div>
+		                                		<div class="text-right">
+		                                			(<span id="modACnt">0</span>자/150자)
+		                                		</div>
+		                                	</div>
+		                                </div>
+		                                <div class="col-2">
+		                                	<button type="submit" class="btn btn-primary" formaction="<%=request.getContextPath()%>/admin_review/modifyReviewAnswerAction.jsp">수정</button>
+		                                </div>
+	                                </div>
+							<%
+								}
+							%>
+                           </fieldset>
+                       </form>
+                       <!-- 정보 수정폼 끝 -->
+                   </div>
+            	</div>
+               
+            </div>
+        </section>
+    </div>
+    <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
+
+    <jsp:include page="/inc/script.jsp"></jsp:include>
+    <script>
 		$(document).ready(function(){
 			const MAX_COUNT = 150;
 			
@@ -87,117 +205,12 @@
 				}
 			})
 			
+			//수정버튼
+			$('#modBtn').click(function(){
+				$('#viewAnswer').addClass('hidden');
+				$('#modForm').removeClass('hidden');
+			})
 		})
 	</script>
-</head>
-<body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
-
-<!-- -----------------------------메인 시작----------------------------------------------- -->
-	<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- 마이페이지 -->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/admin_category/adminCategoryList.jsp">관리페이지</a></li>
-                  <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/admin_review/adminReview.jsp">리뷰관리</a></li>
-                  <li aria-current="page" class="breadcrumb-item active">답변하기</li>
-                </ol>
-              </nav>
-            </div>
-            <div class="col-lg-3">
-              <!-- 관리자메뉴 시작 -->
-              <jsp:include page="/inc/adminSideMenu.jsp"></jsp:include>
-              <!-- /.col-lg-3-->
-              <!-- 관리자메뉴 끝 -->
-            </div>
-            <div class="col-lg-9">
-              <div class="box">
-              	<!-- 상세정보 -->
-				<div>
-					<form method="post">
-					<input type="hidden" name="reviewNo" value="<%=reviewNo%>">
-					<h1>리뷰 답변하기</h1>
-					<hr>
-						<table class="table">
-							<tr>
-								<th>리뷰제목</th>
-								<td colspan="3"><%=review.get("reviewTitle")%></td>
-							</tr>
-							<tr>
-								<th>리뷰내용</th>
-								<td colspan="3"><%=review.get("reviewContent")%></td>
-							</tr>
-							<%
-								if(aList.size() < 1){
-							%>
-									<tr>
-										<th>답변입력</th>
-										<td>
-											<textarea id="addAContent" name="addAContent" cols="70" rows="2" class="form-control"></textarea>
-											<div class="text-right">(<span id="addACnt">0</span>자/150자)</div>
-										</td>
-										<td colspan="2">
-											<button class="btn btn-primary" type="submit" formaction="<%=request.getContextPath()%>/admin_review/addReviewAnswerAction.jsp">입력</button>
-										</td>
-									</tr>
-							<%
-								} 
-								for(ReviewAnswer a : aList){	
-							%>
-									<tr id="viewAnswer">
-										<th>답변</th>
-										<td><%=a.getReviewAContent()%></td>
-										<td><%=a.getCreatedate()%></td>
-										<td>
-											<button type="button" class="btn btn-primary" id="modBtn">수정</button>
-											<button class="btn btn-primary" formaction="<%=request.getContextPath()%>/admin_review/deleteReviewAnswerAction.jsp?reviewNo=<%=reviewNo%>">삭제</button>
-										</td>
-									</tr>
-									<tr id="modForm" class="hidden">
-										<th>답변수정</th>
-										<td>
-											<textarea id="modAContent" name="modAContent" class="form-control" cols="70" rows="2"><%=a.getReviewAContent()%></textarea>
-											<div class="text-right">(<span id="modACnt">0</span>자/150자)</div>
-										</td>
-										<td>
-											<button type="submit" class="btn btn-primary" formaction="<%=request.getContextPath()%>/admin_review/modifyReviewAnswerAction.jsp">수정</button>
-										</td>
-									</tr>
-							<%
-								}
-							%>
-						</table>
-						</form>
-					</div>
-				   </div>
-	             </div>
-	           </div>
-	         </div>
-	       </div>
-	     </div>
-	<!-- -----------------------------메인 끝----------------------------------------------- -->
-<!-- copy -->
-<jsp:include page="/inc/copy.jsp"></jsp:include>
-<!-- 자바스크립트 -->
-<jsp:include page="/inc/script.jsp"></jsp:include>
 </body>
-<script>
-	const modBtn = document.querySelector("#modBtn");
-	const modForm = document.querySelector("#modForm");
-	const viewAnswer = document.querySelector("#viewAnswer");
-	
-	function handleClickMod(event){
-		event.preventDefault();
-		viewAnswer.classList.add("hidden");
-		modForm.classList.remove("hidden");
-	
-	}
-	
-	modBtn.addEventListener("click", handleClickMod);
-</script>
-</html>	
+</html>
