@@ -11,7 +11,7 @@
     <a class="nav-link" href="<%=request.getContextPath()%>/admin_orders/adminOrders.jsp">주문관리</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="<%=request.getContextPath()%>/admin_product/adminProduct.jsp">상품관리</a>
+    <a class="nav-link" href="<%=request.getContextPath()%>/product/productList.jsp">상품관리</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="<%=request.getContextPath()%>/admin_question/adminQnAList.jsp">문의관리</a>
