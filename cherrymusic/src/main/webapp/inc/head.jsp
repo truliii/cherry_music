@@ -15,4 +15,4 @@
 <link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/resources/assets/packages/thumbelina/thumbelina.css">
 <link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/resources/assets/packages/bootstrap-touchspin/bootstrap-touchspin.css">
 <link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/resources/assets/css/theme.css">
-<link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/resources/assets/css/kmj.css">
+<link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/resources/assets/css/custom.css">

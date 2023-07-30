@@ -65,7 +65,6 @@
                         관리자 상세정보
                     </h1>
                     <p class="lead">
-                        Update Your Account Info
                     </p>
                 </div>
             </div>
@@ -73,12 +72,20 @@
 
         <section id="checkout">
             <div class="container">
+            
+            	<!-- 관리자메뉴 -->
+            	<div class="row mb-5">
+            		<div class="col-lg-12">
+						<jsp:include page="/inc/adminNav.jsp"></jsp:include>
+            		</div>
+            	</div>
+            	
                 <div class="row justify-content-center">
                     <div class="col-xs-12 col-sm-8">
                         <h5 class="mb-3">관리자 정보</h5>
                         <!-- 계정 상세정보 시작 -->
                         <div class="row mb-2"><!-- 1행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>아이디</strong>
                         	</div>
                         	<div class="col-9">
@@ -86,7 +93,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 2행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>이름</strong>
                         	</div>
                         	<div class="col-9">
@@ -94,7 +101,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 3행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>등급</strong>
                         	</div>
                         	<div class="col-6">
@@ -106,7 +113,7 @@
 							if(idLevel == 2){
 						%>
 								<div class="row mb-2">
-									<div class="col-3">
+									<div class="col-3 text-right">
 										<strong>관리자 권한삭제</strong>
 									</div>
 									<div class="col-3">
@@ -118,7 +125,7 @@
 							}
 						%>
                         <div class="row mb-2"><!-- 4행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>가입일</strong>
                         	</div>
                         	<div class="col-9">
@@ -126,7 +133,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 5행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>수정일</strong>
                         	</div>
                         	<div class="col-9">

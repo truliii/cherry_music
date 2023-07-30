@@ -73,7 +73,6 @@
                         고객 주문목록
                     </h1>
                     <p class="lead">
-                        주문목록을 확인하세요!
                     </p>
                 </div>
             </div>
@@ -84,7 +83,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table text-center">
                                 <thead>
                                     <tr>
                                         <th width="5%"></th>

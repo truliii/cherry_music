@@ -39,7 +39,6 @@
                         비밀번호 변경
                     </h1>
                     <p class="lead">
-                        최근 사용된 3개의 비밀번호는 사용할 수 없습니다.
                     </p>
                 </div>
             </div>
@@ -54,8 +53,8 @@
                         <form action="<%=request.getContextPath()%>/customer/modifyPasswordAction.jsp" method="post" class="bill-detail">
                             <fieldset>
                                 <div class="form-group row">
-                                	<div class="col-3">
-                                		<label for="password_2">새로운 비밀번호</label>
+                                	<div class="col-3 text-right">
+                                		<label for="password_2"><strong>새로운 비밀번호</strong></label>
                                 	</div>
                                 	<div class="col-9">
                                 		<div class="row">
@@ -67,8 +66,8 @@
                                 	</div>
                        			</div>
                                 <div class="form-group row">
-                                	<div class="col-3">
-                                		<label for="add-default">비밀번호 확인</label>
+                                	<div class="col-3 text-right">
+                                		<label for="add-default"><strong>비밀번호 확인</strong></label>
                                 	</div>
                                 	<div class="col-9">
                                 		<div class="row">

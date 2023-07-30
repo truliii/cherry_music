@@ -63,10 +63,9 @@
             <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
                 <div class="container">
                     <h1 class="pt-5">
-                        고객 후기 답변
+                        고객 리뷰 답변
                     </h1>
                     <p class="lead">
-                        Update Your Account Info
                     </p>
                 </div>
             </div>
@@ -74,21 +73,29 @@
 
         <section id="checkout">
             <div class="container">
+            
+            	<!-- 관리자메뉴 -->
+            	<div class="row mb-5">
+            		<div class="col-lg-12">
+						<jsp:include page="/inc/adminNav.jsp"></jsp:include>
+            		</div>
+            	</div>
+            
                 <div class="row justify-content-center">
                     <div class="col-xs-12 col-sm-8">
-                        <h5 class="mb-3">후기 답변 작성</h5>
+                        <h5 class="mb-3">리뷰 답변 작성</h5>
                         <!-- 리뷰 상세정보 시작 -->
                         <div class="row mb-2">
-                        	<div class="col-3">
-                        		후기 제목
+                        	<div class="col-3 text-center">
+                        		<strong>리뷰 제목</strong>
                         	</div>
                         	<div class="col-9 text-left">
                         		<%=review.get("reviewTitle")%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 2행 -->
-                        	<div class="col-3">
-                        		후기 내용
+                        	<div class="col-3 text-center">
+                        		<strong>리뷰 내용</strong>
                         	</div>
                         	<div class="col-9 text-left">
                         		<%=review.get("reviewContent")%>
@@ -107,15 +114,15 @@
 								if(aList.size() < 1){
 							%>
 									<div class="form-group row">
-		                                <div class="col-3">
-			                                <label for="name">답변</label>
+		                                <div class="col-3 text-center">
+			                                <label for="name"><strong>답변</strong></label>
 		                                </div>
 		                                <div class="col-7">
 		                                	<div class="row">
 		                                		<div class="col">
-				                                    <textarea id="addAContent" name="addAContent" cols="70" rows="2" class="form-control"></textarea>
+				                                    <textarea id="addAContent" name="addAContent" cols="100" rows="2" class="form-control"></textarea>
 		                                		</div>
-												<div class="col text-right">
+												<div class="text-right">
 													(<span id="addACnt">0</span>자/150자)
 												</div>
 		                                	</div>
@@ -129,8 +136,8 @@
 								for(ReviewAnswer a : aList){	
 							%>
 									<div class="form-group row" id="viewAnswer">
-		                                <div class="col-3">
-			                                <label for="name">답변</label>
+		                                <div class="col-3 text-center">
+			                                <label for="name"><strong>답변</strong></label>
 		                                </div>
 		                                <div class="col-7">
 		                                	<%=a.getReviewAContent()%> (<%=a.getCreatedate()%>)
@@ -143,13 +150,13 @@
 		                                </div>
 	                                </div>
 	                                <div class="hidden form-group row" id="modForm">
-		                                <div class="col-3">
-			                                <label for="name">답변수정</label>
+		                                <div class="col-3 text-center">
+			                                <label for="name"><strong>답변수정</strong></label>
 		                                </div>
 		                                <div class="col-7">
 		                                	<div class="row">
 		                                		<div class="col">
-				                                	<textarea id="modAContent" name="modAContent" class="form-control" cols="80" rows="2"><%=a.getReviewAContent()%></textarea>
+				                                	<textarea id="modAContent" name="modAContent" class="form-control" cols="100" rows="2"><%=a.getReviewAContent()%></textarea>
 		                                		</div>
 		                                		<div class="text-right">
 		                                			(<span id="modACnt">0</span>자/150자)
@@ -165,7 +172,7 @@
 							%>
                            </fieldset>
                        </form>
-                       <!-- 정보 수정폼 끝 -->
+                       <!-- 리뷰 답변폼 끝 -->
                    </div>
             	</div>
                

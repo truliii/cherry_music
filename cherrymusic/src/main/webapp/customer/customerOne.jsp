@@ -37,13 +37,13 @@
     
     <div id="page-content" class="page-content">
         <div class="banner">
-            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header_bg.jpg');">
                 <div class="container">
                     <h1 class="pt-5">
                         마이페이지
                     </h1>
                     <p class="lead">
-                        Update Your Account Info
+                        
                     </p>
                 </div>
             </div>
@@ -56,24 +56,24 @@
                         <h5 class="mb-3">계정 정보</h5>
                         <!-- 계정 상세정보 시작 -->
                         <div class="row mb-2"><!-- 1행 -->
-                        	<div class="col-3">
-                        		아이디
+                        	<div class="col-3 text-right">
+                        		<strong>아이디</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=customer.getId()%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 2행 -->
-                        	<div class="col-3">
-                        		이름
+                        	<div class="col-3 text-right">
+                        		<strong>이름</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=customer.getCstmName()%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 3행 -->
-                        	<div class="col-3">
-                        		주소
+                        	<div class="col-3 text-right align-middle">
+                        		<strong>주소</strong>
                         	</div>
                         	<div class="col-6">
                         		<%=customer.getCstmAddress()%>
@@ -83,51 +83,51 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 4행 -->
-                        	<div class="col-3">
-                        		이메일
+                        	<div class="col-3 text-right">
+                        		<strong>이메일</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=customer.getCstmEmail()%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 5행 -->
-                        	<div class="col-3">
-                        		생일
+                        	<div class="col-3 text-right">
+                        		<strong>생일</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=customer.getCstmBirth()%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 6행 -->
-                        	<div class="col-3">
-                        		성별
+                        	<div class="col-3 text-right">
+                        		<strong>성별</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=customer.getId()%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 7행 -->
-                        	<div class="col-3">
-                        		연락처
+                        	<div class="col-3 text-right">
+                        		<strong>연락처</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=customer.getCstmPhone()%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 8행 -->
-                        	<div class="col-3">
-                        		회원등급
+                        	<div class="col-3 text-right">
+                        		<strong>회원등급</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=customer.getCstmRank()%>
                         	</div>
                         </div>
                         <div class="row mb-4"><!-- 9행 -->
-                        	<div class="col-3">
-                        		포인트
+                        	<div class="col-3 text-right">
+                        		<strong>포인트</strong>
                         	</div>
                         	<div class="col-6">
-                        		<%=customer.getCstmPoint()%>
+                        		<%=customer.getCstmPoint()%>p
                         	</div>
                         	<div class="col-3">
                         		<a class="btn btn-default" href="<%=request.getContextPath()%>/customer/pointHistory.jsp?currentPage=1">포인트확인</a> 
@@ -143,7 +143,7 @@
 	                           	<div class="clearfix"></div>
                         	</div>
                         	<div class="col-4">
-	                           	<a href="#" class="btn btn-primary">회원탈퇴</a>
+	                           	<a href="<%=request.getContextPath()%>/id_list/customerInfoRemove.jsp" class="btn btn-primary">회원탈퇴</a>
 	                           	<div class="clearfix"></div>
                         	</div>
                     	</div>

@@ -100,7 +100,6 @@
                         고객 리뷰목록
                     </h1>
                     <p class="lead">
-                        고객이 작성한 리뷰를 확인하세요.
                     </p>
                 </div>
             </div>
@@ -108,35 +107,43 @@
 
         <section id="cart">
             <div class="container">
+            
+            	<!-- 관리자메뉴 -->
+            	<div class="row mb-5">
+            		<div class="col-lg-12">
+						<jsp:include page="/inc/adminNav.jsp"></jsp:include>
+            		</div>
+            	</div>
+            
             	<div class="row justify-content-center"><!-- 검색조건 -->
             		<div class="col-md-12">
 	            		<div class="card mb-5">
 	                        <div class="card-body">
 	                            <form class="form-horizontal" action="<%=request.getContextPath()%>/admin_review/adminReview.jsp" method="post">
 	                                <div class="form-group row mt-3">
-	                                	<div class="col-md-2 text-center">
-	                                		답변여부
+	                                	<div class="col-md-2 text-right">
+	                                		<strong>답변여부</strong>
 	                                	</div>
 	                                    <div class="col-md-10">
 	                                    	<div class="row">
 	                                    		<%
 													if(answer.equals("all")){
 												%>
-														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="all" checked>전체</div>
-														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="true">답변대기</div>
-														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="false">답변완료</div>
+														<div class="col-2"><input class="mr-1" type="radio" name="answer" value="all" checked>전체</div>
+														<div class="col-2"><input class="mr-1" type="radio" name="answer" value="true">답변대기</div>
+														<div class="col-2"><input class="mr-1" type="radio" name="answer" value="false">답변완료</div>
 												<%
 													} else if (answer.equals("true")){
 												%>
-														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="all">전체</div>
-														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="true" checked>답변대기</div>
-														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="false">답변완료</div>
+														<div class="col-2"><input class="mr-1" type="radio" name="answer" value="all">전체</div>
+														<div class="col-2"><input class="mr-1" type="radio" name="answer" value="true" checked>답변대기</div>
+														<div class="col-2"><input class="mr-1" type="radio" name="answer" value="false">답변완료</div>
 												<%
 													} else {
 												%>
-														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="all">전체</div>
-														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="true">답변대기</div>
-														<div class="col-3"><input class="mr-1" type="radio" name="answer" value="false" checked>답변완료</div>
+														<div class="col-2"><input class="mr-1" type="radio" name="answer" value="all">전체</div>
+														<div class="col-2"><input class="mr-1" type="radio" name="answer" value="true">답변대기</div>
+														<div class="col-2"><input class="mr-1" type="radio" name="answer" value="false" checked>답변완료</div>
 												<%
 													}
 												%>
@@ -156,7 +163,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table text-center">
                                 <thead>
                                     <tr>
                                         <th width="10%">후기번호</th>
@@ -181,7 +188,7 @@
 													<% 
 														if((Integer)m.get("cnt") > 0 ){
 													%>
-															<a class="btn btn-outline-primary btn-sm" href="<%=request.getContextPath()%>/admin_review/addReviewAnswer.jsp?reviewNo=<%=(Integer)m.get("reviewNo")%>">답변완료</a>
+															<a class="btn btn-default btn-sm" href="<%=request.getContextPath()%>/admin_review/addReviewAnswer.jsp?reviewNo=<%=(Integer)m.get("reviewNo")%>">답변완료</a>
 													<%
 														} else {
 													%>

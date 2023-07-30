@@ -50,7 +50,6 @@
                         나의 주소목록
                     </h1>
                     <p class="lead">
-                        주소목록을 확인하세요!
                     </p>
                 </div>
             </div>
@@ -62,7 +61,7 @@
                     <div class="col-md-9">
                         <div class="table-responsive">
                             <table class="table">
-                                <thead>
+                                <thead class="text-center">
                                     <tr>
                                         <th width="5%"></th>
                                         <th>주소명</th>
@@ -81,11 +80,11 @@
 												<td><%=num%></td>
 												<!-- 주소명 -->
 												<td>
-													<%=a.getAddressName()%>
+													<strong class="mr-1"><%=a.getAddressName()%></strong>
 									<%
 												if(a.getAddressDefault().equals("Y")){
 									%>
-													<span class="badge badge-primary ml-2">기본주소</span>
+													<span class="badge badge-primary">기본주소</span>
 									<%
 												} else {
 									%>
@@ -118,6 +117,12 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="row">
+                        	<div class="col-12 text-center mt-3">
+	                           	<a href="<%=request.getContextPath()%>/customer/addCustomerAddress.jsp" class="btn btn-primary">주소추가</a>
+	                           	<div class="clearfix"></div>
+                        	</div>
+                    	</div>
                     </div>
                 </div>
             </div>

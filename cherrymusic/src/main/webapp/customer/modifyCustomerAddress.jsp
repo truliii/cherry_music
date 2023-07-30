@@ -66,7 +66,6 @@
                         주소 변경
                     </h1>
                     <p class="lead">
-                        주소를 변경하세요!
                     </p>
                 </div>
             </div>
@@ -79,18 +78,19 @@
                         <h5 class="mb-3">주소 변경</h5>
                         <!-- 정보 수정폼 시작 -->
                         <form action="<%=request.getContextPath()%>/customer/modifyCustomerAddressAction.jsp" method="post" class="bill-detail">
+                            <input type="hidden" name="addNo" value="<%=addNo%>">
                             <fieldset>
                                 <div class="form-group row"><!-- 2행 -->
-	                                <div class="col-2">
-	                                    <label for="add-name">주소이름</label>
+	                                <div class="col-2 text-right">
+	                                    <label for="add-name"><strong>주소변경</strong></label>
 	                                </div>
 	                                <div class="col-10">
 										<input id="add-name" class="form-control" type="text" name="addName" value="<%=address.getAddressName()%>">
 	                                </div>
                                 </div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="add">주소</label>
+                                	<div class="col-2 text-right">
+                                		<label for="add"><strong>주소</strong></label>
                                 	</div>
                                 	<div class="col-10">
                                 		<div>
@@ -103,8 +103,8 @@
                                 	</div>
                        			</div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="add-default">기본주소설정</label>
+                                	<div class="col-2 text-right">
+                                		<label for="add-default"><strong>기본주소설정</strong></label>
                                 	</div>
                                 	<div class="col-10">
                                 		<%

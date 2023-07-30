@@ -49,10 +49,9 @@
             <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
                 <div class="container">
                     <h1 class="pt-5">
-                        Settings
+                        계정 정보 수정
                     </h1>
                     <p class="lead">
-                        Update Your Account Info
                     </p>
                 </div>
             </div>
@@ -70,8 +69,8 @@
                                 	<input id="id" name="id" value="<%=customer.getId()%>" readonly type="hidden" class="form-control">
                                 </div>
                                 <div class="form-group row"><!-- 2행 -->
-	                                <div class="col-2">
-		                                <label for="name">이름&nbsp;</label>
+	                                <div class="col-2 text-right">
+		                                <label for="name"><strong>이름</strong></label>
 	                                </div>
 	                                <div class="col-10">
 	                                	<div>
@@ -81,22 +80,28 @@
 	                                </div>
                                 </div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="address">주소&nbsp;</label>
+                                	<div class="col-2 text-right">
+                                		<label for="address"><strong>주소</strong></label>
                                 	</div>
                                 	<div class="col-8">
-                                		<input id="address" name="address" value="<%=customer.getCstmAddress()%>" type="text" class="form-control">
+                                		<div class="row">
+                                			<div class="col">
+		                                		<input id="address" name="address" value="<%=customer.getCstmAddress()%>" type="text" class="form-control">
+                                			</div>
+                                		</div>
+										<div class="row">
+											<div class="col">
+		                               			<span class="msg" id="addMsg"></span>
+											</div>
+										</div>
                                 	</div>
                                 	<div class="col-2">
-                                		<div>
-                                			<a class="btn btn-default" id="addrPopup" href="<%=request.getContextPath()%>/customer/addCustomerAddress.jsp">주소 추가</a>
-                                			<span class="msg" id="addMsg"></span>
-                                		</div>
+		                            	<a class="btn btn-default" href="<%=request.getContextPath()%>/customer/addCustomerAddress.jsp">주소 추가</a>
                                 	</div>
                        			</div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="email">이메일&nbsp;</label>
+                                	<div class="col-2 text-right">
+                                		<label for="email"><strong>이메일</strong></label>
                                 	</div>
                                 	<div class="col-10">
                                 		<div>
@@ -106,8 +111,8 @@
                                 	</div>
                                 </div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-		                                <label for="birth">생일&nbsp;</label>
+                                	<div class="col-2 text-right">
+		                                <label for="birth"><strong>생일</strong></label>
                                 	</div>
 									<div class="col-10">
 										<div>
@@ -117,8 +122,8 @@
 									</div>
                                 </div>
                                 <div class="form-group row">
-                                <div class="col-2">
-	                                <label for="phone">연락처&nbsp;</label>
+                                <div class="col-2 text-right">
+	                                <label for="phone"><strong>연락처</strong></label>
                                 </div>
 								<div class="col-10">
 									<div>
@@ -128,8 +133,8 @@
 								</div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-2">
-                                    	<label for="gender">성별</label>
+                                    <div class="col-2 text-right">
+                                    	<label for="gender"><strong>성별</strong></label>
                                     </div>
                                     <div class="col-10">
 			                        <%

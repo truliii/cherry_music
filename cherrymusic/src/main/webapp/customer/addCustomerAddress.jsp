@@ -39,7 +39,6 @@
                         주소 추가
                     </h1>
                     <p class="lead">
-                        주소를 추가하세요!
                     </p>
                 </div>
             </div>
@@ -54,16 +53,16 @@
                         <form action="<%=request.getContextPath()%>/customer/addCustomerAddressAction.jsp" method="post" class="bill-detail">
                             <fieldset>
                                 <div class="form-group row"><!-- 2행 -->
-	                                <div class="col-2">
-	                                    <label for="add-name">주소이름</label>
+	                                <div class="col-2 text-right">
+	                                    <label for="add-name"><strong>주소이름</strong></label>
 	                                </div>
 	                                <div class="col-10">
 										<input id="add-name" class="form-control" type="text" name="addName">
 	                                </div>
                                 </div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="add">주소</label>
+                                	<div class="col-2 text-right">
+                                		<label for="add"><strong>주소</strong></label>
                                 	</div>
                                 	<div class="col-10">
                                 		<div>
@@ -76,8 +75,8 @@
                                 	</div>
                        			</div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="add-default">기본주소설정</label>
+                                	<div class="col-2 text-right">
+                                		<label for="add-default"><strong>기본주소설정</strong></label>
                                 	</div>
                                 	<div class="col-10">
                                 		<input id="add-default" class="mr-1" type="checkbox" name="addDefault">

@@ -26,7 +26,7 @@
 	
 	//mRequest맵핑
 	String dir = request.getServletContext().getRealPath("/review/reviewImg");
-	System.out.println(KMJ + dir + " <--addReviewAction dir" + RESET);
+	System.out.println(KMJ + dir + " <--addReveiwAction.jsp dir" + RESET);
 	int max = 10 * 1024 * 1024; //파일의 최대 크기: 10MB
 	MultipartRequest mRequest = new MultipartRequest(request, dir, max, "utf-8", new DefaultFileRenamePolicy());
 	
@@ -53,7 +53,7 @@
 	review.setReviewCheckCnt(0);
 	
 	// 업로드 파일이 이미지 파일이 아닌 경우 해당 파일 삭제
-	if(!mRequest.getContentType("img").contains("image/")){ //파일타입이 image/를 포함하는 경우
+	if(!mRequest.getContentType("img").contains("image/")){ //파일타입이 image/를 포함하지 않는 경우
 		System.out.println("review이미지 파일이 아닙니다");
 		String saveFilename = mRequest.getFilesystemName("img");
 		File f = new File(dir+"/"+saveFilename);

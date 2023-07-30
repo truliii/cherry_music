@@ -118,9 +118,17 @@
                 </div>
             </div>
         </div>
-
+	
+		
         <section id="cart">
             <div class="container">
+            	<!-- 관리자메뉴 -->
+            	<div class="row mb-5">
+            		<div class="col-lg-12">
+						<jsp:include page="/inc/adminNav.jsp"></jsp:include>
+            		</div>
+            	</div>
+            
             	<div class="row justify-content-center"><!-- 검색조건 -->
             		<div class="col-md-12">
 	            		<div class="card mb-5">
@@ -128,7 +136,7 @@
 	                            <form class="form-horizontal" method="post">
 	                                <div class="form-group row mt-3">
 	                                	<div class="col-md-2 text-center">
-	                                		결제상태
+	                                		<strong>결제상태</strong>
 	                                	</div>
 	                                    <div class="col-md-10">
 	                                    	<div class="row">
@@ -149,7 +157,7 @@
 	                                </div>
 	                                <div class="form-group row mt-3">
 	                                	<div class="col-md-2 text-center">
-	                                		배송상태
+	                                		<strong>배송상태</strong>
 	                                	</div>
 	                                    <div class="col-md-10">
 	                                    	<div class="row">
@@ -183,7 +191,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table text-center">
                                 <thead>
                                     <tr>
                                         <th width="10%">주문번호</th>

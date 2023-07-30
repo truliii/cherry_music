@@ -7,6 +7,9 @@
 	//ANSI코드
 	final String KMJ = "\u001B[42m";
 	final String RESET = "\u001B[0m";
+
+	int cartNum = 0;
+	CartDao cDao = new CartDao();
 	
 	//로그인 세션 유효성 검사
 	Object o = null;
@@ -20,8 +23,26 @@
 			//관리자여부 확인
 			EmployeesDao eDao = new EmployeesDao();
 			emp = eDao.selectEmployee(loginId);
+			
+			cartNum = cDao.selectCartCnt(loginId);
 		}
 	}
+	
+	
+	//장바구니 개수
+	//로그아웃 상태 : 세션에서 장바구니 정보꺼내기
+	ArrayList<HashMap<String, Object>> cartList = null;
+	if(session.getAttribute("loginId") == null && session.getAttribute("sessionCartList") != null){
+		ArrayList<HashMap<String, Object>> sessionCartList = (ArrayList<HashMap<String, Object>>)session.getAttribute("sessionCartList");
+		for(HashMap<String, Object> m : sessionCartList){
+			cartNum += 1;
+		}
+	}
+	
+	//수량변경 ajax를 위해 필요한 변수
+	int num = 0;
+	
+	
 %>
 <div class="page-header">
     <!--=============== Navbar ===============-->
@@ -29,7 +50,7 @@
         <div class="container">
             <!-- Navbar Brand -->
             <a href="<%=request.getContextPath()%>/home.jsp" class="navbar-brand">
-                <img src="<%=request.getContextPath()%>/resources/assets/img/logo/logo.png" alt="">
+                <img src="<%=request.getContextPath()%>/resources/assets/img/logo/cherrymusic_logo2.png" alt="">
             </a>
 
             <!-- Toggle Button -->
@@ -41,17 +62,17 @@
                 <!-- Navbar Menu -->
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a href="<%=request.getContextPath()%>/home.jsp" class="nav-link">Shop</a>
+                        <a href="<%=request.getContextPath()%>/home.jsp" class="nav-link">상품보기</a>
                     </li>
                     <%
                     	//로그인이 되어있지 않은 경우
                     	if(loginId == ""){
                     %>
 	                    <li class="nav-item">
-	                        <a href="<%=request.getContextPath()%>/id_list/signUp.jsp" class="nav-link">Register</a>
+	                        <a href="<%=request.getContextPath()%>/id_list/signUp.jsp" class="nav-link">회원가입</a>
 	                    </li>
 	                    <li class="nav-item">
-	                        <a href="<%=request.getContextPath()%>/id_list/login.jsp" class="nav-link">Login</a>
+	                        <a href="<%=request.getContextPath()%>/id_list/login.jsp" class="nav-link">로그인</a>
 	                    </li>
                     <%
                     	}
@@ -59,13 +80,13 @@
                     	if(loginId != ""){
                   	%>
 	                    <li class="nav-item">
-	                        <a href="<%=request.getContextPath()%>/id_list/logoutAction.jsp" class="nav-link">Logout</a>
+	                        <a href="<%=request.getContextPath()%>/id_list/logoutAction.jsp" class="nav-link">로그아웃</a>
 	                    </li>
 	                <%
 		        			if(emp != null){
                     %>
 			                    <li class="nav-item">
-			                        <a href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp" class="nav-link">Admin</a>
+			                        <a href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp" class="nav-link">관리페이지</a>
 			                    </li>
 	                <%
                     		}
@@ -78,83 +99,25 @@
 	                            <div class="avatar-header"><img src="<%=request.getContextPath()%>/resources/assets/img/logo/avatar.jpg"></div> <%=loginId%>
 	                        </a>
 	                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	                            <a class="dropdown-item" href="<%=request.getContextPath()%>/customer/customerOne.jsp">My Page</a>
-	                            <a class="dropdown-item" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp">My Orders</a>
+	                            <a class="dropdown-item" href="<%=request.getContextPath()%>/customer/customerOne.jsp">마이페이지</a>
+	                            <a class="dropdown-item" href="<%=request.getContextPath()%>/customer/customerOrderList.jsp">주문목록</a>
 	                        </div>
 	                    </li>
 	                <%
                     	}
 	                %>
-                    <li class="nav-item dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-shopping-basket"></i> <span class="badge badge-primary">5</span>
-                        </a>
-                        <div class="dropdown-menu shopping-cart">
-                            <ul>
-                                <li>
-                                    <div class="drop-title">Your Cart</div>
-                                </li>
-                                <li>
-                                    <div class="shopping-cart-list">
-                                        <div class="media">
-                                            <img class="d-flex mr-3" src="<%=request.getContextPath()%>/resources/assets/img/logo/avatar.jpg" width="60">
-                                            <div class="media-body">
-                                                <h5><a href="javascript:void(0)">Carrot</a></h5>
-                                                <p class="price">
-                                                    <span class="discount text-muted">Rp. 700.000</span>
-                                                    <span>Rp. 100.000</span>
-                                                </p>
-                                                <p class="text-muted">Qty: 1</p>
-                                            </div>
-                                        </div>
-                                        <div class="media">
-                                            <img class="d-flex mr-3" src="<%=request.getContextPath()%>/resources/assets/img/logo/avatar.jpg" width="60">
-                                            <div class="media-body">
-                                                <h5><a href="javascript:void(0)">Carrot</a></h5>
-                                                <p class="price">
-                                                    <span class="discount text-muted">Rp. 700.000</span>
-                                                    <span>Rp. 100.000</span>
-                                                </p>
-                                                <p class="text-muted">Qty: 1</p>
-                                            </div>
-                                        </div>
-                                        <div class="media">
-                                            <img class="d-flex mr-3" src="<%=request.getContextPath()%>/resources/assets/img/logo/avatar.jpg" width="60">
-                                            <div class="media-body">
-                                                <h5><a href="javascript:void(0)">Carrot</a></h5>
-                                                <p class="price">
-                                                    <span class="discount text-muted">Rp. 700.000</span>
-                                                    <span>Rp. 100.000</span>
-                                                </p>
-                                                <p class="text-muted">Qty: 1</p>
-                                            </div>
-                                        </div>
-                                        <div class="media">
-                                            <img class="d-flex mr-3" src="<%=request.getContextPath()%>/resources/assets/img/logo/avatar.jpg" width="60">
-                                            <div class="media-body">
-                                                <h5><a href="javascript:void(0)">Carrot</a></h5>
-                                                <p class="price">
-                                                    <span class="discount text-muted">Rp. 700.000</span>
-                                                    <span>Rp. 100.000</span>
-                                                </p>
-                                                <p class="text-muted">Qty: 1</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="drop-title d-flex justify-content-between">
-                                        <span>Total:</span>
-                                        <span class="text-primary"><strong>Rp. 2000.000</strong></span>
-                                    </div>
-                                </li>
-                                <li class="d-flex justify-content-between pl-3 pr-3 pt-3">
-                                    <a href="<%=request.getContextPath()%>/resources/cart.html" class="btn btn-default">View Cart</a>
-                                    <a href="<%=request.getContextPath()%>/resources/checkout.html" class="btn btn-primary">Checkout</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+	                <li class="nav-item">
+	                    <a href="<%=request.getContextPath()%>/cart/cart.jsp" class="nav-link">
+	                    	<i class="fa fa-shopping-basket"></i> 
+	                    	<%
+	                    		if(cartNum != 0){
+	                    	%>
+		                    	<sup><span class="badge badge-primary"><%=cartNum%></span></sup>
+	                    	<%
+	                    		}
+	                    	%>
+	                    </a>
+	                </li>
                 </ul>
             </div>
 

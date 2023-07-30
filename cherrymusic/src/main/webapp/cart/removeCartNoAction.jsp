@@ -25,9 +25,10 @@
 	}
 	
 	//요청값 유효성 검사
-	if(request.getParameter("cartNo") == null){
+	if(request.getParameter("cartNo") == null 
+		|| request.getParameter("cartNo").equals("")){
 		response.sendRedirect(request.getContextPath()+"/cart/cart.jsp");
-		System.out.println("modifyCartCnt에서 리다이렉션");
+		System.out.println("removeCartCnt에서 리다이렉션");
 		return;
 	} 
 	

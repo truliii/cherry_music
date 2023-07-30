@@ -51,8 +51,9 @@
 	int rBeginRow = 0;
 	int rRowPerPage = 5;
 	int reviewCnt = rDao.selectReviewCntByProduct(productNo);
-	ArrayList<HashMap<String, Object>> rList = rDao.selectReviewListByProduct(productNo,rBeginRow, rRowPerPage);
-	Review review = new Review();
+	ArrayList<HashMap<String, Object>> rList = rDao.selectReviewListByProduct(productNo, rBeginRow, rRowPerPage);
+	
+	String dir = request.getServletContext().getRealPath("/reveiw/reviewImg");
 
 %>
 
@@ -74,7 +75,6 @@
                         <%=product.get("productName")%>
                     </h1>
                     <p class="lead">
-                        Save time and leave the groceries to us.
                     </p>
                 </div>
             </div>
@@ -88,13 +88,15 @@
                     <div class="col-sm-6">
                         <div class="slider-zoom">
                             <%-- <a href="<%request.getContextPath()%>/review/reviewImg/<%=product.get("saveFilename")%>" class="cloud-zoom" rel="transparentImage: 'data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', useWrapper: false, showTitle: false, zoomWidth:'500', zoomHeight:'500', adjustY:0, adjustX:10" id="cloudZoom">
-                                <img alt="Detail Zoom thumbs image" src="<%request.getContextPath()%>/review/reviewImg/<%=product.get("saveFilename")%>" style="width: 100%;">
+                                <img alt="Detail Zoom thumbs image" src="<%=request.getContextPath()%>/review/reviewImg/panda_fav.png" style="width: 100%;">
                             </a> --%>
+                            <img src="<%=request.getContextPath()%>/review/reviewImg/panada_fav.png"> 
                         </div>
                     </div>
-                    <form action="<%=request.getContextPath()%>/cart/addToCartAction.jsp" method="post">
-                    	<input type="hidden" name="productNo" value="<%=productNo%>">
-	                    <div class="col-sm-6">
+                    
+                    <div class="col-sm-6">
+		                <form action="<%=request.getContextPath()%>/cart/addToCartAction.jsp" method="post">
+		                   <input type="hidden" name="productNo" value="<%=productNo%>">
 	                        <p>
 	                            <strong>상세보기</strong><br>
 	                            	<%=product.get("productInfo")%></br>
@@ -133,107 +135,109 @@
 	                        <button class="mt-3 btn btn-primary btn-lg">
 	                            <i class="fa fa-shopping-basket"></i> 장바구니에 담기
 	                        </button>
-	                    </div>
-                    </form>
+	                    </form>
+                    </div>
                 </div>
                 
                 <!-- 문의 및 리뷰 시작 -->
-				<div class="row mt-5">
-		          <div class="col-md-12 nav-link-wrap">
-		            <div class="nav nav-pills d-flex text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-		              <a class="nav-link ftco-animate active mr-lg-1" id="v-pills-1-tab" data-toggle="pill" href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">문의하기</a>
-		              <a class="nav-link ftco-animate mr-lg-1" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">후기</a>
-		            </div>
-		          </div>
-		          <div class="col-md-12 tab-wrap">
-		            <div class="tab-content bg-light" id="v-pills-tabContent">
-		              <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="day-1-tab">
-		              	<div class="p-4">
-							<form action="<%=request.getContextPath()%>/question/addQuestion.jsp?p.productNo=<%=productNo%>" method="post">
-			       				<div class="table-resposive">
-			       					<table class="table">
-			       						<thead>
+               <div class="row mt-5">
+		        <div class="col">
+		            <ul class="nav nav-tabs nav-pills">
+		              <li class="nav-item">
+		                <a class="nav-link active btn btn-primary" data-toggle="tab" href="#qna">문의하기</a>
+		              </li>
+		              <li class="nav-item">
+		                <a class="nav-link btn btn-primary" data-toggle="tab" href="#review">리뷰</a>
+		              </li>
+		            </ul>
+		            <div class="tab-content">
+		              	<div class="tab-pane fade show active" id="qna">
+							<div class="p-4">
+								<form action="<%=request.getContextPath()%>/question/addQuestion.jsp?p.productNo=<%=productNo%>" method="post">
+				       				<div class="table-resposive">
+				       					<table class="table text-center">
+				       						<thead>
+					       						<tr>
+					       							<th >p no.</th>
+					       							<th >q no.</th>
+					       							<th >id</th>
+					       							<th >문의 카테고리</th>
+					       							<th >문의 제목</th>
+					       							<th >문의 내용</th>
+					       							<th >등록일</th>
+					       							<th >수정일</th>
+					       							<th >조회수</th>
+					       						</tr>
+				       						</thead>
+				       						<tbody>
+				       						<%
+				       							for(Question q : pList) {
+				       								// 할인 기간 확인을 위한 변수와 분기
+				       						%>
 				       						<tr>
-				       							<th >p no.</th>
-				       							<th >q no.</th>
-				       							<th >id</th>
-				       							<th >문의 카테고리</th>
-				       							<th >문의 제목</th>
-				       							<th >문의 내용</th>
-				       							<th >등록일</th>
-				       							<th >수정일</th>
-				       							<th >조회수</th>
+				       							<td><%=productNo%></td>
+				       							<td>
+				       								<a href="<%=request.getContextPath()%>/question/questionDetail.jsp?qNo=<%=q.getqNo()%>">
+				       									<%=q.getqNo()%>
+				       								</a>
+				       							</td>
+				       							<td><%=q.getId()%></td>
+				       							<td><%=q.getqCategory()%></td>
+				       							<td><%=q.getqTitle()%></td>
+				       							<td><%=q.getqContent()%></td>
+				       							<td><%=q.getCreatedate()%></td>
+				       							<td><%=q.getUpdatedate()%></td>
+				       							<td><%=q.getqCheckCnt()%></td>
 				       						</tr>
-			       						</thead>
-			       						<tbody>
-			       						<%
-			       							for(Question q : pList) {
-			       								// 할인 기간 확인을 위한 변수와 분기
+				       						<%	
+				       							}
+				       						%>
+				       						</tbody>
+				       					</table>
+				       				  </div>
+				       				  <div class="text-right">
+				       					<a href="<%=request.getContextPath()%>/question/addQuestion.jsp?p.productNo=<%=productNo%>">
+				       						<button class="btn btn-primary" type="button">문의입력</button>
+										</a>
+							  		</div>
+								</form>
+			              	</div>
+			              </div>
+			              <div class="tab-pane fade" id="review">
+			              	<div class="row p-4">
+						   		<div class="col-md-12">
+						   			<h3 class="mb-4"><%=reviewCnt%>개의 후기</h3>
+						   			<div class="review row">
+							   			<%
+			       							for(HashMap<String, Object> r : rList) {
 			       						%>
-			       						<tr>
-			       							<td><%=productNo%></td>
-			       							<td>
-			       								<a href="<%=request.getContextPath()%>/question/questionDetail.jsp?qNo=<%=q.getqNo()%>">
-			       									<%=q.getqNo()%>
-			       								</a>
-			       							</td>
-			       							<td><%=q.getId()%></td>
-			       							<td><%=q.getqCategory()%></td>
-			       							<td><%=q.getqTitle()%></td>
-			       							<td><%=q.getqContent()%></td>
-			       							<td><%=q.getCreatedate()%></td>
-			       							<td><%=q.getUpdatedate()%></td>
-			       							<td><%=q.getqCheckCnt()%></td>
-			       						</tr>
-			       						<%	
+									   		<div class="col-md-2">
+									   			<img class="reviewImg" src="<%=request.getContextPath()%>/review/reviewImg/<%=(String)r.get("reviewSaveFilename")%>">
+									   		</div>
+									   		<div class="col-md-10">
+											<h4>
+								   				<span class="text-left"><%=r.get("reviewTitle")%></span>
+							   				</h4>
+							   					<p>
+				       								리뷰번호 : <%=r.get("reviewNo")%>
+			       								</p>
+									   			<p>
+									   				<strong><span><%=r.get("id").toString().substring(0,2)%>***</span></strong><br>
+									   				<%=r.get("reviewContent")%><br>
+									   				(<%=r.get("createdate").toString().substring(0, 10)%>)
+									   			</p>
+									   		</div>
+									   	<%	
 			       							}
-			       						%>
-			       						</tbody>
-			       					</table>
-			       				  </div>
-			       				  <div class="text-right">
-			       					<a href="<%=request.getContextPath()%>/question/addQuestion.jsp?p.productNo=<%=productNo%>">
-			       						<button class="btn btn-primary" type="button">문의입력</button>
-									</a>
-						  		</div>
-							</form>
-		              	</div>
-		              </div>
-		
-		              <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-day-2-tab">
-		              	<div class="row p-4">
-					   		<div class="col-md-12">
-					   			<h3 class="mb-4"><%=reviewCnt%>개의 후기</h3>
-					   			<div class="review">
-						   			<%
-		       							for(HashMap<String, Object> r : rList) {
-		       						%>
-								   		<div class="user-img" style="background-image: url(<%=request.getContextPath()%>/review/reviewImg/<%=(String)r.get("reviewSaveFilename")%>)"></div>
-								   		<div class="desc">
-										<h4>
-							   				<span class="text-left"><%=r.get("id")%></span>
-							   				<span class="text-right"><%=r.get("createdate").toString().substring(0, 10)%></span>
-						   				</h4>
-						   					<p>
-							   					<a href="<%=request.getContextPath()%>/review/reviewOne.jsp?reviewNo=<%=r.get("reviewNo")%>">
-			       									<%=r.get("orderNo")%>
-			       								</a>
-		       								</p>
-								   			<p>
-								   				<strong><%=r.get("reviewTitle")%></strong><br>
-								   				<%=r.get("reviewContent")%></p>
-								   		</div>
-								  </div>
-								   	<%	
-		       							}
-						   			%>
-				              </div>
-				            </div>
-				          </div>
-				        </div>
-	            	</div>
-	        	</div>
-	        <!-- 문의 및 리뷰 끝 -->
+							   			%>
+									  </div>
+					              </div>
+					          </div>
+			              </div>
+			            </div>
+		        	</div>
+		      	</div>
+		      <!-- 문의 및 리뷰 끝 -->
     		</div>
     	</div>
 		<!-- 상품상세보기 끝 -->
@@ -256,6 +260,8 @@
     		$('#cartCnt').val(stock);
     	}
     })
+    
+    
     </script>
 </body>
 </html>

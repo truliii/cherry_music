@@ -96,7 +96,7 @@ public class CartDao {
 	public HashMap<String, Object> selectCartOne(int cartNo) throws Exception {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
-		String sql = "SELECT c.product_no productNo, p.product_name productName, p.product_price productPrice, id, cart_cnt cartCnt, cart_check cartCheck, c.createdate createdate, c.updatedate updatedate\r\n"
+		String sql = "SELECT c.product_no productNo, p.product_name productName, p.product_price productPrice, id, cart_no cartNo, cart_cnt cartCnt, cart_check cartCheck, c.createdate createdate, c.updatedate updatedate\r\n"
 				+ "FROM cart c INNER JOIN product p\r\n"
 				+ "ON c.product_no = p.product_no\r\n"
 				+ "WHERE c.cart_no = ?";
@@ -110,12 +110,29 @@ public class CartDao {
 			map.put("productName", rs.getString("productName"));
 			map.put("productPrice", rs.getInt("productPrice"));
 			map.put("id", rs.getString("id"));
+			map.put("cartNo", rs.getInt("cartNo"));
 			map.put("cartCnt", rs.getInt("cartCnt"));
 			map.put("cartCheck", rs.getString("cartCheck"));
 			map.put("createdate", rs.getString("createdate"));
 			map.put("updatedate", rs.getString("updatedate"));
 		}
 		return map;
+	}
+	
+	//장바구니 cnt
+	public int selectCartCnt(String id) throws Exception {
+		int cnt = 0;
+		
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		String sql = "SELECT COUNT(*) FROM cart WHERE id = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, id);
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			cnt = rs.getInt(1);
+		}
+		return cnt;
 	}
 	
 	// 장바구니에 추가 
@@ -134,6 +151,7 @@ public class CartDao {
 		row = stmt.executeUpdate();
 		return row;
 	}
+	
 	// 장바구니 하나 삭제
 	public int deletecart(int cartNo) throws Exception {
 		if(cartNo == 0) {

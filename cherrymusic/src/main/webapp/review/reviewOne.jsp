@@ -62,7 +62,6 @@
                         리뷰 상세보기
                     </h1>
                     <p class="lead">
-                        Update Your Account Info
                     </p>
                 </div>
             </div>
@@ -75,48 +74,48 @@
                         <h5 class="mb-3">리뷰 상세</h5>
                         <!-- 리뷰 상세정보 시작 -->
                         <div class="row mb-2"><!-- 1행 -->
-                        	<div class="col-3">
-                        		주문번호
+                        	<div class="col-3 text-right">
+                        		<strong>주문번호</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=review.get("orderNo")%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 2행 -->
-                        	<div class="col-3">
-                        		리뷰사진
+                        	<div class="col-3 text-right">
+                        		<strong>리뷰사진</strong>
                         	</div>
                         	<div class="col-9">
                         		<img src="<%=request.getContextPath()%>/review/reviewImg/<%=(String)review.get("reviewSaveFilename")%>" alt="준비중" width="auto" height="100px">
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 3행 -->
-                        	<div class="col-3">
-                        		제목
+                        	<div class="col-3 text-right">
+                        		<strong>제목</strong>
                         	</div>
                         	<div class="col-6">
                         		<%=review.get("reviewTitle")%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 4행 -->
-                        	<div class="col-3">
-                        		내용
+                        	<div class="col-3 text-right">
+                        		<strong>내용</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=review.get("reviewContent")%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 5행 -->
-                        	<div class="col-3">
-                        		작성일
+                        	<div class="col-3 text-right">
+                        		<strong>작성일</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=review.get("createdate").toString().substring(0, 10)%>
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 6행 -->
-                        	<div class="col-3">
-                        		수정일
+                        	<div class="col-3 text-right">
+                        		<strong>수정일</strong>
                         	</div>
                         	<div class="col-9">
                         		<%=review.get("updatedate").toString().substring(0, 10)%>

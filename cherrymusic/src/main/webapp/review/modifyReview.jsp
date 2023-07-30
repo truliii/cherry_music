@@ -47,10 +47,9 @@
             <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
                 <div class="container">
                     <h1 class="pt-5">
-                        Settings
+                        리뷰 수정
                     </h1>
                     <p class="lead">
-                        Update Your Account Info
                     </p>
                 </div>
             </div>
@@ -60,14 +59,14 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xs-12 col-sm-8">
-                        <h5 class="mb-3">정보 수정</h5>
+                        <h5 class="mb-3">리뷰 수정</h5>
                         <!-- 정보 수정폼 시작 -->
                         <form action="<%=request.getContextPath()%>/review/modifyReviewAction.jsp" method="post" enctype="multipart/form-data" class="bill-detail">
                             <fieldset>
                             	<input type="hidden" name="reviewNo" value="<%=reviewNo%>">
                                 <div class="form-group row"><!-- 2행 -->
-	                                <div class="col-2">
-		                                <label for="name">주문번호</label>
+	                                <div class="col-2 text-right">
+		                                <label for="name"><strong>주문번호</strong></label>
 	                                </div>
 	                                <div class="col-10">
 	                                	<div>
@@ -76,16 +75,16 @@
 	                                </div>
                                 </div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="address">제목</label>
+                                	<div class="col-2 text-right">
+                                		<label for="address"><strong>제목</strong></label>
                                 	</div>
                                 	<div class="col-10">
                                 		<input type="text" class="form-control" name="title" value="<%=review.get("reviewTitle")%>" size="80" required>
                                 	</div>
                        			</div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="email">내용</label>
+                                	<div class="col-2 text-right">
+                                		<label for="email"><strong>내용</strong></label>
                                 	</div>
                                 	<div class="col-10">
                                 		<div>
@@ -94,8 +93,8 @@
                                 	</div>
                                 </div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-		                                <label for="birth">작성자</label>
+                                	<div class="col-2 text-right">
+		                                <label for="birth"><strong>작성자</strong></label>
                                 	</div>
 									<div class="col-10">
 										<div>
@@ -104,8 +103,8 @@
 									</div>
                                 </div>
                                 <div class="form-group row">
-                                <div class="col-2">
-	                                <label for="phone">등록이미지</label>
+                                <div class="col-2 text-right">
+	                                <label for="phone"><strong>등록이미지</strong></label>
                                 </div>
 								<div class="col-10">
 									<div>
@@ -114,8 +113,8 @@
 								</div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-2">
-                                    	<label for="gender">사진 첨부</label>
+                                    <div class="col-2 text-right">
+                                    	<label for="gender"><strong>사진 첨부</strong></label>
                                     </div>
                                     <div class="col-10">
                                     	<input type="file" name="img" class="form-control">

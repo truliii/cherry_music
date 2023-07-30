@@ -11,7 +11,7 @@
 	//로그인 세션 유효성 검사: 로그아웃 상태면 로그인창으로 리다이렉션
 	if(session.getAttribute("loginId") == null){
 		response.sendRedirect(KMJ + request.getContextPath()+"/id_list/login.jsp" + RESET);
-		System.out.println(KMJ + "removeCustomerAddressAction 로그인필요" + RESET);
+		System.out.println(KMJ + "modifyCustomerAddressAction 로그인필요" + RESET);
 		return;
 	}
 	Object o = session.getAttribute("loginId");
@@ -38,8 +38,8 @@
 		|| request.getParameter("addName").equals("")
 		|| request.getParameter("add1").equals("")
 		|| request.getParameter("add2").equals("")){
-		response.sendRedirect(request.getContextPath()+"/customer/addCustomerAddress.jsp");
-		System.out.println(KMJ + "customer/addCustomerAddressAction에서 리다이렉션" + RESET);
+		response.sendRedirect(request.getContextPath()+"/customer/customerAddress.jsp");
+		System.out.println(KMJ + "customer/modifyCustomerAddressAction에서 리다이렉션" + RESET);
 		return;
 	}
 	int addNo = Integer.parseInt(request.getParameter("addNo"));

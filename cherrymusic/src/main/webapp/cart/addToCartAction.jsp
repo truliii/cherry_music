@@ -37,55 +37,69 @@
 		cartCnt = stock;
 	}
 	
+	CartDao cDao = new CartDao();
 	DiscountDao dDao = new DiscountDao();
 	
 	//1. 로그아웃상태 -> 세션에 저장
 	if(session.getAttribute("loginId") == null){ 
-		ArrayList<HashMap<String, Object>> sessionCartList = new ArrayList<>();
-		HashMap<String, Object> sessionCart = new HashMap<>();		
-		sessionCart.put("productNo", productNo);
-		sessionCart.put("cartCnt", cartCnt);
-		
-		session.setAttribute("sessionCartList", sessionCartList);
-		response.sendRedirect(request.getContextPath()+"/cart/cart.jsp");
+		//세션에 저장된 장바구니가 없는 경우 -> 새로운 장바구니 속성객체 생성
+		if(session.getAttribute("sessionCartList") == null){ 
+			ArrayList<HashMap<String, Object>> sessionCartList = new ArrayList<>();
+			HashMap<String, Object> sessionCart = new HashMap<>();		
+			sessionCart.put("productNo", productNo);
+			sessionCart.put("cartCnt", cartCnt);
+			sessionCartList.add(sessionCart);
+			session.setAttribute("sessionCartList", sessionCartList);
+		} else {
+			//세션에 저장된 장바구니가 있는 경우 -> 기존 장바구니에 추가하여 저장
+			ArrayList<HashMap<String, Object>> sessionCartList = (ArrayList<HashMap<String, Object>>)session.getAttribute("sessionCartList");
+			System.out.println(KMJ + sessionCartList.size() + " <--addToCartAction sessionCartList.size()" + RESET);
+			
+			//기존 장바구니에 해당 상품이 있는 경우 
+		}
 		
 	} else {
 	
-	//2. 로그인상태 -> cart테이블에 저장
+		//2. 로그인상태 -> cart테이블에 저장
 		String loginId = "";
 		Object o = session.getAttribute("loginId");
 		if(o instanceof String){
 			loginId = (String)o;
 		}
 		
-		CartDao cDao = new CartDao();
-		int productStock = cDao.productCartStock(productNo);
-		if(productStock < cartCnt){
-			cartCnt = productStock;
-		}
-		
 		//장바구니에 동일한 상품이 이미 있는 경우 기존 수량과 새로 담은 수량 합쳐서 저장
 		ArrayList<HashMap<String, Object>> oldCartList = cDao.selectCartListByPage(loginId);
+		int oldCartCnt = -1;
+		int cartNo = -1;
 		for(HashMap<String, Object> m : oldCartList){
 			if((Integer)m.get("productNo") == productNo){
-				int oldCartCnt = (Integer)m.get("cartCnt");
-				cartCnt = oldCartCnt + cartCnt;
+				oldCartCnt = (Integer)m.get("cartCnt");
+				cartNo = (Integer)m.get("cartNo");
 			}
 		}
 		
-		//cart DB에 저장
-		Cart cart = new Cart();
-		cart.setId(loginId);
-		cart.setProductNo(productNo);
-		cart.setCartCnt(cartCnt);
-		
-		int row = cDao.insertCart(cart); //카트db에 저장
-		if(row == 1){
-			System.out.println(KMJ + row + " <--addToCartAction row 카트db에 저장성공");
+		//동일한 상품이 있는 경우
+		if(cartNo != -1){
+			cartCnt += oldCartCnt;
+			Cart c = new Cart();
+			c.setCartNo(cartNo);
+			c.setCartCnt(cartCnt);
+			cDao.updateCartCnt(c);
 		} else {
-			System.out.println(KMJ + row + " <--addToCartAction row 카트db에 저장실패");
+			// 동일한 상품이 없는 경우 cart DB에 저장
+			Cart cart = new Cart();
+			cart.setId(loginId);
+			cart.setProductNo(productNo);
+			cart.setCartCnt(cartCnt);
+			int row = cDao.insertCart(cart); //카트db에 저장
+			if(row == 1){
+				System.out.println(KMJ + row + " <--addToCartAction row 카트db에 저장성공");
+			} else {
+				System.out.println(KMJ + row + " <--addToCartAction row 카트db에 저장실패");
+			}
 		}
-		
-		response.sendRedirect(request.getContextPath()+"/cart/cart.jsp");
 	}
+	
+
+	response.sendRedirect(request.getContextPath()+"/cart/cart.jsp");
 %>

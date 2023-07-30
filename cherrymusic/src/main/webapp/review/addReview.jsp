@@ -44,10 +44,9 @@
             <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
                 <div class="container">
                     <h1 class="pt-5">
-                        리뷰
+                        리뷰 작성
                     </h1>
                     <p class="lead">
-                        Update Your Account Info
                     </p>
                 </div>
             </div>
@@ -59,13 +58,13 @@
                     <div class="col-xs-12 col-sm-8">
                         <h5 class="mb-3">리뷰 작성</h5>
                         <!-- 정보 수정폼 시작 -->
-                        <form action="<%=request.getContextPath()%>/review/addReviewAction.jsp" method="post" enctype="multipart/form-data"" class="bill-detail">
+                        <form action="<%=request.getContextPath()%>/review/addReviewAction.jsp" method="post" enctype="multipart/form-data" class="bill-detail">
                             <fieldset>
                             	<!-- hidden으로 넘기는 값 -->
                             	<input type="hidden" name="orderNo" value="<%=orderNo%>">
                                 <div class="form-group row">
-	                                <div class="col-2">
-		                                <label for="name">제목</label>
+	                                <div class="col-2 text-right">
+		                                <label for="reiviewTitle"><strong>제목</strong></label>
 	                                </div>
 	                                <div class="col-10">
 	                                	<div>
@@ -74,8 +73,8 @@
 	                                </div>
                                 </div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="address">내용</label>
+                                	<div class="col-2 text-right">
+                                		<label for="reviewContent"><strong>내용</strong></label>
                                 	</div>
                                 	<div class="col-2">
                                 		<div>
@@ -84,8 +83,8 @@
                                 	</div>
                        			</div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-                                		<label for="email">작성자</label>
+                                	<div class="col-2 text-right">
+                                		<label for="id"><strong>작성자</strong></label>
                                 	</div>
                                 	<div class="col-10">
                                 		<div>
@@ -94,12 +93,12 @@
                                 	</div>
                                 </div>
                                 <div class="form-group row">
-                                	<div class="col-2">
-		                                <label for="birth">사진 첨부</label>
+                                	<div class="col-2 text-right">
+		                                <label for="file"><strong>사진 첨부</strong></label>
                                 	</div>
 									<div class="col-10">
 										<div>
-				                        	<input type="file" name="img" required>
+				                        	<input id="file" type="file" name="img" required>
 				                        </div>
 									</div>
                                 </div>

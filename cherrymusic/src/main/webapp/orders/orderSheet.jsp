@@ -25,23 +25,45 @@
 	request.setCharacterEncoding("utf-8");
 	
 	//요청값 유효성 검사
-	if(request.getParameter("cartNo") == null){
+	if(request.getParameterValues("cartNo") == null
+		|| request.getParameterValues("cartNo").length == 0){
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	} 
-	int disPrice = 0;
-	if(request.getParameter("disPrice") != null){
-		disPrice = Integer.parseInt(request.getParameter("disPrice"));
-	}
 	
-	int cartNo = Integer.parseInt(request.getParameter("cartNo"));
-	System.out.println(KMJ + cartNo + " <--orderSheet cartNo" + RESET);
-	System.out.println(KMJ + disPrice + " <--orderSheet disPrice" + RESET);
-		
-	//주문정보 출력
 	CartDao cDao = new CartDao();
-	HashMap<String, Object> cart = cDao.selectCartOne(cartNo);
-	int totalPrice = ((Integer)cart.get("cartCnt") * (Integer)cart.get("productPrice")) - disPrice;
+	DiscountDao dDao = new DiscountDao();
+	ArrayList<HashMap<String, Object>> cartList = new ArrayList<>(); //view출력할 정보를 담은 list
+	
+	//checkbox에 체크한 상품의 cartNo가 넘어온다
+	int totalPrice = 0;
+	String[] cartNoStr = request.getParameterValues("cartNo"); 
+	System.out.println(KMJ + cartNoStr.length + "<--orderSheet.jsp cartNoStr.length" + RESET);
+	for(String s : cartNoStr){
+		HashMap<String, Object> cart = cDao.selectCartOne(Integer.parseInt(s));
+		HashMap<String, Object> m = new HashMap<String, Object>(); //cartList에 저장할 map
+		m.put("cartNo", Integer.parseInt(s));
+		m.put("productNo", (Integer)cart.get("productNo"));
+		m.put("productName", (String)cart.get("productName"));
+		m.put("cartCnt", (Integer)cart.get("cartCnt"));
+		m.put("productPrice", (Integer)cart.get("productPrice"));
+		
+		//할인금액 구하기
+		Discount cartDis = dDao.selectProductCurrentDiscount((Integer)cart.get("productNo")); //해당상품의 discount정보를 Discount 타입으로 반환
+		double disRate = 0;
+		int disPrice = 0;
+		if(cartDis != null){
+			disRate = cartDis.getDiscountRate();
+		}
+		disPrice = (int)((Integer)cart.get("productPrice")*(1 - disRate)); //상품별 할인된 금액
+		int orderPrice = (Integer)cart.get("cartCnt") * disPrice; 
+		System.out.println(KMJ + orderPrice + "<--orderSheet.jsp orderPrice" + RESET);
+		m.put("orderPrice", orderPrice);
+		
+		cartList.add(m);
+		
+		totalPrice += orderPrice;
+	}
 	
 	//id별 주소목록 출력
 	AddressDao addDao = new AddressDao();
@@ -51,163 +73,228 @@
 	CustomerDao cstmDao = new CustomerDao();
 	Customer customer = cstmDao.selectCustomer(loginId);
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Customer One</title>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
-<body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
 
-<!-- -----------------------------메인 시작----------------------------------------------- -->
-<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- breadcrumb-->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">장바구니/주문</a></li>
-                  <li aria-current="page" class="breadcrumb-item active">주문하기</li>
-                </ol>
-              </nav>
+<body>
+    <jsp:include page="/inc/header.jsp"></jsp:include>
+    <div id="page-content" class="page-content">
+        <div class="banner">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('assets/img/bg-header.jpg');">
+                <div class="container">
+                    <h1 class="pt-5">
+                        주문하기
+                    </h1>
+                    <p class="lead">
+                    </p>
+                </div>
             </div>
-            <div id="checkout" class="col-lg-12">
-              <div class="box">
-                <form action="<%=request.getContextPath()%>/orders/ordersAction.jsp" method="post">
-					<input type="hidden" name="cartNo" value="<%=cartNo%>">
-					<input type="hidden" name="productNo" value="<%=cart.get("productNo")%>">
-					<input type="hidden" name="orderCnt" value="<%=cart.get("cartCnt")%>">
-                  <h1>주문하기</h1>
-                  <div class="nav flex-column flex-md-row nav-pills text-center">
-                  	<a href="checkout1.html" class="nav-link flex-sm-fill text-sm-center active"><i class="fa fa-map-marker"></i>주문하기</a>
-                  	<a href="#" class="nav-link flex-sm-fill text-sm-center disabled"> <i class="fa fa-eye"></i>주문확인</a>
-                  </div>
-                 <div class="content py-3">
-	                 <h3>주문상품정보</h3>
-	                    <div class="row">
-	                     <div class="col-md-12">
-	                      <table class="table table-bordered">
-	                      	<tr>
-	                      		<th>주문상품</th>
-	                      		<th>상품금액</th>
-	                      		<th>수량</th>
-	                      		<th>할인액</th>
-	                      	</tr>
-	                      	<tr>
-	                      		<td>
-	                      			<img src="<%=request.getContextPath()%>/product/productImg/<%=cart.get("productSaveFilename")%>" alt="이미지 준비중" height="10" width="auto">
-									<%=cart.get("productName")%>
-	                      		</td>
-	                      		<td><%=cart.get("productPrice")%>원</td>
-	                      		<td><%=cart.get("cartCnt")%>개</td>
-	                      		<td><%=disPrice%>원</td>
-	                      	</tr>
-	                       </table>
-	                      </div>
-	                    </div>
-	                    <!-- /.row-->
-	                 <br>
-	                 <br>
-                 	<h3>주문자 정보</h3>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="firstname">이름</label>
-                          <input id="name" type="text" class="form-control" value="<%=customer.getCstmName()%>" required>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="lastname">연락처</label>
-                          <input id="phone" type="text" class="form-control" value="<%=customer.getCstmPhone()%>" required>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- /.row-->
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label for="address">주소</label>
-                          <select id="address" class="form-control">
-                          <%
-                          	for(Address a : addList){
-                          		String addSelect = a.getAddressDefault().equals("Y") ? "selected": "";
-                          %>
-                          		<option value="<%=a.getAddress()%>" <%=addSelect%>><%=a.getAddress()%></option>
-                          <%
-                          	}
-                          %>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- /.row-->
-                    
-                    <br>
-                    <br>
-                    <h3>포인트(P)</h3>
-                    <p>포인트는 최소 <span id="min"></span>p부터 <span id="unit"></span>p단위로 사용 가능합니다.</p>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="currPoint">가용포인트</label>
-                          <input id="currPoint" name="currPoint" type="number" class="form-control" value="<%=customer.getCstmPoint()%>" readonly>
-                          <div class="text-right"><input type="checkbox" id="useAllPoint">포인트 전체 사용</div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="usePoint">사용포인트</label>
-                          <input id="usePoint" name="usePoint" type="number" class="form-control" value="0" min="0" required>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- /.row-->
-                   <br>
-                   <br>
-                   <h3>결제금액(원)</h3>
-                    <div class="row">
-                    	<div class="col-md-3">
-                      		<input id="finalPrice" name="finalPrice" type="number" class="form-control" value="<%=totalPrice%>" readonly>
-                      	</div>
-                    </div>
-                    <!-- /.row-->
-                   
-                    <br>
-                    <br>
-                    <h3>결제방법</h3>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <select name="payment" class="form-control">
-                        	<option value="무통장입금">무통장입금</option>
-                        	<option value="카드결제">카드결제</option>
-                        </select>
-                      </div>
-                    </div>
-                    <!-- /.row-->
-                  </div>
-                  <div class="box-footer d-flex justify-content-between"><a href="<%=request.getContextPath()%>/cart/cart.jsp" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i>장바구니</a>
-                    <button type="submit" class="btn btn-primary">주문하기<i class="fa fa-chevron-right"></i></button>
-                  </div>
-            	</form>
-              </div>
-              <!-- /.box-->
-            </div>
-            <!-- /.col-lg-12-->
-          </div>
         </div>
-      </div>
+
+        <section id="checkout">
+            <div class="container">
+                <form action="<%=request.getContextPath()%>/orders/ordersAction.jsp" method="post" class="bill-detail">
+	                <div class="row">
+	                    <div class="col-xs-12 col-sm-7">
+	                        <h5 class="mb-3">주문자 정보</h5>
+	                        <!-- 주문자정보 시작 -->
+	                            <fieldset>
+	                                <div class="form-group row">
+	                                	<div class="col-2 text-right">
+	                                		<input type="hidden" id="loginId" value="<%=loginId%>">
+	                                		<strong><label for="name">이름</label></strong>
+	                                	</div>
+	                                	<div class="col-10">
+		                                    <input id="name" type="text" class="form-control" value="<%=customer.getCstmName()%>" required>
+	                                	</div>
+	                                </div>
+	                                <div class="form-group row">
+	                                	<div class="col-2 text-right">
+	                                		<strong><label for="phone">연락처</label></strong>
+	                                	</div>
+	                                	<div class="col-10">
+		                                    <input id="phone" type="text" class="form-control" value="<%=customer.getCstmPhone()%>" required>
+	                                	</div>
+	                                </div>
+	                                <div class="form-group row">
+	                                	<div class="col-2 text-right">
+	                                		<strong><label for="address">주소</label></strong>
+	                                	</div>
+	                                	<div class="col-10">
+	                                		<div class="row mb-1">
+	                                			<div class="col-12">
+			                                		<select id="address" class="form-control">
+													<%
+														for(Address a : addList){
+														String addSelect = a.getAddressDefault().equals("Y") ? "selected": "";
+													%>
+														<option value="<%=a.getAddress()%>" <%=addSelect%>><%=a.getAddressName()%></option>
+													<%
+														}
+													%>
+													</select>
+	                                			</div>
+	                                		</div>
+	                                		<div class="row">
+	                                			<div class="col-12">
+		                                			<input id="addtext" type="text" class="form-control" value="" readonly>
+	                                			</div>
+	                                		</div>
+	                                	</div>
+	                                </div>
+	                                <div class="form-group row">
+	                                	<div class="col-2 text-right">
+	                                		<strong><label for="">포인트</label></strong>
+	                                	</div>
+	                                	<div class="col-10">
+	                                		<div class="row mb-1">
+	                                			<div class="col-6">
+				                                    <input id="currPoint" name="currPoint" type="number" class="form-control" placeholder="가용포인트" value="<%=customer.getCstmPoint()%>" readonly>
+	                                			</div>
+												<div class="col-6">
+													<input class="mr-1" type="checkbox" id="useAllPoint">포인트 전체 사용
+												</div>	                                		
+	                                		</div>
+	                                		<div class="row">
+	                                			<div class="col-6">
+		                                			<input id="usePoint" name="usePoint" type="number" class="form-control" placeholder="사용포인트" value="0" min="0" required>
+	                                			</div>
+	                                			<div class="col-6">
+	                                				<span id="min"></span>p부터 사용가능(<span id="unit"></span>p단위)
+	                                			</div>
+	                                		</div>
+	                                	</div>
+	                                </div>
+	                                <div class="form-group row">
+	                                	<div class="col-2 text-right">
+	                                		<strong><label for="orderNotes">배송요청사항</label></strong>
+	                                	</div>
+	                                	<div class="col-10">
+		                                    <textarea id="orderNotes" class="form-control"></textarea>
+	                                	</div>
+	                                </div>
+	                            </fieldset>
+	                        <!-- 주문자정보 끝 -->
+	                    </div>
+	                    <div class="col-xs-12 col-sm-5">
+	                        <div class="holder">
+	                            <h5 class="mb-3">주문 확인</h5>
+	                            <div class="table-responsive">
+	                                <table class="table">
+	                                    <thead>
+	                                        <tr>
+	                                            <th>상품</th>
+	                                            <th class="text-right">소계</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                    	<%
+	                                    		for(HashMap<String, Object> m : cartList){
+	                                    	%>
+	                                        <tr>
+	                                            <td>
+			                                    	<input type="hidden" name="cartNo" value="<%=(Integer)m.get("cartNo")%>">
+			                                    	<input type="hidden" name="orderCnt" value="<%=(Integer)m.get("cartCnt")%>">
+			                                    	<input type="hidden" name="productNo" value="<%=(Integer)m.get("productNo")%>">
+	                                                <input id="orderPrice" name="orderPrice" type="hidden" class="form-control" value="<%=(Integer)m.get("orderPrice")%>">
+	                                                <%=m.get("productName")%> x <%=m.get("cartCnt")%>개
+	                                            </td>
+	                                            <td class="text-right">
+	                                                <%=(Integer)m.get("orderPrice")%>원
+	                                            </td>
+	                                        </tr>
+	                                        <%
+	                                    		}
+	                                        %>
+	                                    </tbody>
+	                                    <tfoot>
+	                                        <tr>
+	                                            <td>
+	                                                <strong>총 주문금액</strong>
+	                                            </td>
+	                                            <td class="text-right">
+	                                                <%=totalPrice%>원
+	                                            </td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>
+	                                                <strong>배송비</strong>
+	                                            </td>
+	                                            <td class="text-right">
+	                                                0원
+	                                            </td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td>
+	                                                <strong>총 결제금액</strong>
+	                                            </td>
+	                                            <td class="text-right">
+	                                                <%=totalPrice%>원</strong>
+	                                            </td>
+	                                        </tr>
+	                                    </tfoot>
+	                                </table>
+	                            </div>
+	
+	                            <h5 class="mb-3"><label for="payment">결제방법</label></h5>
+	                            <div class="form-check-inline">
+	                                <label class="form-check-label">
+	                                    <input class="form-check-input" type="radio" name="payment" id="payment" value="무통장입금" checked>
+	                                    무통장입금
+	                                </label>
+	                            </div>
+	                            <div class="form-check-inline">
+	                                <label class="form-check-label">
+	                                    <input class="form-check-input" type="radio" name="payment" id="payment" value="카드결제">
+	                                    카드결제
+	                                </label>
+	                            </div>
+	                        </div>
+	                        <p class="text-right mt-3">
+	                            <input id="terms" type="checkbox"> <a href="#">주문 유의사항</a>을 모두 확인하였으면 이에 동의합니다.
+	                        </p>
+	                        <button id="checkoutBtn" type="submit" class="btn btn-primary float-right">주문 진행하기<i class="fa fa-check"></i></button>
+	                        <div class="clearfix"></div>
+	                	</div>
+	            	</div>
+              </form>
+            </div>
+        </section>
     </div>
-    <!-- copy -->
-   <jsp:include page="/inc/copy.jsp"></jsp:include>
-	<!-- script -->
+    <footer>
+		<jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>
+
     <jsp:include page="/inc/script.jsp"></jsp:include>
     <script>
+    	//주소선택
+		function handleAdd(){
+			let addressName = $('#address option:selected').text();
+	    	let loginId = $('#loginId').val();
+	    	console.log(addressName);
+	    	console.log(loginId);
+   			console.log('handleAddress함수실행');
+	    	$.ajax({
+	   			url : './modifyOrderAddressAction.jsp',
+	   			type : 'post',
+	   			data : {
+	   				addressName : addressName,
+	   				loginId : loginId},
+	   			success : function(param){
+	   				$('#addtext').val(param);
+	   			},
+	   			error : function(){
+	   				console.log('ajax실패');
+	   			}
+	   		})
+    	};
+    	handleAdd();
+    	$('#address').change(handleAdd);
+    	
     	//포인트 사용
     	const MIN = 1000;
     	const UNIT = 10;
@@ -266,6 +353,16 @@
     		}
     		
     		$("#finalPrice").val(price - $("#usePoint").val());
+    	})
+    	
+    	//주문 동의 진행
+    	$('#checkoutBtn').prop('disabled', true);
+    	$('input[id="terms"]').change(function(){
+	    	if($('#terms').is(':checked') == true){
+	    		$('#checkoutBtn').prop('disabled', false);
+	    	} else {
+	    		$('#checkoutBtn').prop('disabled', true);
+	    	}
     	})
     </script>
 </body>

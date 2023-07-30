@@ -26,23 +26,43 @@
 	int disPrice = 0;
 	
 	CartDao cDao = new CartDao();
+	ProductDao pDao = new ProductDao();
 	
-	//로그아웃 상태 : 세션에서 장바구니 꺼내기
-	if(session.getAttribute("loginId") == null){
-		response.sendRedirect(request.getContextPath()+"/id_list/login.jsp");
-		System.out.println(KMJ + "로그인 안되어 있어 cart에서 리다이렉션" + RESET);
-		return;
+	//로그아웃 상태 : 세션에서 장바구니 정보꺼내기
+	if(session.getAttribute("loginId") == null && session.getAttribute("sessionCartList") != null){
+		ArrayList<HashMap<String, Object>> sessionCartList = (ArrayList<HashMap<String, Object>>)session.getAttribute("sessionCartList");
+		cartList = new ArrayList<>();
+		for(HashMap<String, Object> m : sessionCartList){
+			int sessionCartCnt = (Integer)m.get("cartCnt");
+			int sessionPrdtNo = (Integer)m.get("productNo");
+			HashMap<String, Object> prdtInfo = pDao.selectProductOne(sessionPrdtNo);
+			
+			HashMap<String, Object> c = new HashMap<String, Object>();
+			c.put("cartProductNo", sessionPrdtNo);
+			c.put("cartCnt", sessionCartCnt);
+			c.put("productNo", sessionPrdtNo);
+			c.put("productName", prdtInfo.get("productName"));
+			c.put("productPrice", prdtInfo.get("productPrice"));
+			c.put("productSaveFilename", prdtInfo.get("productSaveFilename"));
+			cartList.add(c);
+			
+		}
+	
 	} else {
 	
-	//로그인 상태 : db에서 장바구니 정보 불러오기
-	Object o = session.getAttribute("loginId");
-	String loginId = "";
-	if(o instanceof String){
-		loginId = (String)o;
-	} 
-	System.out.println(KMJ + loginId + "<-- cart loginId" + RESET);
-	cartList = cDao.selectCartListByPage(loginId);
+		//로그인 상태 : db에서 장바구니 정보 불러오기
+		Object o = session.getAttribute("loginId");
+		String loginId = "";
+		if(o instanceof String){
+			loginId = (String)o;
+		} 
+		
+		System.out.println(KMJ + loginId + "<-- cart loginId" + RESET);
+		cartList = cDao.selectCartListByPage(loginId);
 	}
+	
+	//수량변경 ajax를 위해 필요한 변수
+	int num = 0;
 %>
 
 <!DOCTYPE html>
@@ -62,7 +82,6 @@
                         장바구니
                     </h1>
                     <p class="lead">
-                        Save time and leave the groceries to us.
                     </p>
                 </div>
             </div>
@@ -71,6 +90,7 @@
         <section id="cart">
             <div class="container">
                 <div class="row">
+                  	<div class="col-md-12">
 					<form method="post" action="<%=request.getContextPath()%>/orders/orderSheet.jsp">
 						<%
 							if(cartList == null || cartList.size() < 1){
@@ -80,16 +100,16 @@
 						<%
 							} else {
 						%>
-	                    	<div class="col-md-12">
 		                        <div class="table-responsive">
 		                            <table class="table">
 		                                <thead>
-		                                    <tr>
+		                                    <tr class="text-center">
+		                                    	<th></th>
 		                                        <th width="10%"></th>
 		                                        <th>제품</th>
 		                                        <th>제품금액</th>
-		                                        <th width="15%">수량</th>
 		                                        <th>할인금액</th>
+		                                        <th width="15%">수량</th>
 		                                        <th>합계</th>
 		                                        <th></th>
 		                                    </tr>
@@ -105,30 +125,32 @@
 			                      			cartPrice = (Integer)m.get("productPrice") * (Integer)m.get("cartCnt");
 			                      			disPrice = (int)Math.floor(cartPrice*disRate);
 			                      			cartSum += (cartPrice - disPrice);
+			                      			num += 1;
 			                      	%>
-		                                    <tr>
+		                                    <tr class="text-center">
+		                                    	<td>
+		                                    		<input id="checkbox-<%=num%>" class="checkbox" type="checkbox" name="cartNo" value="<%=(Integer)m.get("cartNo")%>">
+		                                    	</td>
 		                                        <td>
-													<input id="cartNo" type="hidden" name="cartNo" value="<%=m.get("cartNo")%>" required>
 		                                        	<img src="<%=dir%>/<%=m.get("productSaveFilename")%>" width="60" alt="이미지준비중">
 		                                        </td>
 		                                        <td>
 		                                            <%=(String)m.get("productName")%>
 		                                        </td>
 		                                        <td>
-		                                            <%=cartPrice%>
-		                                        </td>
-		                                        <td>
-		                                            <input name="cartCnt" type="number" value="<%=(Integer)m.get("cartCnt")%>" class="form-control" min="1" max="<%=productStock%>" readonly>
-		                                            <input class="vertical-spin" type="text" data-bts-button-down-class="btn btn-primary" data-bts-button-up-class="btn btn-primary" value="" name="vertical-spin">
+		                                            <%=m.get("productPrice")%>
 		                                        </td>
 		                                        <td>
 		                                            <%=disPrice%>
 		                                        </td>
 		                                        <td>
+		                                            <input id="cartCnt-<%=num%>" name="cartCnt" type="number" class="form-control" value="<%=(Integer)m.get("cartCnt")%>" class="form-control" min="1" max="<%=productStock%>">
+		                                        </td>
+		                                        <td>
 		                                        	<%=cartPrice-disPrice%><input type="hidden" name="orderPrice" value="<%=cartPrice-disPrice%>">
 		                                        </td>
 		                                        <td>
-		                                            <a href="javasript:void" class="text-danger"><i class="fa fa-times"></i></a>
+		                                            <a href="<%=request.getContextPath()%>/cart/removeCartNoAction.jsp?cartNo=<%=(Integer)m.get("cartNo")%>" class="text-danger"><i class="fa fa-times"></i></a>
 		                                        </td>
 		                                    </tr>
 									<%
@@ -137,19 +159,19 @@
 		                                </tbody>
 		                            </table>
 		                        </div>
-		                    </div>
-		                    <div class="col">
-		                        <a href="shop.html" class="btn btn-default">Continue Shopping</a>
-		                    </div>
-		                    <div class="col text-right">
-		                        <div class="clearfix"></div>
-		                        <h6 class="mt-3">합계: <%=cartSum%>원</h6>
-		                        <button type="submit" class="btn btn-lg btn-primary">주문하기<i class="fa fa-long-arrow-right"></i></button>
-		                    </div>
+			                    <div class="col">
+			                        <a href="shop.html" class="btn btn-default">쇼핑계속하기</a>
+			                    </div>
+			                    <div class="col text-right">
+			                        <div class="clearfix"></div>
+			                        <h6 class="mt-3">합계: <%=cartSum%>원</h6>
+			                        <button id="checkOutBtn" type="submit" class="btn btn-lg btn-primary">주문하기<i class="fa fa-long-arrow-right"></i></button>
+			                    </div>
 							<%
 								}
 							%>
                     </form>
+                    </div>
                 </div>
             </div>
         </section>
@@ -160,7 +182,44 @@
 
     <jsp:include page="/inc/script.jsp"></jsp:include>
     <script>
+    	//주문할 상품 선택
+    	$('#checkOutBtn').prop('disabled', true);
+    	$('.checkbox').change(function(){
+   			if($('.checkbox').is(':checked')){
+   				$('#checkOutBtn').prop('disabled', false);
+   			} else {
+   				$('#checkOutBtn').prop('disabled', true);
+   			}
+    	})
     	
+    	//상품수량변경
+    	$('input[id^="cartCnt"]').change(function(event){
+    		let id = event.target.id; //이벤트가 발생한 요소의 id얻기
+    		console.log(id);
+    		let eventNo = id.substring(id.indexOf('-')+1); //이벤트가 발생한 요소 id의 번호
+    		let cartNoId = 'checkbox-'+eventNo;
+    		console.log(cartNoId);
+    		
+    		let cartNo = $('#'+cartNoId).val();
+    		let cartCnt = $('#'+id).val();
+    		console.log(cartNo);
+    		console.log(cartCnt);
+    		$.ajax({
+    			url : './modifyCartCntAction.jsp',
+    			type : 'post',
+    			data : {
+    				cartNo : cartNo,
+    				cartCnt : cartCnt
+    			},
+    			success : function(param){
+    				console.log(param);
+    				console.log('ajax성공');
+    			},
+    			error : function(){
+    				console.log('ajax실패');
+    			}
+    		})
+    	})
     </script>
 </body>
 </html>

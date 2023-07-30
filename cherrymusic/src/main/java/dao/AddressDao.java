@@ -51,14 +51,15 @@ public class AddressDao {
 		}
 		
 	//조회: 주소이름에 따라 주소 리턴 / 주문하기
-	public Address selectAddressName(String addressName) throws Exception {
+	public Address selectAddressByName(Address add) throws Exception {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		//PreparedStatement
 		String sql = "SELECT address_no addressNo, id, address_name addressName, address, address_default addressDefault, address_last_date addressLastDate, createdate, updatedate "
-						+"FROM address WHERE address_name = ?";
+						+"FROM address WHERE id = ? AND address_name = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, addressName);
+		stmt.setString(1, add.getId());
+		stmt.setString(2, add.getAddressName());
 		ResultSet rs = stmt.executeQuery();
 		//ResultSet->Address
 		Address address = null;

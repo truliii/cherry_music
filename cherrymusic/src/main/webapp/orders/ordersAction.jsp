@@ -25,19 +25,26 @@
 	request.setCharacterEncoding("utf-8");
 
 	//요청값 유효성 검사
-	if(request.getParameter("cartNo") == null
-		|| request.getParameter("productNo") == null
-		|| request.getParameter("orderCnt") == null 
-		|| request.getParameter("finalPrice") == null
+	if(request.getParameterValues("cartNo") == null
+		|| request.getParameterValues("productNo") == null
+		|| request.getParameterValues("orderCnt") == null 
+		|| request.getParameterValues("orderPrice") == null
+		|| request.getParameterValues("cartNo").length == 0
+		|| request.getParameterValues("productNo").length == 0
+		|| request.getParameterValues("orderCnt").length == 0
+		|| request.getParameterValues("orderPrice").length == 0
+		|| request.getParameterValues("cartNo").length != request.getParameterValues("productNo").length
+		|| request.getParameterValues("cartNo").length != request.getParameterValues("orderCnt").length
+		|| request.getParameterValues("cartNo").length != request.getParameterValues("orderPrice").length
 		|| request.getParameter("payment") == null 
 		|| request.getParameter("usePoint") == null){
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
-	int cartNo = Integer.parseInt(request.getParameter("cartNo"));
-	int productNo = Integer.parseInt(request.getParameter("productNo"));
-	int orderCnt = Integer.parseInt(request.getParameter("orderCnt"));
-	int orderPrice = Integer.parseInt(request.getParameter("finalPrice"));
+	String[] cartNoArr = request.getParameterValues("cartNo");
+	String[] productNoArr = request.getParameterValues("productNo");
+	String[] orderCntArr = request.getParameterValues("orderCnt");
+	String[] orderPriceArr = request.getParameterValues("orderPrice");
 	String payment = request.getParameter("payment");
 	int usePoint = Integer.parseInt(request.getParameter("usePoint"));
 	String paymentStatus = "결제완료";
@@ -46,21 +53,79 @@
 	}
 	String deliveryStatus = "발송준비";
 	
-	//orders DB에 저장하기 위하여 Orders타입으로 묶기
-	Orders order = new Orders();
-	order.setProductNo(productNo);
-	order.setId(loginId);
-	order.setPaymentStatus(paymentStatus); //무통장입금 선택시에는 결제대기로 바꾸기
-	order.setDeliveryStatus(deliveryStatus);
-	order.setOrderCnt(orderCnt);
-	order.setOrderPrice(orderPrice);
+	//디버깅
+	System.out.println(cartNoArr.length);
+	System.out.println(productNoArr.length);
+	System.out.println(orderCntArr.length);
+	System.out.println(orderPriceArr.length);
 	
-	//주문DB 저장 후 orderNo받아오기
+	//메서드 실행을 위한 객체생성
 	OrdersDao oDao = new OrdersDao();
-	int orderNo = oDao.insertOrder(order);
-	System.out.println(KMJ + orderNo + " <--ordersAction orderNo" + RESET);
+	CustomerDao cDao = new CustomerDao();
+	CartDao cartDao = new CartDao();
+
+	String rank = cDao.selectCustomer(loginId).getCstmRank();
+	int point = 0;
+
+	//주문처리
+	int orderNo = -1;
+	for(int i=0; i<cartNoArr.length; i++){
+		//orders DB에 저장하기 위하여 Orders타입으로 묶기
+		int productNo = Integer.parseInt(productNoArr[i]);
+		int orderCnt = Integer.parseInt(orderCntArr[i]);
+		int orderPrice = Integer.parseInt(orderPriceArr[i]);
+		int cartNo = Integer.parseInt(cartNoArr[i]);
+		
+		Orders order = new Orders();
+		order.setProductNo(productNo);
+		order.setId(loginId);
+		order.setPaymentStatus(paymentStatus); //무통장입금 선택시에는 결제대기로 바꾸기
+		order.setDeliveryStatus(deliveryStatus);
+		order.setOrderCnt(orderCnt);
+		order.setOrderPrice(orderPrice);
+		
+		//주문DB 저장 후 orderNo받아오기
+		orderNo = oDao.insertOrder(order);
+		System.out.println(KMJ + orderNo + " <--ordersAction orderNo" + RESET);
+
+		//고객 주문금액 합계 업데이트
+		int sumPriceRow = cDao.updateSumPrice(loginId);
+		if(sumPriceRow != 1){
+			System.out.println(KMJ + sumPriceRow + " <--ordersAction sumPriceRow 입력실패" + RESET);
+		} else {
+			System.out.println(KMJ + sumPriceRow + " <--ordersAction sumPriceRow 입력성공" + RESET);
+		}
+
+		//id의 등급에 따라 주문금액의 3%, 5%, 10% 적립 
+		if(rank.equals("bronze")){
+			point = (int)(orderPrice * 0.03);
+		} else if(rank.equals("silver")){
+			point = (int)(orderPrice * 0.05);
+		} else {
+			point = (int)(orderPrice * 0.1);
+		}
+		
+		//상품재고량 업데이트(기존 재고량 - orderCnt)
+		int stockRow = oDao.updateProductStock(productNo, orderCnt);
+		if(stockRow != 1){
+			System.out.println(KMJ + stockRow + " <--ordersAction stockRow 입력실패" + RESET);
+		} else {
+			System.out.println(KMJ + stockRow + " <--ordersAction stockRow 입력성공" + RESET);
+		}
+		
+		//주문완료 후 장바구니에서 삭제
+		int dltCtRow = cartDao.deletecart(cartNo);
+		if(dltCtRow != 1){
+			System.out.println(KMJ + dltCtRow + " <--ordersAction dltCtRow 입력실패" + RESET);
+		} else {
+			System.out.println(KMJ + dltCtRow + " <--ordersAction dltCtRow 입력성공" + RESET);
+		}
+	}
 	
-	//포인트이력DB 업데이트
+	System.out.println(KMJ + orderNo + " <--orderAction.jsp 상품의 마지막orderNo" + RESET);
+	
+	
+	//포인트이력DB 업데이트 : 마지막 상품의 orderNo로 point넣기
 	PointHistoryDao pDao = new PointHistoryDao();
 	
 	//사용한 포인트가 0보다 클 경우에는 포인트 -로 삽입
@@ -78,17 +143,6 @@
 		}
 	}
 	
-	//id의 등급에 따라 주문금액의 3%, 5%, 10% 적립 
-	CustomerDao cDao = new CustomerDao();
-	String rank = cDao.selectCustomer(loginId).getCstmRank();
-	int point = 0;
-	if(rank.equals("bronze")){
-		point = (int)(orderPrice * 0.03);
-	} else if(rank.equals("silver")){
-		point = (int)(orderPrice * 0.05);
-	} else {
-		point = (int)(orderPrice * 0.1);
-	}
 	
 	PointHistory pPlus = new PointHistory();
 	String pointPm = "+";
@@ -111,32 +165,8 @@
 		System.out.println(KMJ + sumPointRow + " <--ordersAction sumPointRow 입력성공" + RESET);
 	}
 	
-	//고객 주문금액 합계 업데이트
-	int sumPriceRow = cDao.updateSumPrice(loginId);
-	if(sumPriceRow != 1){
-		System.out.println(KMJ + sumPriceRow + " <--ordersAction sumPriceRow 입력실패" + RESET);
-	} else {
-		System.out.println(KMJ + sumPriceRow + " <--ordersAction sumPriceRow 입력성공" + RESET);
-	}
-	
-	//상품재고량 업데이트(기존 재고량 - orderCnt)
-	int stockRow = oDao.updateProductStock(productNo, orderCnt);
-	if(stockRow != 1){
-		System.out.println(KMJ + stockRow + " <--ordersAction stockRow 입력실패" + RESET);
-	} else {
-		System.out.println(KMJ + stockRow + " <--ordersAction stockRow 입력성공" + RESET);
-	}
-	
-	//주문완료 후 장바구니에서 삭제
-	CartDao cartDao = new CartDao();
-	int dltCtRow = cartDao.deletecart(cartNo);
-	if(dltCtRow != 1){
-		System.out.println(KMJ + dltCtRow + " <--ordersAction dltCtRow 입력실패" + RESET);
-	} else {
-		System.out.println(KMJ + dltCtRow + " <--ordersAction dltCtRow 입력성공" + RESET);
-	}
 	
 	//주문action 완료 후 주문확인페이지로 리다이렉션 
-	response.sendRedirect(request.getContextPath()+"/orders/orderConfirm.jsp?orderNo="+orderNo);
+	response.sendRedirect(request.getContextPath()+"/orders/orderConfirm.jsp?orderNo="+orderNo+"?orders="+cartNoArr.length);
 
 %>

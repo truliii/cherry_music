@@ -74,7 +74,6 @@
                         고객 상세정보
                     </h1>
                     <p class="lead">
-                        Update Your Account Info
                     </p>
                 </div>
             </div>
@@ -82,12 +81,20 @@
 
         <section id="checkout">
             <div class="container">
+            
+            	<!-- 관리자메뉴 -->
+            	<div class="row mb-5">
+            		<div class="col-lg-12">
+						<jsp:include page="/inc/adminNav.jsp"></jsp:include>
+            		</div>
+            	</div>
+            
                 <div class="row justify-content-center">
                     <div class="col-xs-12 col-sm-8">
                         <h5 class="mb-3">고객 정보</h5>
                         <!-- 고객 상세정보 시작 -->
                         <div class="row mb-2"><!-- 1행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>아이디</strong>
                         	</div>
                         	<div class="col-9">
@@ -95,7 +102,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 2행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>이름</strong>
                         	</div>
                         	<div class="col-9">
@@ -103,7 +110,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 3행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>주소</strong>
                         	</div>
                         	<div class="col-6">
@@ -111,7 +118,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 4행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>이메일</strong>
                         	</div>
                         	<div class="col-9">
@@ -119,7 +126,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 5행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>생일</strong>
                         	</div>
                         	<div class="col-9">
@@ -127,7 +134,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 6행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>성별</strong>
                         	</div>
                         	<div class="col-9">
@@ -135,7 +142,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 7행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>연락처</strong>
                         	</div>
                         	<div class="col-9">
@@ -143,7 +150,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 8행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>회원등급</strong>
                         	</div>
                         	<div class="col-9">
@@ -155,7 +162,7 @@
 							if(idLevel == 2){
 						%>
 								<div class="row mb-2">
-									<div class="col-3">
+									<div class="col-3 text-right">
 										<strong>관리자권한 부여</strong>
 									</div>
 									<div class="col-9">
@@ -166,7 +173,7 @@
 							}
 						%>
                         <div class="row mb-2"><!-- 9행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>포인트</strong>
                         	</div>
                         	<div class="col-6">
@@ -174,7 +181,7 @@
                         	</div>
                         </div>
                         <div class="row mb-2"><!-- 9행 -->
-                        	<div class="col-3">
+                        	<div class="col-3 text-right">
                         		<strong>총주문금액</strong>
                         	</div>
                         	<div class="col-6">
