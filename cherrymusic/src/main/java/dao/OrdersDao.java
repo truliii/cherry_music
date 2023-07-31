@@ -342,4 +342,28 @@ public class OrdersDao {
 		int row = stmt.executeUpdate();
 		return row;
 	}
+	
+	//상품 총판매수량 수정: 주문하기 (주문시 판매량 +주문량)
+	public int updateProductSumCnt (int productNo, int orderCnt) throws Exception {
+		//DB접속
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		//PreparedStatement
+		String stockSql = "SELECT product_sum_cnt FROM product WHERE product_no = ?";
+		PreparedStatement sumStmt = conn.prepareStatement(stockSql);
+		sumStmt.setInt(1, productNo);
+		ResultSet sumRs = sumStmt.executeQuery();
+		int sumCnt = 0;
+		if(sumRs.next()) {
+			sumCnt = sumRs.getInt(1);
+		}
+		
+		String sql = "UPDATE product SET product_sum_cnt = ? WHERE product_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, sumCnt+orderCnt);
+		stmt.setInt(2, productNo);
+		System.out.println(KMJ + stmt + " <--OrdersDao.updateProductSumCnt stmt" + RESET);
+		int row = stmt.executeUpdate();
+		return row;
+	}
 }

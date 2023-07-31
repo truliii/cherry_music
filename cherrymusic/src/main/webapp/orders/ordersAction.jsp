@@ -113,6 +113,14 @@
 			System.out.println(KMJ + stockRow + " <--ordersAction stockRow 입력성공" + RESET);
 		}
 		
+		//상품판매량 업데이트 (기존 판매량 + orderCnt)
+		int sumRow = oDao.updateProductSumCnt(productNo, orderCnt);
+		if(sumRow != 1){
+			System.out.println(KMJ + stockRow + " <--ordersAction sumRow 입력실패" + RESET);
+		} else {
+			System.out.println(KMJ + stockRow + " <--ordersAction sumRow 입력성공" + RESET);
+		}
+		
 		//주문완료 후 장바구니에서 삭제
 		int dltCtRow = cartDao.deletecart(cartNo);
 		if(dltCtRow != 1){
@@ -167,6 +175,6 @@
 	
 	
 	//주문action 완료 후 주문확인페이지로 리다이렉션 
-	response.sendRedirect(request.getContextPath()+"/orders/orderConfirm.jsp?orderNo="+orderNo+"?orders="+cartNoArr.length);
+	response.sendRedirect(request.getContextPath()+"/orders/orderConfirm.jsp?orderNo="+orderNo+"&orders="+cartNoArr.length);
 
 %>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<ul class="nav nav-pills nav-fill">
+<ul class="nav nav-pills nav-fill adminNav">
   <li class="nav-item">
     <a class="nav-link" href="<%=request.getContextPath()%>/admin_category/adminCategoryAddAction.jsp">카테고리관리</a>
   </li>

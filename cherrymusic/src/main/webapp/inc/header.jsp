@@ -62,7 +62,7 @@
                 <!-- Navbar Menu -->
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a href="<%=request.getContextPath()%>/home.jsp" class="nav-link">상품보기</a>
+                        <a href="<%=request.getContextPath()%>/product/productHome.jsp" class="nav-link">상품보기</a>
                     </li>
                     <%
                     	//로그인이 되어있지 않은 경우
