@@ -64,7 +64,7 @@
 
         <!-- 카테고리별 바로가기 -->
         <div class="container">
-            <div class="row">
+            <div class="row mt-5">
                 <div class="col-md-12">
                     <div class="shop-categories owl-carousel">
                     	<%
@@ -123,7 +123,7 @@
 	                                        		}
 	                                            %>
 	                                        </div>
-	                                        <img src="<%=request.getContextPath() %>/product/productImg/<%=m.get("productSaveFilename")%>" alt="Card image 2" class="card-img-top">
+	                                        <img src="<%=request.getContextPath()%>/product/productImg/<%=m.get("productSaveFilename")%>" alt="Card image 2" class="card-img-top">
 	                                    </div>
 	                                    <div class="card-body">
 	                                        <h4 class="card-title">

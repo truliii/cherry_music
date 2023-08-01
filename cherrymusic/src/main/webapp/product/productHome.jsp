@@ -181,7 +181,7 @@
                                         		}
                                             %>
                                         </div>
-                                        <img src="assets/img/meats.jpg" alt="Card image 2" class="card-img-top">
+                                        <img src="<%=request.getContextPath() %>/product/productImg/<%=m.get("productSaveFilename") %>" alt="Card image 2" class="card-img-top">
                                     </div>
                                     <div class="card-body">
                                         <h4 class="card-title">
