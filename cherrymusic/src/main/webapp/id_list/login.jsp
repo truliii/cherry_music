@@ -14,54 +14,56 @@
 <head>
     <jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
+<style>
+
+</style>
 <body>
     <jsp:include page="/inc/header.jsp"></jsp:include>
     
     <div id="page-content" class="page-content">
         <div class="banner">
-            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
-                <div class="container">
-                    <h1 class="pt-5">
-                        로그인
-                    </h1>
-                    <p class="lead">
-                        Good music for Good moment!
-                    </p>
-
-                    <div class="card card-login mb-5" style="width: 450px; height: 250px;">
-                        <div class="card-body">
-                            <form id="loginForm">
-                                <div class="form-group row mt-3">
-                                    <div class="col-md-12">
-                                        <input id="id" name="id" class="form-control" type="text" placeholder="아이디">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <input id="password" name="pw" class="form-control" type="password" placeholder="비밀번호">
-                                    </div>
-                                </div>
-                                <div class="form-group row text-center mt-4">
-                                    <div class="col-md-12">
-                                        <button id="loginBtn" type="button" class="btn btn-primary btn-block text-uppercase">로그인</button>
-                                    </div>
-                                </div>
-                                <div class="form-group row text-center">
-                                	<div class="col-md-12">
-                                        <button type="button" onclick="location.href='<%=request.getContextPath()%>/id_list/signUp.jsp'" class="btn btn-primary btn-block text-uppercase">회원가입</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header.jpg');">
+                <div class="container" style="height: 100vh">
+                    <div style="margin-top: 100px;">
+	                    <h1 class="pt-5">
+	                        로그인
+	                    </h1>
+	                    <p class="lead">
+	                        Good music for Good moment!
+	                    </p>
+	
+	                    <div class="card card-login mb-5" style="width: 450px; height: 250px;">
+	                        <div class="card-body">
+	                            <form id="loginForm">
+	                                <div class="form-group row mt-3">
+	                                    <div class="col-md-12">
+	                                        <input id="id" name="id" class="form-control" type="text" placeholder="아이디">
+	                                    </div>
+	                                </div>
+	                                <div class="form-group row mt-3">
+	                                    <div class="col-md-12">
+	                                        <input id="password" name="pw" class="form-control" type="password" placeholder="비밀번호">
+	                                    </div>
+	                                </div>
+	                                <div class="form-group row text-center" style="margin-top: 50px;">
+	                                    <div class="col-md-12">
+	                                        <button id="loginBtn" type="button" class="btn btn-primary btn-block text-uppercase">로그인</button>
+	                                    </div>
+	                                </div>
+	                            </form>
+	                        </div>
+	                    </div>
+	                </div>
+	             </div>
+	         </div>
+	     </div>
+	 </div>
+	    
+    <!-- footer -->
     <footer>
         <jsp:include page="/inc/footer.jsp"></jsp:include>
     </footer>
-
+    <!-- js -->
     <jsp:include page="/inc/script.jsp"></jsp:include>
     <script>
 		// loginBtn click

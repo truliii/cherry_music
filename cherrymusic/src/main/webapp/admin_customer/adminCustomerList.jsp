@@ -51,6 +51,7 @@
 		id = request.getParameter("id");
 		System.out.println(id+"<--adminCustomerList.jsp id");
 		selectId = idListCustomerDao.selectId(id);
+		
 		if(selectId != null){
 			System.out.println(selectId+"<--adminCustomerList.jsp selectId");
 		} else{
@@ -182,14 +183,11 @@
 	<div id="page-content" class="page-content">
 		<!-- banner -->
 		<div class="banner">
-			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header.jpg');">
 				<div class="container">
 					<h1 class="pt-5">
                         회원 관리
                     </h1>
-                    <p class="lead">
-                        
-                    </p>
 				</div>
 			</div>
 		</div>
@@ -265,61 +263,51 @@
 					</div>
 					<div style="margin-top: 50px;">
 						<!-- Id 검색 폼 -->
-						<div class="text-right">
-							<form action="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp" method="post">
-								<input type ="text" name="id">
-								<button type="submit" class="btn btn-primary">아이디 조회</button> 
+						<div>
+							<form id="idSelectForm" method="post" style="display: flex; justify-content: flex-end;">
+								<input type ="text" name="id" id="id" style="margin-right: 5px;">
+								<button type="button" class="btn btn-primary" id="idSelectBtn">아이디 조회</button> 
 							</form>
 						</div>
 					</div>
-					<!-- 조회 리스트, Id검색 분기하여 출력 -->
-					<%
-						if(selectId == null){ // 조회 리스트 출력
-					%>
-							<div style="margin-top: 20px;">
-								<table class="table">
-									<tr>
-										<th>ID</th>
-										<th>성명</th>
-										<th>회원등급</th>
-										<th>활성화</th>
+					<!-- 회원 리스트, Id검색 분기하여 출력 -->
+					<div style="margin-top: 20px">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>성명</th>
+									<th>회원등급</th>
+									<th>활성화</th>
+								</tr>
+							</thead>
+							<tbody>
+							<%
+								if(selectId == null){
+									for(HashMap<String, Object> m : adminCustomerList){
+							%>
+									<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) m.get("id")%>'">
+										<td><%=(String) m.get("id")%></td>
+										<td><%=(String) m.get("cstmName")%></td>
+										<td><%=(String) m.get("cstmRank")%></td>
+										<td><%=(String) m.get("active")%></td>
 									</tr>
-									<%
-										for(HashMap<String, Object> m : adminCustomerList){
-									%>
-										<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) m.get("id")%>'">
-											<td><%=(String) m.get("id")%></td>
-											<td><%=(String) m.get("cstmName")%></td>
-											<td><%=(String) m.get("cstmRank")%></td>
-											<td><%=(String) m.get("active")%></td>
-										</tr>
-									<%		
-										}
-									%>
-								</table>
-							</div>
-					<%		
-						} else{ // 검색 Id 출력
-					%>
-							<div>
-								<table class="table">
-									<tr>
-										<th>ID</th>
-										<th>성명</th>
-										<th>회원등급</th>
-										<th>활성화</th>
-									</tr>
+							<%		
+									}
+								} else{
+							%>
 									<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) selectId.get("id")%>'">
 										<td><%=(String) selectId.get("id")%></td>
 										<td><%=(String) selectId.get("cstmName")%></td>
 										<td><%=(String) selectId.get("cstmRank")%></td>
 										<td><%=(String) selectId.get("active")%></td>
 									</tr>
-								</table>
-							</div>
-					<%		
-						}
-					%>
+							<%		
+								}
+							%>
+							</tbody>
+						</table>
+					</div>
 					<!-- 페이지 네비게이션 
 					 * selectId가 null이 아닌경우만 페이지 네비게이션 출력
 					-->
@@ -439,6 +427,35 @@
 	  	}
 		});
 	}
+	
+	// 아이디 조회 버튼 클릭(idSelectBtn)
+	$('#idSelectBtn').click(function(){
+		if($('#id').val() == '') {
+			alert('조회할 아이디를 입력해주세요');
+		} else {
+			$.ajax({
+				url:'<%=request.getContextPath()%>/id_list/checkMemberId.jsp',
+				data: {idCheck : $('#id').val()},
+				dataType: 'json',
+				success : function(param){
+					console.log(param);
+					if(param === true) {
+						let idSelectUrl = '<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp';
+						$('#idSelectForm').attr('action', idSelectUrl);
+					    $('#idSelectForm').submit();	
+					} else {
+						alert('존재하지 않는 아이디 입니다.');
+						$('#id').val('');
+						$('#id').focus();
+					}
+				},
+				error : function(err) {
+					alert('err');
+					console.log(err);
+					}
+				});
+			}
+		});
 </script>
 
 </html>

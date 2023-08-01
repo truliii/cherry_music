@@ -124,6 +124,15 @@
 		<!-- content -->
 		<div class="container" style="margin-top: 100px;">
 			<div class="row">
+				<div class="col-lg-12">
+					<!-- breadcrumb-->
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home.jsp">홈</a></li>
+							<li aria-current="page" class="breadcrumb-item active">Q&A</li>
+						</ol>
+					</nav>
+				</div>
 				<!-- Q&A 리스트-->
 				<div class="col-lg-12">
 					<div class="box">
@@ -135,6 +144,7 @@
 						<!-- 리스트 출력 -->
 						<div>
 							<table class="table">
+								<thead>
 								<tr>
 									<th>문의번호</th>
 									<th>분류</th>
@@ -144,6 +154,8 @@
 									<th>조회수</th>
 									<th colspan="2">&nbsp;</th>
 								</tr>
+								</thead>
+								<tbody>
 								<%
 									for(HashMap<String, Object> bq: list){
 										if(loginId.equals((String) bq.get("id"))){
@@ -191,6 +203,7 @@
 										%>
 												<td><i class="fa fa-lock"></i></td>
 										</tr>
+									</tbody>
 								<%			
 										}
 								%>

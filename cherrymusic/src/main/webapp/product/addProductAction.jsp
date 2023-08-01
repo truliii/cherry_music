@@ -109,7 +109,5 @@
 		System.out.println(SJ+ "상품 추가 성공"+RE);
 	}
 	
-	
-	// 이미지 업로드 폼으로
-	response.sendRedirect(request.getContextPath() + "/product/productDetail.jsp");
+	response.sendRedirect(request.getContextPath() + "/product/productList.jsp");
 %>

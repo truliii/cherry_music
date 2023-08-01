@@ -17,51 +17,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <title>customerInfoRemove</title>
 </head>
 <body>
-    <div id="all">
-		<div id="content">
-			<div class="container">
-					<div class="row">
-						<div class="col-lg-12">
-							<!-- breadcrumb-->
-							<nav aria-label="breadcrumb">
-								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="#">홈</a></li>
-									<li aria-current="page" class="breadcrumb-item active">마이페이지</li>
-									<li aria-current="page" class="breadcrumb-item active">회원탈퇴</li>
-								</ol>
-							</nav>
-						</div>
-						<!-- customerInfoRemove form -->
-						<div class="col-lg-6">
-							<div class="box">
-								<h1>회원탈퇴</h1>
-								<hr>
-								<form method="post" id="customerInfoRemoveForm">
-									<input type="hidden" id="id" name="id" value="<%=loginId%>">
-									<div class="form-group">
-										<label for="password">비밀번호</label>
-										<input id="password" name="password" type="password" class="form-control">
-									</div>
-									<div class="text-center">
-										<button type="button" id="customerInfoRemoveBtn" class="btn btn-primary">회원탈퇴</button>
-									</div>
-								</form>
+    <!-- header -->
+	<jsp:include page="/inc/header.jsp"></jsp:include>
+	
+	<!-- main-->
+	<div id="page-content" class="page-content">
+		<!-- banner -->
+		<div class="banner">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+				<h1 class="pt-5">
+                    회원탈퇴
+                </h1>
+                <p class="lead">
+                    Bye Bye!
+                </p>
+			</div>
+		</div>
+		<!-- content -->
+		<div class="container" style="margin-top: 100px;">
+			<div class="row justify-content-center">
+				<div class="col-lg-12">
+					<!-- breadcrumb-->
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home.jsp">홈</a></li>
+							<li aria-current="page" class="breadcrumb-item active">마이페이지</li>
+							<li aria-current="page" class="breadcrumb-item active">회원탈퇴</li>
+						</ol>
+					</nav>
+				</div>
+				<!-- 회원탈퇴 폼 -->
+				<div class="col-lg-6 card">
+					<div class="card-body">
+						<form method="post" id="customerInfoRemoveForm">
+							<input type="hidden" id="id" name="id" value="<%=loginId%>">
+							<div class="form-group">
+								<label for="password">비밀번호</label>
+								<input id="password" name="password" type="password" class="form-control">
 							</div>
-						</div>
-						<!-- img -->
-						<div class="col-lg-6">
-						<div class="box">
-						          
-						</div>
+							<div class="text-center">
+								<button type="button" id="customerInfoRemoveBtn" class="btn btn-primary">회원탈퇴</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>  
+	</div>
+	<!-- footer -->		
+	 <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>	
     <!-- JavaScript files-->
     <jsp:include page="/inc/script.jsp"></jsp:include>
 </body>

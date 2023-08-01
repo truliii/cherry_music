@@ -63,6 +63,14 @@
     	<!-- banner -->
 		<div class="banner">
 			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+				<div class="container">
+					<h1 class="pt-5">
+                        문의 수정
+                    </h1>
+                    <p class="lead">
+                        문의사항 수정
+                    </p>
+				</div>
 			</div>
 		</div>
 		<!-- content -->

@@ -100,13 +100,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Admin Customer One</title>
-	<jsp:include page="/inc/link.jsp"></jsp:include>
+	
 </head>
 <body>
-<!-- 메뉴 -->
-<jsp:include page="/inc/menu.jsp"></jsp:include>
+
 
 <!-- -----------------------------메인 시작----------------------------------------------- -->
 	<div id="all">

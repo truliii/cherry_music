@@ -6,13 +6,14 @@
 <%
 	final String RE = "\u001B[0m"; 
 	final String SJ = "\u001B[44m";
+	
 	//request 인코딩
 	request.setCharacterEncoding("utf-8");
 	
 	/* session 유효성 검사
 	* session 값이 null이면 redirection. return.
 	*/
-	/*
+	
 	if(session.getAttribute("loginId") == null){
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;	
@@ -23,12 +24,12 @@
 	if(session.getAttribute("loginId") != null){
 		loginId = (String)session.getAttribute("loginId");
 	}
-	*/
+	
 	/* idLevel 유효성 검사
 	 * idLevel == 0이면 redirection. return
 	 * IdListDao selectIdListOne(loginId) method 호출
 	*/
-	/*
+	
 	IdListDao idListDao = new IdListDao();
 	IdList idList = idListDao.selectIdListOne(loginId);
 	int idLevel = idList.getIdLevel();
@@ -37,19 +38,19 @@
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;	
 	}
-	*/
-	//유효성검사
-	if(request.getParameter("p.productNo") == null
-		||request.getParameter("p.productNo").equals("")) {
+	
+	// 요청값 유효성 검사
+	if(request.getParameter("productNo") == null
+		||request.getParameter("productNo").equals("")) {
 		
-		System.out.println(SJ+ "productNo 입력" +RE);
-		response.sendRedirect(request.getContextPath() + "/product/modifyProduct.jsp");
+		response.sendRedirect(request.getContextPath() + "/product/productList.jsp");
 		return;
 	}
+	// 값 저장
+	int productNo = Integer.parseInt(request.getParameter("productNo"));
+	System.out.println(productNo+"<-- addProductDiscountAction.jsp");
 	
-	int productNo = Integer.parseInt(request.getParameter("p.productNo"));
-	
-	// 수정값 유효성 섬사
+	// 요청값 유효성 검사 
 	if(request.getParameter("discountRate") == null
 		||request.getParameter("discountStart") == null
 		||request.getParameter("discountEnd") == null
@@ -57,41 +58,43 @@
 		||request.getParameter("discountStart").equals("")
 		||request.getParameter("discountEnd").equals("")) {
 		
-		System.out.println(SJ+"매개변수 요청"+RE); 
-		response.sendRedirect(request.getContextPath() + "/product/addProductDiscount.jsp?p.productNo=" + productNo);
+		response.sendRedirect(request.getContextPath() + "/product/productDetail.jsp?productNo=" + productNo);
 		return;
 	}
 	
-	//DAO 받아오기
+	// dao
 	DiscountDao dDao = new DiscountDao();
 	
-	//변수
+	// 요청값 저장
 	String discountStart = request.getParameter("discountStart");
 	String discountEnd = request.getParameter("discountEnd");
 	double discountRate = Double.parseDouble(request.getParameter("discountRate"));
-
+	
+	// vo 값 저장
 	Discount discount = new Discount();
 	discount.setProductNo(productNo);
 	discount.setDiscountStart(discountStart);
 	discount.setDiscountEnd(discountEnd);
 	discount.setDiscountRate(discountRate);
+	
+	// 디버깅 코드
 	System.out.println(SJ+ discount.getProductNo() + "<-productNo");
 	System.out.println(SJ+ productNo + "<-productNo");
 	System.out.println(discountStart + "<-discountStart");
 	System.out.println(discountEnd + "<-discountEnd");
 	System.out.println(discountRate + "<-discountRate"+ RE);
 	
-	//row에 값 넣기
+	// 할인율 삽입 method 반환 값 row에 저장
 	int row = dDao.insertDiscount(discount);
-		System.out.println(SJ+ row + "<--row"+RE);
+	
+	// row값의 따른 분기
 	if(row == 1) {
-		System.out.println(SJ+"할인율 삽입 성공"+RE);
-		response.sendRedirect(request.getContextPath() + "/product/productList.jsp");
-		return;
-		
-	} else if (row > 1 || row == 0){
-		response.sendRedirect(request.getContextPath() + "/product/addProductDiscount.jsp?productNo=" + productNo);
-		System.out.println(SJ+ "할인율 삽입 실패"+RE);
-		return;
+		System.out.println(SJ+ row +"<-- addProductDiscountAction.jsp 할인율 삽입 성공 row"+RE);
+		response.sendRedirect(request.getContextPath() + "/product/productDetail.jsp?productNo="+productNo);
+	} else if (row == 0){
+		response.sendRedirect(request.getContextPath() + "/product/productDetail.jsp?productNo=" + productNo);
+		System.out.println(SJ+ row + "<-- addProductDiscountAction.jsp 할인율 삽입 실패"+RE);
+	} else{
+		System.out.println(SJ+ row + "<-- addProductDiscountAction.jsp error row"+RE);
 	}
 %>

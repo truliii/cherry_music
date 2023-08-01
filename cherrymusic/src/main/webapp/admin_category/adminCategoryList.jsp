@@ -59,14 +59,11 @@
 	<div id="page-content" class="page-content">
 		<!-- banner -->
 		<div class="banner">
-			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header.jpg');">
 				<div class="container">
 					<h1 class="pt-5">
                         카테고리 관리
                     </h1>
-                    <p class="lead">
-                        
-                    </p>
 				</div>
 			</div>
 		</div>
@@ -78,7 +75,7 @@
 					<jsp:include page="/inc/adminNav.jsp"></jsp:include>
 				</div>
 				<!-- 카테고리 리스트 -->
-				<div class="col-lg-12" style="margin-top: 50px;"a>
+				<div class="col-lg-12" style="margin-top: 50px;">
 					<div class="box">
 						<!-- 카테고리 등록 버튼 -->
 						<div>
@@ -88,10 +85,12 @@
 						<!-- 리스트 출력 -->
 						<div>
 							<table class="table">
-								<tr>
-									<th>카테고리</th>
-									<th>&nbsp;</th>
-								</tr>
+								<thead>
+									<tr>
+										<th>카테고리</th>
+										<th>&nbsp;</th>
+									</tr>
+								</thead>
 								<%
 								    int num = 0;
 									String categoryName = "";
@@ -99,35 +98,37 @@
 								        num = num + 1;
 								        categoryName = "categoryName" +num;
 								%>
-							    <tr>
-							        <td>
-							            <form method="post" id="modifyCategoryForm">
-								            <span data-category-name="<%=categoryName%>"><%=c.getCategoryName()%></span>
-								            <input type="text" name="modifyCategoryName" id="<%=categoryName%>" class="form-control" value="<%=c.getCategoryName()%>" style="display:none">
-								            <input type="hidden" name="categoryName" value="<%=c.getCategoryName()%>">
-							            </form>
-							        </td>
-							        <td class="text-right">
-							            <button type="button" class="modifyBtn btn btn-primary" data-modify="<%=categoryName%>">수정</button>
-							            <button type="button" class="removeBtn btn btn-primary" data-modify="<%=categoryName%>" data-remove="<%=c.getCategoryName()%>">삭제</button>
-							            <button type="button" class="confirmBtn btn btn-primary" data-modify-confirm="<%=categoryName%>" style="display:none">확인</button>
-							            <button type="button" class="cancelBtn btn btn-primary" data-modify-cancel="<%=categoryName%>" style="display:none">취소</button>
-							        </td>
-							    </tr>    
-								<%
-								    }
-								%>
-								<tr id="addCategoryTr" style="display:none">
-									<td>
-										<form method="post" id="addCategoryForm">
-											<input type="text" name="addCategoryName" class="form-control">
-										</form>
-									</td>
-									<td class="text-right">
-										<button type="button" id="addBtn" class="btn btn-primary">등록</button>
-										<button type="button" class="cancelBtn btn btn-primary">취소</button>
-									</td>
-								</tr>
+								<tbody>
+								    <tr>
+								        <td>
+								            <form method="post" id="modifyCategoryForm">
+									            <span data-category-name="<%=categoryName%>"><%=c.getCategoryName()%></span>
+									            <input type="text" name="modifyCategoryName" id="<%=categoryName%>" class="form-control" value="<%=c.getCategoryName()%>" style="display:none">
+									            <input type="hidden" name="categoryName" value="<%=c.getCategoryName()%>">
+								            </form>
+								        </td>
+								        <td class="text-right">
+								            <button type="button" class="modifyBtn btn btn-primary" data-modify="<%=categoryName%>">수정</button>
+								            <button type="button" class="removeBtn btn btn-primary" data-modify="<%=categoryName%>" data-remove="<%=c.getCategoryName()%>">삭제</button>
+								            <button type="button" class="confirmBtn btn btn-primary" data-modify-confirm="<%=categoryName%>" style="display:none">확인</button>
+								            <button type="button" class="cancelBtn btn btn-primary" data-modify-cancel="<%=categoryName%>" style="display:none">취소</button>
+								        </td>
+								    </tr>    
+									<%
+									    }
+									%>
+									<tr id="addCategoryTr" style="display:none">
+										<td>
+											<form method="post" id="addCategoryForm">
+												<input type="text" name="addCategoryName" class="form-control">
+											</form>
+										</td>
+										<td class="text-right">
+											<button type="button" id="addBtn" class="btn btn-primary">등록</button>
+											<button type="button" class="cancelBtn btn btn-primary">취소</button>
+										</td>
+									</tr>
+								</tbody>
 							</table>
 						</div>
 						

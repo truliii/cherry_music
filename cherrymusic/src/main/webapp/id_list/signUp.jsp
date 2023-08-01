@@ -20,7 +20,7 @@
     
     <div id="page-content" class="page-content">
         <div class="banner">
-            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-color: #191919;">
+            <div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header.jpg');">
                 <div class="container">
                     <h1 class="pt-5">
                         회원가입
@@ -29,8 +29,8 @@
                         Good music for Good moment!
                     </p>
 
-                    <div class="card card-login mb-5" style="width: 500px">
-                        <div class="card-body">
+                    <div class="card card-login mb-5" style="width: 500px;">
+                        <div class="card-body sc" style="overflow:auto; height:700px;">
                             <form id="signUpForm">
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12 text-left">
