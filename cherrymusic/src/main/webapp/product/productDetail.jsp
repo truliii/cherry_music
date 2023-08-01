@@ -121,6 +121,10 @@
 	
 	String dir = request.getContextPath() + "/product/productImg/" + productSaveFilename;
 	System.out.println(SJ+ dir + "<-dir" +RE);
+	
+	//주문한 상품은 삭제불가
+	OrdersDao oDao = new OrdersDao();
+	int ordersCnt = oDao.selectOrderCntByProductNo(productNo);
 
 %>
 <!DOCTYPE html>
@@ -236,7 +240,13 @@
 					<!-- 상품 수정, 삭제, 목록 버튼 -->
 					<div class="text-right">
 						<button onclick="location.href='<%=request.getContextPath()%>/product/modifyProduct.jsp?productNo=<%=productNo%>'" class="btn btn-primary">수정</button>
+						<%
+							if(ordersCnt == 0){
+						%>
 						<button onclick="location.href='<%=request.getContextPath()%>/product/removeProductAction.jsp?productNo=<%=productNo%>'" class="btn btn-primary">삭제</button>
+						<%
+							}
+						%>
 						<button onclick="location.href='<%=request.getContextPath()%>/product/productList.jsp'" class="btn btn-primary">목록</button>
 					</div>
 				</div>

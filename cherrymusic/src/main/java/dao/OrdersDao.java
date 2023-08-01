@@ -366,4 +366,24 @@ public class OrdersDao {
 		int row = stmt.executeUpdate();
 		return row;
 	}
+	
+	//주문한 상품은 삭제 불가 -> productNo에 따라 order존재하는지 확인
+	public int selectOrderCntByProductNo(int productNo) throws Exception {
+		int ordersCnt = 0;
+		
+		//DB접속
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		//PreparedStatement
+		String sql = "SELECT COUNT(*) FROM orders WHERE product_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, productNo);
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			ordersCnt = rs.getInt(1);
+		}
+		return ordersCnt;
+	}
+	
+	
 }
