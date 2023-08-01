@@ -35,7 +35,7 @@ public class BoardQuestionDao {
 		String sql = null;
 		PreparedStatement stmt = null;
 		
-		if(searchWord.equals("") || columnName.equals("")) { // 1. 전체 조회
+		if(searchWord.equals("") && columnName.equals("")) { // 1. 전체 조회
 			
 			sql = "SELECT bq.board_q_no boardQNo, bq.id, bq.board_q_category boardQCategory, bq.board_q_title boardQTitle, bq.board_q_content boardQContent, "
 				+ "bq.board_q_check_cnt boardQCheckCnt, bq.createdate createdate, bq.updatedate updatedate, count(ba.board_a_no) boardANoCnt, c.cstm_name cstmName "
@@ -300,7 +300,7 @@ public class BoardQuestionDao {
 		String sql = null;
 		PreparedStatement stmt = null;
 		
-		if(searchWord.equals("")) { // 1. 전체 조회
+		if(searchWord.equals("") && columnName.equals("")) { // 1. 전체 조회
 			
 			sql = "SELECT COUNT(*) FROM board_question"; 
 			

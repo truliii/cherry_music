@@ -172,7 +172,7 @@ public class AdminQuestionDao {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "SELECT a_no aNo, q_no qNo, a_content aContent, createdate, updatedate "
+		String sql = "SELECT id, a_no aNo, q_no qNo, a_content aContent, createdate, updatedate "
 				   + "FROM answer WHERE q_no = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -182,6 +182,7 @@ public class AdminQuestionDao {
 		ArrayList<Answer> list = new ArrayList<>();
 		while(rs.next()) {
 			Answer answer = new Answer();
+			answer.setId(rs.getString("id"));
 			answer.setaNo(rs.getInt("aNo"));
 			answer.setqNo(rs.getInt("qNo"));
 			answer.setaContent(rs.getString("aContent"));
@@ -204,7 +205,7 @@ public class AdminQuestionDao {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "SELECT board_a_no boardANo, board_q_no boardQNo, board_a_content boardAContent, createdate, updatedate "
+		String sql = "SELECT id, board_a_no boardANo, board_q_no boardQNo, board_a_content boardAContent, createdate, updatedate "
 				   + "FROM board_answer WHERE board_q_no = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -214,6 +215,7 @@ public class AdminQuestionDao {
 		ArrayList<BoardAnswer> list = new ArrayList<>();
 		while(rs.next()) {
 			BoardAnswer boardAnswer = new BoardAnswer();
+			boardAnswer.setId(rs.getString("id"));
 			boardAnswer.setBoardANo(rs.getInt("boardANo"));
 			boardAnswer.setBoardQNo(rs.getInt("boardQNo"));
 			boardAnswer.setBoardAContent(rs.getString("boardAContent"));
