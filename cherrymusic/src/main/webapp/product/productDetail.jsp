@@ -178,7 +178,7 @@
 									<tr>
 										<th>할인율</th>
 										<td>
-											<%=discountRate%>&#37; 
+											<%=discountRate*100%>&#37; 
 											<button class="btn btn-primary" style="margin-left: 30px;" id="modifyProductDiscountModalBtn">수정</button>
 											<button onclick="location.href='<%=request.getContextPath()%>/product/removeDiscountAction.jsp?productNo=<%=productNo%>&discountNo=<%=discountNo%>'" class="btn btn-primary">삭제</button>
 										</td>
@@ -266,7 +266,7 @@
 	                    </div>
 	                    <div class="col-md-12 mt-3">
 	                        <label for="discountRate"><strong>할인율</strong></label>
-	                        <input type="number" id="discountRate" name="discountRate" class="form-control">
+	                        <input type="number" id="discountRate" name="discountRate" step="0.1" class="form-control">
 	                    </div>
 	                    <div class="col-md-12 mt-3">
 	                        <label for="discountRate"><strong>할인 시작일</strong></label>
