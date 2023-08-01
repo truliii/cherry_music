@@ -954,6 +954,52 @@ public class ProductDao {
 		return false;
 	} 
 	
+	//kmj : 상품 전체 리스트 출력
+	public ArrayList<HashMap<String, Object>> selectAllProduct() throws Exception{
+		
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = null;
+		PreparedStatement stmt = null;
+		
+		//전체 상품 출력
+			sql = "SELECT t.productNo, t.categoryName, t.productName, t.productPrice, t.productStatus, t.productStock, t.productinfo, t.productSumCnt, t.productSaveFilename, t.createdate createdate, d.discount_start discountStart, d.discount_end discountEnd, nvl(d.discount_rate, 0) discountRate "
+					+ "FROM (SELECT p.product_no productNo, p.category_name categoryName, p.product_name productName, p.product_price productPrice, p.product_status productStatus, p.product_stock productStock, p.product_info productInfo, p.product_sum_cnt productSumCnt, p.createdate createdate, i.product_save_filename productSaveFilename "
+					+ "FROM product p "
+					+ "INNER JOIN product_img i "
+					+ "ON p.product_no = i.product_no) t "
+					+ "LEFT OUTER JOIN "
+					+ "(SELECT discount_no, product_no, discount_start, discount_end, discount_rate, createdate, updatedate FROM discount WHERE NOW() BETWEEN discount_start AND discount_end) d "
+					+ "ON t.productNo = d.product_no "
+					+ "ORDER BY t.createdate DESC";
+			stmt = conn.prepareStatement(sql);
+			System.out.println(stmt +"<--ProductDao.selectAllProduct");
+		ResultSet rs = stmt.executeQuery();
+		
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		while(rs.next()) {
+			HashMap<String, Object> m = new HashMap<>();
+			m.put("productNo", rs.getInt("productNo"));
+			m.put("categoryName", rs.getString("categoryName"));
+			m.put("productName", rs.getString("productName"));
+			m.put("productPrice", rs.getInt("productPrice"));
+			m.put("productStatus", rs.getString("productStatus"));
+			m.put("productStock", rs.getInt("productStock"));
+			m.put("productInfo", rs.getString("productInfo"));
+			m.put("productSumCnt", rs.getInt("productSumCnt"));
+			m.put("createdate", rs.getString("createdate"));
+			m.put("productSaveFilename", rs.getString("productSaveFilename"));
+			m.put("discountStart", rs.getString("discountStart"));
+			m.put("discountEnd", rs.getString("discountEnd"));
+			m.put("discountRate", rs.getDouble("discountRate"));
+			list.add(m);
+		}
+		
+		return list;
+	}
+	
+	
 	//kmj : 카테고리별 상품조회(고객단)
 	public ArrayList<HashMap<String, Object>> selectProductsByCategory(int beginRow, int rowPerPage, String categoryName, String desc) throws Exception{
 		

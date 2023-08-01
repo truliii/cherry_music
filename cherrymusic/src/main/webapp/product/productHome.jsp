@@ -27,7 +27,8 @@
 	//카테고리별 상품출력을 위한 객체생성
 	ProductDao pDao = new ProductDao();
 	ArrayList<HashMap<String, Object>> pList = new ArrayList<>();
-	ArrayList<HashMap<String, Object>> dList = new ArrayList<>();
+	ArrayList<HashMap<String, Object>> dList = pDao.selectAllProduct();
+	System.out.println(KMJ + dList.size() + " <--productHome.jsp dList.size()" + RESET);
 	
 	//상품별 할인출력을 위한 객체생성
 	DiscountDao dDao = new DiscountDao();
@@ -92,13 +93,13 @@
                         <h2 class="title">할인중</h2>
                         <div class="product-carousel owl-carousel">
                         <%
-                        	dList = pDao.selectProductsByCategory(0, 8, "", "최신순");
                         	for(HashMap<String, Object> m : dList){
                         		//해당상품의 할인률 출력
                         		double discountRate = (Double)m.get("discountRate");
+                        		System.out.println(discountRate);
                         		//최종가격
                         		int finalPrice = (int)((Integer)m.get("productPrice")*(1-discountRate));
-                        		if(discountRate != 0){
+                        		if(discountRate != 0.0){
                         %>
                             <div class="item">
                                 <div class="card card-product">
@@ -110,17 +111,17 @@
                                     <div class="card-badge">
                                         <div class="card-badge-container left">
                                             <span class="badge badge-default">
-                                                <%=(String)m.get("discountEnd") %>
+                                                <%=(String)m.get("discountEnd").toString().substring(0,10)%> 까지
                                             </span>
                                             <span class="badge badge-primary">
-                                                <%=(Double)m.get("discountRate")*100 %>% 할인중
-                                            </span>
+                                                <%=(Double)m.get("discountRate")*100%>% 할인중
+                           	                 </span>
                                         </div>
                                         <img src="<%=request.getContextPath() %>/product/productImg/<%=m.get("productSaveFilename") %>" alt="Card image 2" class="card-img-top">
                                     </div>
                                     <div class="card-body">
                                         <h4 class="card-title">
-                                            <a href="<%=request.getContextPath()%>/product/customerProductDetail.jsp?productNo=<%=m.get("productNo")%>"><%=(String)m.get("productName") %></a>
+                                            <a href="<%=request.getContextPath()%>/product/customerProductDetail.jsp?productNo=<%=m.get("productNo")%>"><%=(String)m.get("productName").toString().substring(0, Math.min(m.get("productName").toString().length(), 20))%></a>
                                         </h4>
                                         <div class="card-price">
                                             <span class="discount"><%=finalPrice%>원</span>
@@ -129,7 +130,6 @@
                                         <a href="<%=request.getContextPath()%>/product/customerProductDetail.jsp?productNo=<%=m.get("productNo")%>&cartCnt=1" class="btn btn-block btn-primary">
                                             장바구니에 담기
                                         </a>
-
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +185,7 @@
                                     </div>
                                     <div class="card-body">
                                         <h4 class="card-title">
-                                            <a href="<%=request.getContextPath()%>/product/customerProductDetail.jsp?productNo=<%=m.get("productNo")%>"><%=(String)m.get("productName") %></a>
+                                            <a href="<%=request.getContextPath()%>/product/customerProductDetail.jsp?productNo=<%=m.get("productNo")%>"><%=(String)m.get("productName").toString().substring(0, Math.min(m.get("productName").toString().length(), 20))%></a>
                                         </h4>
                                         <div class="card-price">
                                             <span class="discount"><%=(Integer)m.get("productPrice")%>원</span>
