@@ -45,24 +45,22 @@
 	// 이미지 파일 삭제를 위한 코드
 	String dir = request.getServletContext().getRealPath("/product/productImg");
 	System.out.println(SJ+ dir +"<--dir deleteAction" + RE);
-	int max = 10 * 1024 * 1024; 
-	MultipartRequest mRequest = new MultipartRequest(request, dir, max, "utf-8", new DefaultFileRenamePolicy());
 	
 	// 파라미터 디버깅
 	System.out.println(SJ+ "productRemoveAction 시작" + RE);
-	System.out.println(SJ+ mRequest.getParameter("productNo") + RE);
+	System.out.println(SJ+ request.getParameter("productNo") + RE);
 	
 	// 요청값(productNo) 유효성 검사
-	if(mRequest.getParameter("productNo") == null  
-		|| mRequest.getParameter("productNo").equals("")) {
+	if(request.getParameter("productNo") == null  
+		|| request.getParameter("productNo").equals("")) {
 		
 		response.sendRedirect(request.getContextPath() + "/product/productList.jsp");
 		return;
 	}
 	
 	// 요청값 변수에 저장
-	int productNo = Integer.parseInt(mRequest.getParameter("productNo"));
-	String productSaveFilename = mRequest.getParameter("productSaveFilename");
+	int productNo = Integer.parseInt(request.getParameter("productNo"));
+	String productSaveFilename = request.getParameter("productSaveFilename");
 	System.out.println(SJ+ productNo +"productNo" + RE);
 	System.out.println(SJ+ productSaveFilename +"savefilename" + RE);
 	
