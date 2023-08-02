@@ -148,7 +148,7 @@
 	* if(endPage > lastPage){endPage = lastPage;}
 	*/
 	
-	int pageLength = 5;
+	int pageLength = 10;
 	int currentBlock = currentPage / pageLength;
 	if(currentPage % pageLength != 0){
 		currentBlock += 1;	

@@ -80,7 +80,7 @@
 	* if(endPage > lastPage){endPage = lastPage;}
 	*/
 	
-	int pageLength = 5;
+	int pageLength = 10;
 	int currentBlock = currentPage / pageLength;
 	if(currentPage % pageLength != 0){
 		currentBlock += 1;	
@@ -110,14 +110,11 @@
 	<div id="page-content" class="page-content">
 		<!-- banner -->
 		<div class="banner">
-			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header.jpg');">
 				<div class="container">
 					<h1 class="pt-5">
                         문의 게시판
                     </h1>
-                    <p class="lead">
-                        문의사항 작성
-                    </p>
 				</div>
 			</div>
 		</div>
@@ -134,169 +131,168 @@
 					</nav>
 				</div>
 				<!-- Q&A 리스트-->
-				<div class="col-lg-12">
-					<div class="box">
-						<!-- 문의 등록 버튼 -->
-						<div class="text-right">
-							<button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/board_question/qnaAdd.jsp'">문의작성</button>
-						</div>
-						<br>
-						<!-- 리스트 출력 -->
-						<div>
-							<table class="table">
-								<thead>
-								<tr>
-									<th>문의번호</th>
-									<th>분류</th>
-									<th>문의제목</th>
-									<th>작성자</th>
-									<th>작성일</th>
-									<th>조회수</th>
-									<th colspan="2">&nbsp;</th>
-								</tr>
-								</thead>
-								<tbody>
-								<%
-									for(HashMap<String, Object> bq: list){
-										if(loginId.equals((String) bq.get("id"))){
-								%>
-										<tr id="qnaDetailTr" onclick="location.href='<%=request.getContextPath()%>/board_question/qnaDetail.jsp?boardQNo=<%=(Integer) bq.get("boardQNo")%>'">
+				<div class="col-lg-12">					
+					<!-- 문의 등록 버튼 -->
+					<div class="text-right">
+						<button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/board_question/qnaAdd.jsp'">문의작성</button>
+					</div>
+					<br>
+					<!-- 리스트 출력 -->
+					<div>
+						<table class="table">
+							<thead>
+							<tr>
+								<th>문의번호</th>
+								<th>분류</th>
+								<th>문의제목</th>
+								<th>작성자</th>
+								<th>작성일</th>
+								<th>조회수</th>
+								<th colspan="2">&nbsp;</th>
+							</tr>
+							</thead>
+							<tbody>
+							<%
+								for(HashMap<String, Object> bq: list){
+									if(loginId.equals((String) bq.get("id"))){
+							%>
+									<tr id="qnaDetailTr" onclick="location.href='<%=request.getContextPath()%>/board_question/qnaDetail.jsp?boardQNo=<%=(Integer) bq.get("boardQNo")%>'">
+										<td><%=(Integer) bq.get("boardQNo")%></td>
+										<td><%=(String) bq.get("boardQCategory")%></td>
+										<td><%=(String) bq.get("boardQTitle")%></td>
+										<td><%=(String) bq.get("cstmName")%></td>
+										<td><%=((String) bq.get("createdate")).substring(0,10)%></td>
+										<td><%=(Integer) bq.get("boardQCheckCnt")%></td>
+									<%
+										if((Integer) bq.get("boardANoCnt") > 0){
+									%>
+											<td>답변완료</td>
+									<%		
+										} else{
+									%>
+											<td>확인중</td>
+									<%		
+										}
+									%>
+											<td><i class="fa fa-unlock"></i></td>
+									</tr>
+							<%			
+									} else{
+							%>
+										<tr>
 											<td><%=(Integer) bq.get("boardQNo")%></td>
 											<td><%=(String) bq.get("boardQCategory")%></td>
 											<td><%=(String) bq.get("boardQTitle")%></td>
 											<td><%=(String) bq.get("cstmName")%></td>
 											<td><%=((String) bq.get("createdate")).substring(0,10)%></td>
 											<td><%=(Integer) bq.get("boardQCheckCnt")%></td>
-										<%
-											if((Integer) bq.get("boardANoCnt") > 0){
-										%>
-												<td>답변완료</td>
-										<%		
-											} else{
-										%>
-												<td>확인중</td>
-										<%		
-											}
-										%>
-												<td><i class="fa fa-unlock"></i></td>
-										</tr>
-								<%			
+									<%
+										if((Integer) bq.get("boardANoCnt") > 0){
+									%>
+											<td>답변완료</td>
+									<%		
 										} else{
-								%>
-											<tr>
-												<td><%=(Integer) bq.get("boardQNo")%></td>
-												<td><%=(String) bq.get("boardQCategory")%></td>
-												<td><%=(String) bq.get("boardQTitle")%></td>
-												<td><%=(String) bq.get("cstmName")%></td>
-												<td><%=((String) bq.get("createdate")).substring(0,10)%></td>
-												<td><%=(Integer) bq.get("boardQCheckCnt")%></td>
-										<%
-											if((Integer) bq.get("boardANoCnt") > 0){
-										%>
-												<td>답변완료</td>
-										<%		
-											} else{
-										%>
-												<td>확인중</td>
-										<%		
-											}
-										%>
-												<td><i class="fa fa-lock"></i></td>
-										</tr>
-									</tbody>
-								<%			
+									%>
+											<td>확인중</td>
+									<%		
 										}
-								%>
-									
-								<%		
+									%>
+											<td><i class="fa fa-lock"></i></td>
+									</tr>
+								</tbody>
+							<%			
 									}
-								%>
-							</table>
-						</div>
-						<!-- 검색조회 폼 -->
-						<div class="text-right">
-							<form method="post" id="selectQnAForm">
-								<select name="columnName">
-									<option value="">전체</option>
-									<option value="titleContent">제목+내용</option>
-									<option value="title">제목</option>
-									<option value="content">내용</option>
-									<option value="cstmName">작성자</option>
-								</select>
-								<input type ="text" name="searchWord" value="<%=searchWord%>">
-								<button type="button" id="selectQnABtn" class="btn btn-primary">검색</button>
-							</form>
-						</div>
-						<!-- 페이지 네비게이션 -->
-						<div class="d-flex justify-content-center">
-							<ul class="pagination">
-								<!-- 첫페이지 -->
-								<li class="page-item">
-									<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=1&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#60;&#60;</a>
-								</li>
-								<!-- 이전 페이지블럭 (startPage - 1) -->
-								<%
-									if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
-								%>
-										<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
-								<%	
-									} else {
-								%>
-										<li class="page-item">
-											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=startPage-1%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#60;</a>
-										</li>
-								<%
-									}
-								%>
+							%>
 								
-								<!-- 현재페이지 -->
-								<%
-									for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
-										if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
-								%>
-										<li class="page-item active">
-											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=i%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">
-												<%=i%>
-											</a>
-										</li>
-								<%
-										} else {
-								%>
-										<li class="page-item">
-											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=i%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">
-												<%=i%>
-											</a>
-										</li>
-								<%	
-										}
-									}
-								%>
-								<!-- 다음 페이지블럭 (endPage + 1) -->
-								<%
-									if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
-								%>
-										<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
-								<%	
-									} else {
-								%>
-										<li class="page-item">
-											<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=endPage+1%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#62;</a>
-										</li>
-								<%
-									}
-								%>
-								
-								<!-- 마지막페이지 -->
-								<li class="page-item">
-									<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=lastPage%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#62;&#62;</a>
-								</li>
-							</ul>	
-						</div> 
+							<%		
+								}
+							%>
+						</table>
 					</div>
+					<!-- 검색조회 폼 -->
+					<div class="text-right">
+						<form method="post" id="selectQnAForm">
+							<select name="columnName">
+								<option value="">전체</option>
+								<option value="titleContent">제목+내용</option>
+								<option value="title">제목</option>
+								<option value="content">내용</option>
+								<option value="cstmName">작성자</option>
+							</select>
+							<input type ="text" name="searchWord" value="<%=searchWord%>">
+							<button type="button" id="selectQnABtn" class="btn btn-primary">검색</button>
+						</form>
+					</div>
+					<!-- 페이지 네비게이션 -->
+					<div class="d-flex justify-content-center">
+						<ul class="pagination">
+							<!-- 첫페이지 -->
+							<li class="page-item">
+								<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=1&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#60;&#60;</a>
+							</li>
+							<!-- 이전 페이지블럭 (startPage - 1) -->
+							<%
+								if(startPage <= 1){ //startPage가 1인 페이지블럭에서는 '이전'버튼 비활성화
+							%>
+									<li class="page-item disabled"><a class="page-link" href="#">&#60;</a></li>
+							<%	
+								} else {
+							%>
+									<li class="page-item">
+										<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=startPage-1%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#60;</a>
+									</li>
+							<%
+								}
+							%>
+							
+							<!-- 현재페이지 -->
+							<%
+								for(int i=startPage; i<=endPage; i+=1){ //startPage~endPage 사이의 페이지i 출력하기
+									if(currentPage == i){ //현재페이지와 i가 같은 경우에는 표시하기
+							%>
+									<li class="page-item active">
+										<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=i%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">
+											<%=i%>
+										</a>
+									</li>
+							<%
+									} else {
+							%>
+									<li class="page-item">
+										<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=i%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">
+											<%=i%>
+										</a>
+									</li>
+							<%	
+									}
+								}
+							%>
+							<!-- 다음 페이지블럭 (endPage + 1) -->
+							<%
+								if(lastPage == endPage){ //마지막페이지에서는 '다음'버튼 비활성화
+							%>
+									<li class="page-item disabled"><a class="page-link" href="#">&#62;</a></li>
+							<%	
+								} else {
+							%>
+									<li class="page-item">
+										<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=endPage+1%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#62;</a>
+									</li>
+							<%
+								}
+							%>
+							
+							<!-- 마지막페이지 -->
+							<li class="page-item">
+								<a class="page-link" href="<%=request.getContextPath()%>/board_question/qnaList.jsp?currentPage=<%=lastPage%>&searchWord=<%=searchWord%>&columnName=<%=columnName%>">&#62;&#62;</a>
+							</li>
+						</ul>	
+					</div> 
 				</div>
 			</div>
 		</div>
 	</div>
+	
 	<!-- footer -->		
 	 <footer>
         <jsp:include page="/inc/footer.jsp"></jsp:include>

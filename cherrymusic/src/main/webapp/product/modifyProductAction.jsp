@@ -7,6 +7,7 @@
 <%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
 <%@ page import="com.oreilly.servlet.MultipartRequest"%>
 <%
+	System.out.println("modifyProductAction.jsp");
 	final String RE = "\u001B[0m"; 
 	final String SJ = "\u001B[44m";
 	//인코딩

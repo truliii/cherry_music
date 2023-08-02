@@ -27,7 +27,10 @@
     <div id="page-content" class="page-content">
     	<!-- banner -->
 		<div class="banner">
-			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header.jpg');">
+				<h1 class="pt-5">
+                    문의 작성
+                </h1>
 			</div>
 		</div>
 		<!-- content -->

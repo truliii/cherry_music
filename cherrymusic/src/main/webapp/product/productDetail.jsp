@@ -29,7 +29,7 @@
 	// idLevel 디버깅코드
 	System.out.println(SJ+idLevel +"<-- idLevel" +RE );
 	
-	// 요청값(p.productNo) 유효성 검사
+	// 요청값(productNo) 유효성 검사
 	if(request.getParameter("productNo") == null  
 		|| request.getParameter("productNo").equals("")) {
 		// 값이 없으면 productList.jsp 리턴
@@ -47,12 +47,12 @@
 	// 상품 상세내용 조회 method
 	HashMap<String, Object> p = pDao.selectProductOne(productNo);
 	
-	// 변수 상품 파일명, 상품가격 초기화
+	// 상품 파일명, 상품가격 변수 초기화
 	String productSaveFilename = null;
 	int productPrice = 0;
 	
 	// 할인율 정보 변수 초기화
-	int discountNo = 0; // 번호
+	int discountNo = 0; // 할인상품 번호
 	double discountRate = 0.0; // 할인율
 	String dStartYear = null; // 할인 시작 년
 	String dStartMonth = null; // 할인 시작 월
@@ -70,6 +70,7 @@
 	
 	// 할인율 정보 담을 변수 초기화
 	ArrayList<HashMap<String, Object>> d = null;
+	
 	// Discount vo (현재 할인율 저장)
 	Discount dInfo = null;
 	
@@ -99,7 +100,7 @@
 			    discountNo = dInfo.getDiscountNo();
 			 	
 			    // 할인가격, 할인 시작일, 할인 종료일 
-			 	dProductPrice = (int) Math.floor(productPrice * (1 - (discountRate / 100)));
+			 	dProductPrice = (int) Math.floor(productPrice * (1 - discountRate));
 			    dStartDateArr = new String[]{dStartYear, dStartMonth, dStartDay};
 			    dEndDateArr = new String[]{dEndYear, dEndMonth, dEndDay};
 			 	dStartDate = String.join("-", dStartDateArr);
@@ -115,6 +116,7 @@
 			    System.out.println(dStartDate+"<--productDetail.jsp dStartDate");
 			    System.out.println(dEndDate+"<--productDetail.jsp dEndDate");
 			    System.out.println(discountRate+"<--productDetail.jsp discountRate");
+			    System.out.println(dProductPrice+"<--productDetail.jsp dProductPrice");
 		    }
 		} 
 	}
@@ -122,7 +124,7 @@
 	String dir = request.getContextPath() + "/product/productImg/" + productSaveFilename;
 	System.out.println(SJ+ dir + "<-dir" +RE);
 	
-	//주문한 상품은 삭제불가
+	// 주문한 상품은 수정, 삭제불가
 	OrdersDao oDao = new OrdersDao();
 	int ordersCnt = oDao.selectOrderCntByProductNo(productNo);
 
@@ -182,7 +184,7 @@
 									<tr>
 										<th>할인율</th>
 										<td>
-											<%=discountRate*100%>&#37; 
+											<%=(int)(discountRate*100)%>&#37; 
 											<button class="btn btn-primary" style="margin-left: 30px;" id="modifyProductDiscountModalBtn">수정</button>
 											<button onclick="location.href='<%=request.getContextPath()%>/product/removeDiscountAction.jsp?productNo=<%=productNo%>&discountNo=<%=discountNo%>'" class="btn btn-primary">삭제</button>
 										</td>
@@ -203,7 +205,7 @@
 									<tr>
 										<th>할인율</th>
 										<td>
-											<%=discountRate%>
+											<%=(int)discountRate%>&#37;
 											<button class="btn btn-primary" style="margin-left: 30px;" id="addDiscountModalBtn">등록</button>
 										</td>
 									</tr>
@@ -221,11 +223,25 @@
 							</tr>
 							<tr>
 								<th>정보</th>
-								<td><%=p.get("productInfo")%></td>
+								<td>
+									<textarea rows="5" name="productInfo" class="form-control" readonly="readonly"><%=p.get("productInfo")%></textarea>	
+								</td>
 							</tr>
 							<tr>
 								<th>상품 이미지</th>
-								<td><img src="<%=dir%>" id="preview" width="300px"></td>
+								<td>
+									<%
+										if(productSaveFilename == null) {
+									%>
+											<span>상품 이미지 없음</span>
+									<%
+										} else {
+									%>
+											<img src="<%=dir%>" id="preview" width="300px">
+									<%
+										}
+									%>
+								</td>
 							</tr>
 							<tr>
 								<th>등록일</th>
@@ -237,13 +253,15 @@
 							</tr>
 						</table>
 					</div>
-					<!-- 상품 수정, 삭제, 목록 버튼 -->
+					<!-- 상품 수정, 삭제, 목록 버튼 
+						* 주문한 상품이 있으면 수정, 삭제 불가
+					-->
 					<div class="text-right">
-						<button onclick="location.href='<%=request.getContextPath()%>/product/modifyProduct.jsp?productNo=<%=productNo%>'" class="btn btn-primary">수정</button>
 						<%
 							if(ordersCnt == 0){
 						%>
-						<button onclick="location.href='<%=request.getContextPath()%>/product/removeProductAction.jsp?productNo=<%=productNo%>'" class="btn btn-primary">삭제</button>
+							<button onclick="location.href='<%=request.getContextPath()%>/product/modifyProduct.jsp?productNo=<%=productNo%>'" class="btn btn-primary">수정</button>
+							<button onclick="location.href='<%=request.getContextPath()%>/product/removeProductAction.jsp?productNo=<%=productNo%>'" class="btn btn-primary">삭제</button>
 						<%
 							}
 						%>

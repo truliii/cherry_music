@@ -71,14 +71,11 @@
 	<div id="page-content" class="page-content">
 		<!-- banner -->
 		<div class="banner">
-			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header.jpg');">
 				<div class="container">
 					<h1 class="pt-5">
-                        나의 문의 상세
+                        상세 문의
                     </h1>
-                    <p class="lead">
-                        나의 문의 상세보기
-                    </p>
 				</div>
 			</div>
 		</div>
@@ -97,78 +94,85 @@
 				</div>
 				<!-- 상세문의 -->
 				<div class="col-lg-12">
-					<div class="box">
-						<div>
-							<table class="table">
-								<tr>
-									<th>문의번호</th>
-									<td><%=boardQuestion.getBoardQNo()%></td>
-								</tr>
-								<tr>
-									<th>작성자</th>
-									<td><%=boardQuestion.getId()%></td>
-								</tr>
-								<tr>
-									<th>카테고리</th>
-									<td><%=boardQuestion.getBoardQCategory()%></td>
-								</tr>
-								<tr>
-									<th>문의제목</th>
-									<td><%=boardQuestion.getBoardQTitle()%></td>
-								</tr>
-								<tr>
-									<th>문의내용</th>
-									<td><%=boardQuestion.getBoardQContent()%></td>
-								</tr>
-								<tr>
-									<th>작성일</th>
-									<td><%=boardQuestion.getCreatedate()%></td>
-								</tr>
-								<tr>
-									<th>수정일</th>
-									<td><%=boardQuestion.getUpdatedate()%></td>
-								</tr>
-							</table>
-						</div>
-						<!-- 수정, 삭제, 목록 버튼 -->
-						<div class="text-right">
+					<div>
+						<table class="table">
+							<tr>
+								<th>문의번호</th>
+								<td><%=boardQuestion.getBoardQNo()%></td>
+							</tr>
+							<tr>
+								<th>작성자</th>
+								<td><%=boardQuestion.getId()%></td>
+							</tr>
+							<tr>
+								<th>카테고리</th>
+								<td><%=boardQuestion.getBoardQCategory()%></td>
+							</tr>
+							<tr>
+								<th>문의제목</th>
+								<td><%=boardQuestion.getBoardQTitle()%></td>
+							</tr>
+							<tr>
+								<th>문의내용</th>
+								<td><%=boardQuestion.getBoardQContent()%></td>
+							</tr>
+							<tr>
+								<th>작성일</th>
+								<td><%=boardQuestion.getCreatedate()%></td>
+							</tr>
+							<tr>
+								<th>수정일</th>
+								<td><%=boardQuestion.getUpdatedate()%></td>
+							</tr>
+						</table>
+					</div>
+					<!-- 수정, 삭제, 목록 버튼 
+						* 수정, 삭제 버튼은 관리자 답변이 없을 때만 보여 주도록 분기
+					-->
+					<div class="text-right">
+						<%
+							if(boardAnswerList.size() == 0){
+						%>
 							<button type="button" class="btn btn-primary" id="qnaModifyBtn">수정</button>
 							<button type="button" class="btn btn-primary" id="qnaRemoveBtn">삭제</button>
-							<button type="button" class="btn btn-primary" id="qnaListBtn">목록</button>
-						</div>
-						<br>
-						<!-- 관리자 답변 
-							* 값이 있을 경우만 답변 table 보여주기
-						-->
-						<%
-							if(boardAnswerList.size() != 0){
-						%>
-								<div>
-									<table class="table">
-										<tr>
-											<th>문의 답변</th>
-											<th class="text-right">작성자</th>
-										</tr>
-										<%
-											for(BoardAnswer boardAnswer : boardAnswerList){
-										%>
-											<tr>
-												<td><%=boardAnswer.getBoardAContent()%></td>
-												<td class="text-right"><%=boardAnswer.getId()%></td>
-											</tr>
-										<%		
-											}
-										%>
-									</table>	
-								</div>
-						<%		
+						<%	
 							}
 						%>
+						<button type="button" class="btn btn-primary" id="qnaListBtn">목록</button>
 					</div>
+					<br>
+					<!-- 관리자 답변 
+						* 값이 있을 경우만 답변 table 보여 주도록 분기
+					-->
+					<%
+						if(boardAnswerList.size() != 0){
+					%>
+							<div>
+								<table class="table">
+									<tr>
+										<th>문의 답변</th>
+										<th class="text-right">작성자</th>
+									</tr>
+									<%
+										for(BoardAnswer boardAnswer : boardAnswerList){
+									%>
+										<tr>
+											<td><%=boardAnswer.getBoardAContent()%></td>
+											<td class="text-right"><%=boardAnswer.getId()%></td>
+										</tr>
+									<%		
+										}
+									%>
+								</table>	
+							</div>
+					<%		
+						}
+					%>
 				</div>
 			</div>
 		</div>
 	</div>
+	
 	<!-- footer -->		
 	 <footer>
         <jsp:include page="/inc/footer.jsp"></jsp:include>

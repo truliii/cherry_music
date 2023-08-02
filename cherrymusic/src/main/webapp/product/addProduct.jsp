@@ -120,7 +120,7 @@
 									</td>
 								</tr>
 								<tr>
-									<th>상품이미지 업로드</th>
+									<th>상품 이미지</th>
 									<td>
 										<input type="file" name="boardFile" required="required">
 									</td>
@@ -129,6 +129,7 @@
 						</div>
 						<div class="text-right">
 							<button type="submit" class="btn btn-primary">상품등록</button>
+							<button onclick="location.href='<%=request.getContextPath()%>/product/productList.jsp'" class="btn btn-primary">목록</button>
 						</div>
 					</form>
 				</div>

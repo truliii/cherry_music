@@ -5,6 +5,7 @@
 <%
 	final String RE = "\u001B[0m"; 
 	final String SJ = "\u001B[44m";
+	
 	//request 인코딩
 	request.setCharacterEncoding("utf-8");
 	
@@ -38,163 +39,268 @@
 		return;	
 	}
 	// 요청값 유효성 검사
-	if(request.getParameter("p.productNo") == null  
-		|| request.getParameter("p.productNo").equals("")) {
-		
+	if(request.getParameter("productNo") == null  
+		|| request.getParameter("productNo").equals("")) {
+		// 값이 없으면 productList.jsp 리턴
 		response.sendRedirect(request.getContextPath() + "/product/productList.jsp");
 		return;
 	}
 	// 요청값 변수에 저장
-	int productNo = Integer.parseInt(request.getParameter("p.productNo"));
-	int beginRow = 1;
-	int rowPerPage = 10;
-	// sql 메서드들이 있는 클래스의 객체 생성
+	int productNo = Integer.parseInt(request.getParameter("productNo"));
+	
+	// Dao 객체 생성
 	ProductDao pDao = new ProductDao();
 	DiscountDao dDao = new DiscountDao();
+	CategoryDao categoryDao = new CategoryDao();
 	
-	ArrayList<HashMap<String, Object>> list = pDao.selectProduct(productNo);
-	ArrayList<HashMap<String, Object>> dList = dDao.selectDiscount(beginRow, rowPerPage);
-	Product product = new Product();
-	ProductImg productImg = new ProductImg();
-	Discount discount = new Discount();
+	// 상품 상세내용 조회 method
+	HashMap<String, Object> p = pDao.selectProductOne(productNo);
 	
-	// product 정보 변수에 저장
-	String productStatus = null;
-	String categoryName = null;
-	String productName = null;
-	int productPrice = 0;
-	int productStock = 0;
-	double discountRate = 0.0;
-	String productInfo = null;
+	// CategoryList 조회 method
+	ArrayList<Category> cList = categoryDao.selectCategoryList();
+	
+	// 상품 파일명, 상품가격 변수 초기화
 	String productSaveFilename = null;
-	String discountStart = null;
-	String discountEnd = null;
-	for(HashMap<String, Object> p : list) {
-		productStatus = p.get("productStatus").toString();
-		categoryName = p.get("categoryName").toString();
-		productName = p.get("productName").toString();
-		productPrice = Integer.parseInt(p.get("productPrice").toString());
-		productStock = Integer.parseInt(p.get("productStock").toString());
-		productInfo = p.get("productInfo").toString();
-		productSaveFilename = p.get("productSaveFilename").toString();
+	int productPrice = 0;
+	
+	// 할인율 정보 변수 초기화
+	int discountNo = 0; // 할인상품 번호
+	double discountRate = 0.0; // 할인율
+	String dStartYear = null; // 할인 시작 년
+	String dStartMonth = null; // 할인 시작 월
+	String dStartDay = null; // 할인 시작 일
+	String [] dStartDateArr = null; // 할인 시작날짜 배열
+	String dStartDate = null; // 할인 시작날짜
+	
+	String dEndYear = null; // 할인 종료 년
+	String dEndMonth = null; // 할인 종료 월
+	String dEndDay = null; // 할인 종료 일
+	String dEndDateArr [] = null; // 할인 종료날짜 배열
+	String dEndDate = null; // 할인 종료날짜
+	
+	double dProductPrice = 0; // 할인가격
+	
+	// 할인율 정보 담을 변수 초기화
+	ArrayList<HashMap<String, Object>> d = null;
+	
+	// Discount vo (현재 할인율 저장)
+	Discount dInfo = null;
+	
+	// p(상품 정보 저장 변수) 값의 따른 분기
+	if(p != null){
+		// 상품 파일명, 상품가격 저장
+		productSaveFilename = (String)p.get("productSaveFilename");
+		productPrice = (int)p.get("productPrice");
+		
+		// 상품에 적용된 할인 정보 조회 method
+		d = dDao.selectDiscountProduct(productNo);
+		
+		/* 할인 정보 유무에 따른 분기
+		 * 정보가 있으면 현재 할인율 정보 조회 method
+		*/
+		if (d != null && !d.isEmpty()) { // d(할인 정보 담은 변수)가 null이 아니고 비어있지 않을 때
+		    // Discount vo에 현재 할인율 정보 값 저장
+			dInfo = dDao.selectProductCurrentDiscount(productNo);
+		    if(dInfo != null){
+		    	dStartYear = dInfo.getDiscountStart().substring(0, 4);
+			    dStartMonth = dInfo.getDiscountStart().substring(5, 7);
+			    dStartDay = dInfo.getDiscountStart().substring(8, 10);
+			    dEndYear = dInfo.getDiscountEnd().substring(0, 4);
+			    dEndMonth = dInfo.getDiscountEnd().substring(5, 7);
+			    dEndDay = dInfo.getDiscountEnd().substring(8, 10);
+			    discountRate = dInfo.getDiscountRate();
+			    discountNo = dInfo.getDiscountNo();
+			 	
+			    // 할인가격, 할인 시작일, 할인 종료일 
+			 	dProductPrice = (int)productPrice * (1 - discountRate);
+			    dStartDateArr = new String[]{dStartYear, dStartMonth, dStartDay};
+			    dEndDateArr = new String[]{dEndYear, dEndMonth, dEndDay};
+			 	dStartDate = String.join("-", dStartDateArr);
+			    dEndDate = String.join("-", dEndDateArr);	
+			    
+			    // 디버깅 코드
+			    System.out.println(dProductPrice+"<--modifyProduct.jsp dProductPrice");
+			    System.out.println(dStartYear+"<--modifyProduct.jsp dStartYear");
+			    System.out.println(dStartMonth+"<--modifyProduct.jsp dStartMonth");
+			    System.out.println(dStartDay+"<--modifyProduct.jsp dStartDay");
+			    System.out.println(dEndYear+"<--modifyProduct.jsp dEndYear");
+			    System.out.println(dEndMonth+"<--modifyProduct.jsp dEndMonth");
+			    System.out.println(dEndDay+"<--modifyProduct.jsp dEndDay");
+			    System.out.println(dStartDate+"<--modifyProduct.jsp dStartDate");
+			    System.out.println(dEndDate+"<--modifyProduct.jsp dEndDate");
+			    System.out.println(discountRate+"<--modifyProduct.jsp discountRate");
+		    }
+		} 
 	}
-	// discount 정보 변수에 저장
-	if(request.getParameter("discountRate") != null) {
-		discountRate = Double.parseDouble(request.getParameter("discountRate").toString());
-	} else {
-		discountRate = 0.0;
-	}
-	if(request.getParameter("discountStart") != null) {
-		discountStart = request.getParameter("discountStart").toString();
-	} else {
-		discountStart = null;
-	}
-	if(request.getParameter("discountEnd") != null) {
-		discountEnd = request.getParameter("discountEnd").toString();
-	} else {
-		discountEnd = null;
-	}
+	
 	String dir = request.getContextPath() + "/product/productImg/" + productSaveFilename;
-	System.out.println(SJ+ dir + "<-dir" +RE);
+	System.out.println(SJ+ dir + "<-modifyProduct.jsp dir" +RE);
+	
 %>
 <!DOCTYPE html>
 <html>
 <head>
-	
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 </head>
 <body>
-
-
-<!-- -----------------------------메인 시작----------------------------------------------- -->
-	<div id="all">
-      <div id="content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- 마이페이지 -->
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li aria-current="page" class="breadcrumb-item active">마이페이지</li>
-                </ol>
-              </nav>
-            </div>
-            <div class="col-lg-3">
-              <!-- 고객메뉴 시작 -->
-              <div class="card sidebar-menu">
-                <div class="card-header">
-                  <h3 class="h4 card-title">관리자 메뉴</h3>
-                </div>
-                <div class="card-body">
-                  <ul class="nav nav-pills flex-column">
-	                  <a href="#" class="nav-link "><i class="fa fa-list"></i>통계</a>
-	                  <a href="#" class="nav-link "><i class="fa fa-list"></i>카테고리관리</a>
-	                  <a href="<%=request.getContextPath()%>/product/productList.jsp?id=<%=loginId%>" class="nav-link active "><i class="fa fa-list"></i>상품관리</a>
-	                  <a href="<%=request.getContextPath()%>/admin_customer/adminCustomerList.jsp?id=<%=loginId%>&currentPage=1" class="nav-link"><i class="fa fa-list"></i>회원관리</a>
-	                  <a href="<%=request.getContextPath()%>/admin_orders/adminOrders.jsp?id=<%=loginId%>&currentPage=1" class="nav-link"><i class="fa fa-list"></i>주문관리</a>
-	                  <a href="#" class="nav-link "><i class="fa fa-list"></i>문의관리</a>
-	                  <a href="<%=request.getContextPath()%>/admin_review/adminReview.jsp?id=<%=loginId%>&currentPage=1" class="nav-link "><i class="fa fa-list"></i>리뷰관리</a>
-               </ul> </div>
-              </div>
-              <!-- /.col-lg-3-->
-              <!-- 고객메뉴 끝 -->
-            </div>
-            <div class="col-lg-9">
-              <div class="box">
-              	<!-- 상세정보 -->
-				<div>
-	<form action = "<%=request.getContextPath()%>/product/modifyProductAction.jsp" method="post" encType="multipart/form-data">
-		<div> 상품 번호 <input type="number" readonly="readonly" name = "productNo" value = "<%=productNo%>"></div>
-		<div> 상품 카테고리
-			<input type="text" name = "categoryName" value = "<%=categoryName%>">
-		</div>
-		
-		<div>상품명 
-			<input type="text" name = "productName" value = "<%=productName%>">
-		</div>
-		
-		<div>상품 설명 
-			<textarea rows="3" cols="100" name = "productInfo"><%=productInfo%></textarea>
-		</div>
-		
-		<div>상품 가격 
-			<input type="number" name = "productPrice" value="<%=productPrice%>">
-		</div>
-		<div>상품 상태
-			<select name="productStatus">
-				<option <%if(productStatus.equals("판매중")){ %> selected <% } %>>판매중</option>
-				<option <%if(productStatus.equals("품절")){ %> selected <% } %>>품절</option>
-				<option <%if(productStatus.equals("예약판매")){ %> selected <% } %>>예약판매</option>
-			</select>
-		</div>
-		
-		<div>재고량 
-			<input type="number" name = "productStock" value="<%=productStock%>">
-		</div> 
-		<div>할인율
-			<input type="text" name = "discountRate" value="<%=discountRate%>">
-		</div>
-		<div>할인 시작 
-			<input type="date" name = "discountStart" value="<%=discountStart%>">
-		</div>
-		<div>할인 종료
-			<input type="date" name = "discountEnd" value="<%=discountEnd%>">
-		</div>
-		<div>상품 이미지  
-			<img src="<%=dir%>" id="preview" width="300px">
-			<input type="hidden" name = "beforeProductImg" value="<%=productSaveFilename%>">
-			<input type="file" name = "productImg" onchange="previewImage(event)">
-		</div> 
-		
-		<div>
-			<button type="submit">수정</button>
-			<button type="submit" formaction="<%=request.getContextPath()%>/product/productList.jsp">이전</button>
-</div></form></div>
-					</div>
+	<!-- header -->
+	<jsp:include page="/inc/header.jsp"></jsp:include>
+	
+	<!-- main -->
+	<div id="page-content" class="page-content">
+		<!-- banner -->
+		<div class="banner">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header.jpg');">
+				<div class="container">
+					<h1 class="pt-5">
+                        상품 수정
+                    </h1>
 				</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+			</div>
+		</div>
+		<!-- content -->
+		<div class="container" style="margin-top: 100px;">
+			<div class="row">
+				<div class="col-lg-12">
+					<!-- adminNav -->
+					<jsp:include page="/inc/adminNav.jsp"></jsp:include>
+				</div>
+				<!-- 상품 상세정보 조회 -->
+				<div class="col-lg-12" style="margin-top: 50px;">
+					<form action = "<%=request.getContextPath()%>/product/modifyProductAction.jsp" method="post" encType="multipart/form-data">
+						<div>
+							<table class="table">
+								<tr>
+									<th>상품번호</th>
+									<td>
+										<input type="hidden" name="productNo" value="<%=productNo%>">
+										<span><%=productNo%></span>
+									</td>
+								</tr>
+								<tr>
+									<th>카테고리</th>
+									<td>
+										<select name="categoryName" class="form-control w-25">
+											<%
+												for (Category c : cList){
+											%>
+													<option value="<%=c.getCategoryName()%>"><%=c.getCategoryName()%></option>
+											<%	
+												}
+											%>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>이름</th>
+									<td>
+										<input type="text" name="productName" class="form-control" value="<%=p.get("productName")%>">
+									</td>
+								</tr>
+								<tr>
+									<th>가격</th>
+									<td><input type="number" name="productPrice" class="form-control w-25" value="<%=p.get("productPrice")%>"></td>
+								</tr>
+								<!-- 할인율 정보 유무에 따른 분기 -->
+								<%
+									if(d != null && !d.isEmpty() && dInfo != null){
+								%>
+										<tr>
+											<th>할인율</th>
+											<td>
+												<%=(int)(discountRate*100)%>&#37; 
+												<button class="btn btn-primary" style="margin-left: 30px;" id="modifyProductDiscountModalBtn">수정</button>
+												<button onclick="location.href='<%=request.getContextPath()%>/product/removeDiscountAction.jsp?productNo=<%=productNo%>&discountNo=<%=discountNo%>'" class="btn btn-primary">삭제</button>
+											</td>
+										</tr>
+										<tr>
+											<th>할인가</th>
+											<td><%=dProductPrice%></td>
+										</tr>
+										<tr>
+											<th>할인기간</th>
+											<td>
+												<%=dStartDate%>&#126;<%=dEndDate%> 
+											</td>
+										</tr>
+								<%		
+									} else{
+								%>
+										<tr>
+											<th>할인율</th>
+											<td>
+												<%=(int)discountRate%>&#37;
+												<button class="btn btn-primary" style="margin-left: 30px;" id="addDiscountModalBtn">등록</button>
+											</td>
+										</tr>
+								<%		
+									}
+								%>
+								<tr>
+									<th>상품 상태</th>
+									<td>
+										<select name="productStatus" class="form-control w-25">
+											<option value="예약판매">예약판매</option>
+											<option value="판매중">판매중</option>
+											<option value="품절">품절</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>재고</th>
+									<td><input type="number" name="productStock" class="form-control w-25" value="<%=p.get("productStock")%>"></td>
+								</tr>
+								<tr>
+									<th>상세정보</th>
+									<td>
+										<textarea rows="5" name="productInfo" class="form-control"><%=p.get("productInfo")%></textarea>
+									</td>
+								</tr>
+								<tr>
+									<th>상품 이미지</th>
+									<td>
+										<%
+											if(productSaveFilename == null) {
+										%>
+												<span>상품 이미지 없음</span>
+										<%
+											} else {
+										%>
+												<img src="<%=dir%>" id="preview" width="300px">
+										<%
+											}
+										%>
+										<div class="mt-3">
+											<input type="file" name="boardFile">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>등록일</th>
+									<td><%=p.get("createdate")%></td>
+								</tr>
+								<tr>
+									<th>수정일</th>
+									<td><%=p.get("updatedate")%></td>
+								</tr>
+							</table>
+						</div>
+						<!-- 상품 수정, 취소 버튼 -->
+						<div class="text-right">
+							<button type="submit" class="btn btn-primary">수정</button>
+							<button type="button" onclick="location.href='<%=request.getContextPath()%>/product/productDetail.jsp?productNo=<%=productNo%>'" class="btn btn-primary">취소</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- footer -->		
+	 <footer>
+        <jsp:include page="/inc/footer.jsp"></jsp:include>
+    </footer>	
+	<!-- 자바스크립트 -->
+	<jsp:include page="/inc/script.jsp"></jsp:include>
+
 </body>
 </html>
