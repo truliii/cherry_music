@@ -34,7 +34,7 @@
 	
 	                    <div class="card card-login mb-5" style="width: 450px; height: 250px;">
 	                        <div class="card-body">
-	                            <form id="loginForm">
+	                            <form id="loginForm" method="post">
 	                                <div class="form-group row mt-3">
 	                                    <div class="col-md-12">
 	                                        <input id="id" name="id" class="form-control" type="text" placeholder="아이디">
@@ -84,25 +84,29 @@
 				return;
 			}
 			
-			// 아이디, 비밀번호 일치 확인
+			// 아이디, 비밀번호 일치, 휴면계정 확인
 			$.ajax({
 				url:'<%=request.getContextPath()%>/id_list/checkIdPw.jsp',
 				data: {id : $('#id').val(),
 					   password : $('#password').val()},
 				dataType: 'json',
-				success : function(param){
-					console.log(param);
-					if(param === false) {
+				success : function(result){
+					
+					if(result === null) {
 						alert('아이디, 비밀번호가 일치하지 않습니다');
 						$('#id').val('');
 						$('#password').val('');
 						$('#id').focus();
+					} else{
+						if(result.active === 'N'){
+							alert('휴면계정 입니다');
+						}
 					}
 				},
 				error : function(err) {
 					alert('err');
 					console.log(err);
-					}
+				}
 			});
 			
 			// 입력값이 있을 경우, loginAction.jsp로 이동

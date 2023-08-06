@@ -28,17 +28,14 @@
 	<div id="page-content" class="page-content">
 		<!-- banner -->
 		<div class="banner">
-			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/bg-header.jpg');">
+			<div class="jumbotron jumbotron-bg text-center rounded-0" style="background-image: url('<%=request.getContextPath()%>/resources/assets/img/cherry_header.jpg');">
 				<h1 class="pt-5">
-                    회원탈퇴
+                    회원 탈퇴
                 </h1>
-                <p class="lead">
-                    Bye Bye!
-                </p>
 			</div>
 		</div>
 		<!-- content -->
-		<div class="container" style="margin-top: 100px;">
+		<div class="container" style="margin-top: 150px;">
 			<div class="row justify-content-center">
 				<div class="col-lg-12">
 					<!-- breadcrumb-->
@@ -51,11 +48,12 @@
 					</nav>
 				</div>
 				<!-- 회원탈퇴 폼 -->
-				<div class="col-lg-6 card">
+				<div class="col-lg-6 card" style="margin-top: 50px;">
 					<div class="card-body">
+						<h5 class="mt-3 text-center">회원탈퇴를 위해 비밀번호를 입력해주세요.</h5>
 						<form method="post" id="customerInfoRemoveForm">
 							<input type="hidden" id="id" name="id" value="<%=loginId%>">
-							<div class="form-group">
+							<div class="form-group" style="margin-top: 50px;">
 								<label for="password">비밀번호</label>
 								<input id="password" name="password" type="password" class="form-control">
 							</div>

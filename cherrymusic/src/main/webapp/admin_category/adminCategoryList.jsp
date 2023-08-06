@@ -110,7 +110,7 @@
 								        <td class="text-right">
 								            <button type="button" class="modifyBtn btn btn-primary" data-modify="<%=categoryName%>">수정</button>
 								            <button type="button" class="removeBtn btn btn-primary" data-modify="<%=categoryName%>" data-remove="<%=c.getCategoryName()%>">삭제</button>
-								            <button type="button" class="confirmBtn btn btn-primary" data-modify-confirm="<%=categoryName%>" style="display:none">확인</button>
+								            <button type="button" class="confirmBtn btn btn-primary" data-modify="<%=c.getCategoryName()%>" data-modify-confirm="<%=categoryName%>" style="display:none">확인</button>
 								            <button type="button" class="cancelBtn btn btn-primary" data-modify-cancel="<%=categoryName%>" style="display:none">취소</button>
 								        </td>
 								    </tr>    
@@ -163,6 +163,24 @@
 		    alert('카테고리명을 입력해주세요.');
 		    return;
 		}
+	    
+	 	// 중복카테고리 확인
+		$.ajax({
+			url:'<%=request.getContextPath()%>/admin_category/selectCategory.jsp',
+			data: {categoryName : addCategoryName},
+			dataType: 'json',
+			success : function(result){
+		       
+				if(result === true) {
+					alert('중복된 카테고리입니다');
+				} 
+			},
+			error : function(err) {
+				alert('err');
+				console.log(err);
+			}
+		});
+	 	
 	    // 입력값이 있을 경우, adminCategoryAddAction.jsp로 이동
 	    let addCategoryFormUrl = '<%=request.getContextPath()%>/admin_category/adminCategoryAddAction.jsp';
 	    $('#addCategoryForm').attr('action', addCategoryFormUrl);
@@ -185,6 +203,9 @@
 	// confirmBtn click
 	$(document).on('click', '.confirmBtn', function(){
 		
+		// 해당 수정 카테고리 값 저장
+		let categoryName = $(this).data('modify');
+		
 		// input 요소 중 name 속성이 "modifyCategoryName"인 요소의 값 저장
 		let modifyCategoryName = $('input[name="modifyCategoryName"]').val();
 		
@@ -193,6 +214,41 @@
 			alert('수정할 카테고리명을 입력해주세요');
 			return;
 		}
+		
+		// 참조카테고리 확인
+		$.ajax({
+			url:'<%=request.getContextPath()%>/admin_category/checkCategory.jsp',
+			data: {categoryName : categoryName},
+			dataType: 'json',
+			success : function(result){
+		        
+				if(result === true) {
+					alert('카테고리의 상품이 등록되어 있어 수정할 수 없습니다');
+				}
+			},
+			error : function(err) {
+				alert('err');
+				console.log(err);
+			}
+		});
+		
+		// 중복카테고리 확인
+		$.ajax({
+			url:'<%=request.getContextPath()%>/admin_category/selectCategory.jsp',
+			data: {categoryName : modifyCategoryName},
+			dataType: 'json',
+			success : function(result){
+		       
+				if(result === true) {
+					alert('중복된 카테고리입니다');
+				} 
+			},
+			error : function(err) {
+				alert('err');
+				console.log(err);
+			}
+		});
+		
 		// 입력값이 있을 경우, adminCategoryModifyAction.jsp로 이동
 		let modifyCategoryFormUrl = '<%=request.getContextPath()%>/admin_category/adminCategoryModifyAction.jsp';
 		$('#modifyCategoryForm').attr('action', modifyCategoryFormUrl);
@@ -207,9 +263,30 @@
 	
 	// removeBtn click, adminCategoryRemoveAction.jsp로 이동
 	$(document).on('click', '.removeBtn', function() {
+		
 		let categoryName = $(this).data('remove');
+		
+		// 참조카테고리 확인
+		$.ajax({
+			url:'<%=request.getContextPath()%>/admin_category/checkCategory.jsp',
+			data: {categoryName : categoryName},
+			dataType: 'json',
+			success : function(result){
+				
+				if(result === true) {
+					alert('카테고리의 상품이 등록되어 있어 삭제할 수 없습니다')
+				}
+			},
+			error : function(err) {
+				alert('err');
+				console.log(err);
+			}
+		});
+		
 		let removeUrl = '<%=request.getContextPath()%>/admin_category/adminCategoryRemoveAction.jsp?categoryName=' + categoryName;
 		location.href = removeUrl;
+		
 	});
+
 </script>
 </html>

@@ -66,13 +66,13 @@
 	String dEndDateArr [] = null; // 할인 종료날짜 배열
 	String dEndDate = null; // 할인 종료날짜
 	
-	int dProductPrice = 0; // 할인가격
+	double dProductPrice = 0; // 할인가격
 	
 	// 할인율 정보 담을 변수 초기화
 	ArrayList<HashMap<String, Object>> d = null;
 	
 	// Discount vo (현재 할인율 저장)
-	Discount dInfo = null;
+	Discount dCurrentInfo = null;
 	
 	// p(상품 정보 저장 변수) 값의 따른 분기
 	if(p != null){
@@ -88,16 +88,16 @@
 		*/
 		if (d != null && !d.isEmpty()) { // d(할인 정보 담은 변수)가 null이 아니고 비어있지 않을 때
 		    // Discount vo에 현재 할인율 정보 값 저장
-			dInfo = dDao.selectProductCurrentDiscount(productNo);
-		    if(dInfo != null){
-		    	dStartYear = dInfo.getDiscountStart().substring(0, 4);
-			    dStartMonth = dInfo.getDiscountStart().substring(5, 7);
-			    dStartDay = dInfo.getDiscountStart().substring(8, 10);
-			    dEndYear = dInfo.getDiscountEnd().substring(0, 4);
-			    dEndMonth = dInfo.getDiscountEnd().substring(5, 7);
-			    dEndDay = dInfo.getDiscountEnd().substring(8, 10);
-			    discountRate = dInfo.getDiscountRate();
-			    discountNo = dInfo.getDiscountNo();
+			dCurrentInfo = dDao.selectProductCurrentDiscount(productNo);
+		    if(dCurrentInfo != null){
+		    	dStartYear = dCurrentInfo.getDiscountStart().substring(0, 4);
+			    dStartMonth = dCurrentInfo.getDiscountStart().substring(5, 7);
+			    dStartDay = dCurrentInfo.getDiscountStart().substring(8, 10);
+			    dEndYear = dCurrentInfo.getDiscountEnd().substring(0, 4);
+			    dEndMonth = dCurrentInfo.getDiscountEnd().substring(5, 7);
+			    dEndDay = dCurrentInfo.getDiscountEnd().substring(8, 10);
+			    discountRate = dCurrentInfo.getDiscountRate();
+			    discountNo = dCurrentInfo.getDiscountNo();
 			 	
 			    // 할인가격, 할인 시작일, 할인 종료일 
 			 	dProductPrice = (int) Math.floor(productPrice * (1 - discountRate));
@@ -105,20 +105,37 @@
 			    dEndDateArr = new String[]{dEndYear, dEndMonth, dEndDay};
 			 	dStartDate = String.join("-", dStartDateArr);
 			    dEndDate = String.join("-", dEndDateArr);	
-			    
-			    // 디버깅 코드
-			    System.out.println(dStartYear+"<--productDetail.jsp dStartYear");
-			    System.out.println(dStartMonth+"<--productDetail.jsp dStartMonth");
-			    System.out.println(dStartDay+"<--productDetail.jsp dStartDay");
-			    System.out.println(dEndYear+"<--productDetail.jsp dEndYear");
-			    System.out.println(dEndMonth+"<--productDetail.jsp dEndMonth");
-			    System.out.println(dEndDay+"<--productDetail.jsp dEndDay");
-			    System.out.println(dStartDate+"<--productDetail.jsp dStartDate");
-			    System.out.println(dEndDate+"<--productDetail.jsp dEndDate");
-			    System.out.println(discountRate+"<--productDetail.jsp discountRate");
-			    System.out.println(dProductPrice+"<--productDetail.jsp dProductPrice");
+		    } else{
+		    	for(HashMap<String, Object> dInfo : d){ // dCurrentInfo 가 null
+		    		dStartYear = ((String)dInfo.get("discountStart")).substring(0, 4);
+				    dStartMonth = ((String)dInfo.get("discountStart")).substring(5, 7);
+				    dStartDay = ((String)dInfo.get("discountStart")).substring(8, 10);
+				    dEndYear = ((String)dInfo.get("discountEnd")).substring(0, 4);
+				    dEndMonth = ((String)dInfo.get("discountEnd")).substring(5, 7);
+				    dEndDay = ((String)dInfo.get("discountEnd")).substring(8, 10);
+				    discountRate = (double)dInfo.get("discountRate");
+				    discountNo = (Integer)dInfo.get("discountNo");
+				    
+				 	// 할인가격, 할인 시작일, 할인 종료일 
+				 	dProductPrice = (int)productPrice * (1 - discountRate);
+				    dStartDateArr = new String[]{dStartYear, dStartMonth, dStartDay};
+				    dEndDateArr = new String[]{dEndYear, dEndMonth, dEndDay};
+				 	dStartDate = String.join("-", dStartDateArr);
+				    dEndDate = String.join("-", dEndDateArr);	
+		    	}
 		    }
-		} 
+		}
+		// 디버깅 코드
+	    System.out.println(dStartYear+"<--productDetail.jsp dStartYear");
+	    System.out.println(dStartMonth+"<--productDetail.jsp dStartMonth");
+	    System.out.println(dStartDay+"<--productDetail.jsp dStartDay");
+	    System.out.println(dEndYear+"<--productDetail.jsp dEndYear");
+	    System.out.println(dEndMonth+"<--productDetail.jsp dEndMonth");
+	    System.out.println(dEndDay+"<--productDetail.jsp dEndDay");
+	    System.out.println(dStartDate+"<--productDetail.jsp dStartDate");
+	    System.out.println(dEndDate+"<--productDetail.jsp dEndDate");
+	    System.out.println(discountRate+"<--productDetail.jsp discountRate");
+	    System.out.println(dProductPrice+"<--productDetail.jsp dProductPrice");
 	}
 	
 	String dir = request.getContextPath() + "/product/productImg/" + productSaveFilename;
@@ -179,19 +196,17 @@
 							</tr>
 							<!-- 할인율 정보 유무에 따른 분기 -->
 							<%
-								if(d != null && !d.isEmpty() && dInfo != null){
+								if(d != null && !d.isEmpty()){
 							%>
 									<tr>
 										<th>할인율</th>
 										<td>
-											<%=(int)(discountRate*100)%>&#37; 
-											<button class="btn btn-primary" style="margin-left: 30px;" id="modifyProductDiscountModalBtn">수정</button>
-											<button onclick="location.href='<%=request.getContextPath()%>/product/removeDiscountAction.jsp?productNo=<%=productNo%>&discountNo=<%=discountNo%>'" class="btn btn-primary">삭제</button>
+											<%=(int)(discountRate*100)%>&#37;
 										</td>
 									</tr>
 									<tr>
 										<th>할인가</th>
-										<td><%=dProductPrice%></td>
+										<td><%=(int)dProductPrice%></td>
 									</tr>
 									<tr>
 										<th>할인기간</th>
@@ -206,7 +221,7 @@
 										<th>할인율</th>
 										<td>
 											<%=(int)discountRate%>&#37;
-											<button class="btn btn-primary" style="margin-left: 30px;" id="addDiscountModalBtn">등록</button>
+											<button type="button" class="btn btn-primary" style="margin-left: 30px;" id="addDiscountModalBtn">등록</button>
 										</td>
 									</tr>
 							<%		
@@ -237,7 +252,7 @@
 									<%
 										} else {
 									%>
-											<img src="<%=dir%>" id="preview" width="300px">
+											<img src="<%=dir%>" id="boardFile" width="300px">
 									<%
 										}
 									%>
@@ -260,12 +275,12 @@
 						<%
 							if(ordersCnt == 0){
 						%>
-							<button onclick="location.href='<%=request.getContextPath()%>/product/modifyProduct.jsp?productNo=<%=productNo%>'" class="btn btn-primary">수정</button>
-							<button onclick="location.href='<%=request.getContextPath()%>/product/removeProductAction.jsp?productNo=<%=productNo%>'" class="btn btn-primary">삭제</button>
+							<button type="button" onclick="location.href='<%=request.getContextPath()%>/product/modifyProduct.jsp?productNo=<%=productNo%>'" class="btn btn-primary">수정</button>
+							<button type="button" onclick="location.href='<%=request.getContextPath()%>/product/removeProductAction.jsp?productNo=<%=productNo%>'" class="btn btn-primary">삭제</button>
 						<%
 							}
 						%>
-						<button onclick="location.href='<%=request.getContextPath()%>/product/productList.jsp'" class="btn btn-primary">목록</button>
+						<button type="button" onclick="location.href='<%=request.getContextPath()%>/product/productList.jsp'" class="btn btn-primary">목록</button>
 					</div>
 				</div>
 			</div>
@@ -286,7 +301,7 @@
 				<span class="close">&times;</span>
 			</div>
 			<div class="modal-body">
-				<form action="<%=request.getContextPath()%>/product/addProductDiscountAction.jsp" method="post">
+				<form id="addProductDiscount" method="post">
 					<div class="form-group row mt-3">
 	                    <div class="col-md-12">
 	                       	<h6>상품번호 <%=productNo%></h6>
@@ -294,7 +309,7 @@
 	                    </div>
 	                    <div class="col-md-12 mt-3">
 	                        <label for="discountRate"><strong>할인율</strong></label>
-	                        <input type="number" id="discountRate" name="discountRate" step="0.1" class="form-control">
+	                        <input type="number" id="discountRate" name="discountRate" step="0.1" class="form-control" placeholder="ex) 0.1">
 	                    </div>
 	                    <div class="col-md-12 mt-3">
 	                        <label for="discountRate"><strong>할인 시작일</strong></label>
@@ -306,67 +321,74 @@
 	                    </div>
 	                </div>
 	                <div class="text-center">
-	                	<button type="submit" id="addDiscountBtn" class="btn btn-primary">할인율 등록</button>
-	                </div>
-				</form>
-			</div>
-		</div>
-	</div>
-	
-	<!-- 할인율 수정 모달창 -->
-	<div id="modifyDiscountModal" class="modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">할인율 수정</h5>
-				<span class="close">&times;</span>
-			</div>
-			<div class="modal-body">
-				<form action="<%=request.getContextPath()%>/product/modifyProductDiscountAction.jsp" method="post">
-					<div class="form-group row mt-3">
-	                    <div class="col-md-12">
-	                       	<h6>상품번호 <%=productNo%></h6>
-	                        <input type="hidden" id="productNo" name="productNo" value="<%=productNo%>">
-	                    </div>
-	                    <div class="col-md-12 mt-3">
-	                        <label for="discountRate"><strong>할인율</strong></label>
-	                        <input type="number" id="discountRate" name="discountRate" class="form-control">
-	                    </div>
-	                    <div class="col-md-12 mt-3">
-	                        <label for="discountRate"><strong>할인 시작일</strong></label>
-	                        <input type="date" id="discountStart" name="discountStart" class="form-control">
-	                    </div>
-	                    <div class="col-md-12 mt-3">
-	                        <label for="discountRate"><strong>할인 종료일</strong></label>
-	                        <input type="date" id="discountEnd" name="discountEnd" class="form-control">
-	                    </div>
-	                </div>
-	                <div class="text-center">
-	                	<button type="submit" id="modifyDiscountBtn" class="btn btn-primary">할인율 수정</button>
+	                	<button type="button" id="addDiscountBtn" class="btn btn-primary">할인율 등록</button>
 	                </div>
 				</form>
 			</div>
 		</div>
 	</div>
 </body>
-
 <script>
-
-  // 할인율 등록 모달 창 열기
-  $("#addDiscountModalBtn").click(function () {
-    $("#addDiscountModal").css("display", "block");
-  });
-
-  // 할인율 수정 모달 창 열기
-  $("#modifyProductDiscountModalBtn").click(function(){
-	 $("#modifyDiscountModal").css("display", "block"); 
-  });
+	
+	//할인율 등록 모달 창 열기
+	$("#addDiscountModalBtn").click(function () {
+		$("#addDiscountModal").css("display", "block");
+	});
   
-  // 모달 창 닫기
-  $(".close").click(function () {
-    $("#addDiscountModal").css("display", "none");
-    $("#modifyDiscountModal").css("display", "none");
-  });
+	// 모달 창 닫기
+	$(".close").click(function () {
+		$("#addDiscountModal").css("display", "none");
+	});
+	
+	// 할인 시작일 유효성 검사
+	function validateDStart(){
+		let selectedDStart = $('#discountStart').val();
+	    let today = new Date();
+	    let selectedDate = new Date(selectedDStart);
 
-  
+	    if (selectedDate <= today) {
+	        return true;
+	    } else {
+	        return false;
+	    }
+	}
+	
+	// 할인 시작일 입력란 변화 감지 이벤트
+	$('#discountStart').on('input', function() {
+	    if (!validateDStart()) {
+	        alert('유효한 날짜를 입력해주세요.');
+	        $(this).val('');
+	        $(this).focus();
+	    }
+	});
+	
+	// addDiscountBtn click
+	$("#addDiscountBtn").on('click', function(){
+		
+		// 값 저장
+		let dRate = $('#discountRate').val();
+		let dStart= $('#discountStart').val();
+		let dEnd = $('#discountEnd').val();
+		
+		// 입력값이 비어있는지 확인
+		if(dRate.trim() == ''){
+			alert('할인율을 입력해주세요');
+			 $('#discountRate').focus();
+			return;
+		} else if(dStart.trim() == ''){
+			alert('할인 시작일을 입력해주세요');
+			$('#discountStart').focus();
+			return;
+		} else if(dEnd.trim() == ''){
+			alert('할인 종료일을 입력해주세요');
+			$('#discountEnd').focus();
+			return;
+		}
+		
+		// 입력값이 있을 경우 addProductDiscountAction.jsp 이동
+		let addProductDiscountUrl = '<%=request.getContextPath()%>/product/addProductDiscountAction.jsp';
+		$('#addProductDiscount').attr('action', addProductDiscountUrl);
+		$('#addProductDiscount').submit();
+	});
 </script>
 </html>

@@ -92,3 +92,12 @@ footer {
 .close:hover {
   color: #000;
 }
+
+/*table*/
+.selectTr:hover {
+	background-color: #F6F6F6;
+   	cursor: pointer;
+}
+.titleTd:hover {
+    color:#0100FF;
+}

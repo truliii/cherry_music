@@ -31,7 +31,7 @@
 
                     <div class="card card-login mb-5" style="width: 500px;">
                         <div class="card-body sc" style="overflow:auto; height:700px;">
-                            <form id="signUpForm">
+                            <form id="signUpForm" method="post">
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12 text-left">
                                     	<label for="id">아이디</label>
@@ -307,6 +307,7 @@
 		$('#cstmBirth').on('input', function() {
 		    if (!validateBirth()) {
 		        alert('유효한 생년월일을 입력해주세요.');
+		        $(this).val('');
 		        $(this).focus();
 		    }
 		});
@@ -385,7 +386,8 @@
 	 	   	let phonePattern= /^(\d{3}-\d{3,4}-\d{4})?$/;
 	 	   	if(!phonePattern.test(cstmPhone)){
 		 	   	alert('유효한 연락처를 입력해주세요.');
-		        $('#cstmPhone').focus();
+		 	   $(this).val('');
+		 	   	$('#cstmPhone').focus();
 		        return false;
 	 	   	}
 	 	   	
@@ -393,6 +395,7 @@
 		    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		    if (!emailPattern.test(cstmEmail)) {
 		        alert('유효한 이메일 주소를 입력해주세요.');
+		        $(this).val('');
 		        $('#cstmEmail').focus();
 		        return false;
 		    }

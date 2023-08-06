@@ -12,7 +12,11 @@
 	idList.setLastPw(password);
 	
 	IdListDao idListDao = new IdListDao();
-	boolean result = idListDao.selectIdList(idList);
+	IdList idListResult = idListDao.selectIdList(idList);
+	
+	Gson gson = new Gson();
+    String result = gson.toJson(idListResult);
+    
 	System.out.println(result);
 	out.print(result);
 %>

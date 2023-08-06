@@ -286,7 +286,7 @@
 								if(selectId == null){
 									for(HashMap<String, Object> m : adminCustomerList){
 							%>
-									<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) m.get("id")%>'">
+									<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) m.get("id")%>'" class="selectTr">
 										<td><%=(String) m.get("id")%></td>
 										<td><%=(String) m.get("cstmName")%></td>
 										<td><%=(String) m.get("cstmRank")%></td>
@@ -296,7 +296,7 @@
 									}
 								} else{
 							%>
-									<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) selectId.get("id")%>'">
+									<tr onclick="location.href='<%=request.getContextPath()%>/admin_customer/customerOne.jsp?id=<%=(String) selectId.get("id")%>'" class="selctTr">
 										<td><%=(String) selectId.get("id")%></td>
 										<td><%=(String) selectId.get("cstmName")%></td>
 										<td><%=(String) selectId.get("cstmRank")%></td>

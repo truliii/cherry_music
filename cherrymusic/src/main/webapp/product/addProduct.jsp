@@ -42,7 +42,6 @@
 	
 	// CategoryList 조회 method
 	ArrayList<Category> list = categoryDao.selectCategoryList();
-	
 %>
 <!DOCTYPE html>
 <html>
@@ -74,13 +73,13 @@
 				</div>
 				<!-- 상품등록 폼 -->
 					<div class="col-lg-12" style="margin-top: 50px;">
-						<form action = "<%=request.getContextPath()%>/product/addProductAction.jsp" method="post" encType="multipart/form-data">
-						<div class="">
+						<form id="addProduct" method="post" encType="multipart/form-data">
+						<div>
 							<table class="table">
 								<tr>
 									<th>카테고리</th>
 									<td>
-										<select name="categoryName" class="form-control w-25">
+										<select id ="category" name="categoryName" class="form-control w-25">
 											<%
 												for (Category c : list){
 											%>
@@ -92,17 +91,17 @@
 									</td>
 								</tr>
 								<tr>
-									<th>상품 이름</th>
-									<td><input type="text" name="productName" class="form-control"></td>
+									<th>상품명</th>
+									<td><input type="text" id="productName" name="productName" class="form-control"></td>
 								</tr>
 								<tr>
 									<th>상품 가격</th>
-									<td><input type="number" name="productPrice" class="form-control w-25"></td>
+									<td><input type="number" id="productPrice" name="productPrice" class="form-control w-25"></td>
 								</tr>
 								<tr>
 									<th>상품 상태</th>
 									<td>
-										<select name = "productStatus" class="form-control w-25">
+										<select id="productStatus" name="productStatus" class="form-control w-25">
 											<option value = "예약판매">예약판매</option>
 											<option value = "판매중">판매중</option>
 											<option value = "품절">품절</option>
@@ -111,24 +110,24 @@
 								</tr>
 								<tr>
 									<th>재고</th>
-									<td><input type="number" name="productStock" class="form-control w-25"></td>
+									<td><input type="number" id="productStock" name="productStock" class="form-control w-25"></td>
 								</tr>
 								<tr>
 									<th>상세정보</th>
 									<td>
-										<textarea rows="5" name="productInfo" class="form-control"></textarea>
+										<textarea rows="5" id="productInfo" name="productInfo" class="form-control"></textarea>
 									</td>
 								</tr>
 								<tr>
 									<th>상품 이미지</th>
 									<td>
-										<input type="file" name="boardFile" required="required">
+										<input type="file" id="boardFile" name="boardFile" required="required">
 									</td>
 								</tr>
 							</table>
 						</div>
 						<div class="text-right">
-							<button type="submit" class="btn btn-primary">상품등록</button>
+							<button type="button" id="addProductBtn" class="btn btn-primary">상품등록</button>
 							<button onclick="location.href='<%=request.getContextPath()%>/product/productList.jsp'" class="btn btn-primary">목록</button>
 						</div>
 					</form>
@@ -144,4 +143,44 @@
 	<jsp:include page="/inc/script.jsp"></jsp:include>
 	
 </body>
+<script>
+	// addProductBtn click
+	$("#addProductBtn").on('click', function(){
+		
+		// 값 저장
+		let productName = $('#productName').val();
+		let productPrice = $('#productPrice').val();
+		let productStock = $('#productStock').val();
+		let productInfo = $('#productInfo').val();
+		let boardFile = $('#boardFile').val();
+		
+		// 입력값이 비어있는지 확인
+		if(productName.trim() == ''){
+			alert('상품명을 입력해주세요');
+			 $('#productName').focus();
+			return;
+		} else if(productPrice.trim() == ''){
+			alert('상품가격을 입력해주세요');
+			$('#productPrice').focus();
+			return;
+		} else if(productStock.trim() == ''){
+			alert('재고량을 입력해주세요');
+			$('#productStock').focus();
+			return;
+		} else if(productInfo.trim() == ''){
+			alert('상품 상세정보를 입력해주세요');
+			$('#productInfo').focus();
+			return;
+		} else if(boardFile.trim() == ''){
+			alert('상품 이미지를 등록해주세요');
+			$('#boardFile').focus();
+			return;
+		}
+		
+		// 입력값이 있을 경우 addProductDiscountAction.jsp 이동
+		let addProductUrl = '<%=request.getContextPath()%>/product/addProductAction.jsp';
+		$('#addProduct').attr('action', addProductUrl);
+		$('#addProduct').submit();
+	});
+</script>
 </html>

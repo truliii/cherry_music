@@ -47,16 +47,20 @@
 	System.out.println(BLUE+BG_YELLOW+categoryName+"<-- adminCategoryModifyAction.jsp categoryName"+RESET);
 	System.out.println(BLUE+BG_YELLOW+modifyCategoryName+"<-- adminCategoryModifyAction.jsp modifyCategoryName"+RESET);
 	
-	// CategoryDao
+	// CategoryDao, ProductDao
 	CategoryDao categoryDao = new CategoryDao();
+	ProductDao productDao = new ProductDao();
 	
-	/* categoryCk값 확인, 분기
+	/* modifyCategoryCk값 확인, 분기
 	 * true, adminCategoryList.jsp 페이지로 리턴
-	 * false, categoryDao.updateCategory(categoryName, modifyCategoryName)
+	 * false, 
+	 * product에서 참조하고 있는 카테고리는 수정 할 수 없어 참조하고 있는 카테고리가 있는지 조회 후 수정
+	 * true, adminCategoryList.jsp return
+	 * categoryDao.updateCategory(categoryName, modifyCategoryName)
 	*/
 	
 	// 카테고리 중복검사
-	boolean categoryCk = categoryDao.selectCategoryOne(categoryName);
+	boolean categoryCk = categoryDao.selectCategoryOne(modifyCategoryName);
 	
 	// 중복되는 카테고리의 따른 분기
 	if(categoryCk == true){
@@ -65,16 +69,27 @@
 		return;
 		
 	} else{
-		// 카테고리명 수정
-		int modifyRow = categoryDao.updateCategory(categoryName, modifyCategoryName);
 		
-		// modifyRow값 확인
-		if(modifyRow == 0){
-			System.out.println(BG_YELLOW+BLUE+modifyRow + "<--adminCategoryModifyAction.jsp 실패 modifyRow"+RESET);
-		} else if(modifyRow == 1){
-			System.out.println(BG_YELLOW+BLUE+modifyRow + "<--adminCategoryModifyAction.jsp 성공 modifyRow"+RESET);
+		// 참조카테고리 조회 method
+		categoryCk = productDao.selectCategory(categoryName);
+		
+		if(categoryCk == true){
+			System.out.println(BLUE+BG_YELLOW+categoryCk+"<--참조카테고리 있어 수정 실패 categoryCk"+RESET);
+			response.sendRedirect(request.getContextPath()+"/admin_category/adminCategoryList.jsp");
+			return;
 		} else{
-			System.out.println(BG_YELLOW+BLUE+modifyRow + "<--adminCategoryModifyAction.jsp error modifyRow"+RESET);
+			
+			// 카테고리명 수정
+			int modifyRow = categoryDao.updateCategory(categoryName, modifyCategoryName);
+			
+			// modifyRow값 확인
+			if(modifyRow == 0){
+				System.out.println(BG_YELLOW+BLUE+modifyRow + "<--adminCategoryModifyAction.jsp 실패 modifyRow"+RESET);
+			} else if(modifyRow == 1){
+				System.out.println(BG_YELLOW+BLUE+modifyRow + "<--adminCategoryModifyAction.jsp 성공 modifyRow"+RESET);
+			} else{
+				System.out.println(BG_YELLOW+BLUE+modifyRow + "<--adminCategoryModifyAction.jsp error modifyRow"+RESET);
+			}
 		}
 	}
 	

@@ -115,10 +115,6 @@
 								<td><%=question.getqCategory()%></td>
 							</tr>
 							<tr>
-								<th>문의번호</th>
-								<td><%=question.getqNo()%></td>
-							</tr>
-							<tr>
 								<th>상품번호</th>
 								<td><%=question.getProductNo()%></td>
 							</tr>
@@ -225,10 +221,6 @@
 						<tr>
 							<th>카테고리</th>
 							<td><%=boardQuestion.getBoardQCategory()%></td>
-						</tr>
-						<tr>
-							<th>문의번호</th>
-							<td><%=boardQuestion.getBoardQNo()%></td>
 						</tr>
 						<tr>
 							<th>아이디</th>

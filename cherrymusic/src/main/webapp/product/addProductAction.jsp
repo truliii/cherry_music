@@ -59,10 +59,9 @@
 	
 	// MultipartRequest API를 사용하여 스트림내에서 문자값을 반환받을 수 있다
 	
-	// 업로드 파일이 PDF파일이 아니면
-	if((mRequest.getContentType("boardFile").equals("image/jpeg") 
-			||mRequest.getContentType("boardFile").equals("image/png"))
-			== false) {
+	// 업로드 파일이 image(jpeg, png)파일이 아니면
+	if(!(mRequest.getContentType("boardFile").equals("image/jpeg") 
+		|| mRequest.getContentType("boardFile").equals("image/png"))) {
 		// 이미 저장된 파일을 삭제
 		System.out.println(mRequest.getContentType("boardFile"));
 		System.out.println(SJ+"이미지파일이 아닙니다"+RE);

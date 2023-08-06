@@ -156,10 +156,10 @@
 								for(HashMap<String, Object> bq: list){
 									if(loginId.equals((String) bq.get("id"))){
 							%>
-									<tr id="qnaDetailTr" onclick="location.href='<%=request.getContextPath()%>/board_question/qnaDetail.jsp?boardQNo=<%=(Integer) bq.get("boardQNo")%>'">
+									<tr class="qnaDetailTr selectTr" onclick="location.href='<%=request.getContextPath()%>/board_question/qnaDetail.jsp?boardQNo=<%=(Integer) bq.get("boardQNo")%>'">
 										<td><%=(Integer) bq.get("boardQNo")%></td>
 										<td><%=(String) bq.get("boardQCategory")%></td>
-										<td><%=(String) bq.get("boardQTitle")%></td>
+										<td class="titleTd"><%=(String) bq.get("boardQTitle")%></td>
 										<td><%=(String) bq.get("cstmName")%></td>
 										<td><%=((String) bq.get("createdate")).substring(0,10)%></td>
 										<td><%=(Integer) bq.get("boardQCheckCnt")%></td>
@@ -179,10 +179,10 @@
 							<%			
 									} else{
 							%>
-										<tr>
+										<tr class="selectTr privateQnA">
 											<td><%=(Integer) bq.get("boardQNo")%></td>
 											<td><%=(String) bq.get("boardQCategory")%></td>
-											<td><%=(String) bq.get("boardQTitle")%></td>
+											<td class="titleTd"><%=(String) bq.get("boardQTitle")%></td>
 											<td><%=(String) bq.get("cstmName")%></td>
 											<td><%=((String) bq.get("createdate")).substring(0,10)%></td>
 											<td><%=(Integer) bq.get("boardQCheckCnt")%></td>
@@ -318,7 +318,7 @@
 	});
 	
 	// qnaDetailTr click
-	$('#qnaDetailTr').click(function(){
+	$('.qnaDetailTr').click(function(){
 		let boardQNoValue = $(this).find('td:first-child').text();
 		
 		$.ajax({
@@ -334,6 +334,9 @@
 				}
 			});
 		});
-	
+	// privateQnA click
+	$('.privateQnA').click(function(){
+		alert('비공개 글입니다');
+	});
 </script>
 </html>

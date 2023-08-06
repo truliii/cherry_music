@@ -7,6 +7,9 @@
 	final String RE = "\u001B[0m"; 
 	final String SJ = "\u001B[44m";
 	
+	//request 인코딩
+	request.setCharacterEncoding("utf-8");
+	
 	/* session 유효성 검사
 	* session 값이 null이면 redirection. return.
 	*/
@@ -142,13 +145,13 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th >상품번호</th>
-									<th >카테고리</th>
-									<th >이름</th>
-									<th >가격</th>
-									<th >상태</th>
-									<th >재고</th>
-									<th >판매량</th>
+									<th>상품번호</th>
+									<th>카테고리</th>
+									<th>상품명</th>
+									<th>가격</th>
+									<th>상태</th>
+									<th>재고</th>
+									<th>판매량</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -156,10 +159,10 @@
 									if(sList == null){
 										for(HashMap<String, Object> p : cntList) {
 								%>
-											<tr onclick="location.href='<%=request.getContextPath()%>/product/productDetail.jsp?productNo=<%=p.get("p.productNo")%>'">
+											<tr onclick="location.href='<%=request.getContextPath()%>/product/productDetail.jsp?productNo=<%=p.get("p.productNo")%>'" class="selectTr">
 												<td><%=p.get("p.productNo")%></td>
 												<td><%=p.get("categoryName")%></td>
-												<td><%=p.get("productName")%></td>
+												<td class="titleTd"><%=p.get("productName")%></td>
 												<td><%=p.get("productPrice")%></td>
 												<td><%=p.get("productStatus")%></td>
 												<td><%=p.get("productStock")%></td>
@@ -170,10 +173,10 @@
 									} else{
 										for(Product p : sList){
 								%>
-											<tr onclick="location.href='<%=request.getContextPath()%>/product/productDetail.jsp?productNo=<%=p.getProductNo()%>'">
+											<tr onclick="location.href='<%=request.getContextPath()%>/product/productDetail.jsp?productNo=<%=p.getProductNo()%>'" class="selectTr">
 												<td><%=p.getProductNo()%></td>
 												<td><%=p.getCategoryName()%></td>
-												<td><%=p.getProductName()%></td>
+												<td class="titleTd"><%=p.getProductName()%></td>
 												<td><%=p.getProductPrice()%></td>
 												<td><%=p.getProductStatus()%></td>
 												<td><%=p.getProductStock()%></td>

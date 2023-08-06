@@ -45,17 +45,16 @@
 	/* loginCheck : idListDao.selectIdList(paramIdList) 리턴값 저장 변수
 	* idListCheck : idListDao.selectIdListOne(id) 리턴값 저장 변수
 	* loginCheck 값에 따른 redirection, session.setAttribute 유무 분기
-	* loginCheck == true 일 때 idListCheck.getActive()값에 따른 redirection 분기
+	* loginCheck != null 일 때 loginCheck.getActive()값에 따른 redirection 분기
 	* 로그인 후 마지막 로그인 날짜 update
 	*/ 
 	
-	boolean loginCheck = idListDao.selectIdList(paramIdList);
+	IdList loginCheck = idListDao.selectIdList(paramIdList);
 	System.out.println(BG_YELLOW+BLUE+loginCheck +"<-- loginAction.jsp loginCheck" +RESET);
 	
-	if(loginCheck == true){
-		IdList idListCheck = idListDao.selectIdListOne(id);
+	if(loginCheck != null){
 		
-		if(idListCheck.getActive().equals("Y")){
+		if(loginCheck.getActive().equals("Y")){
 			session.setAttribute("loginId", id);
 			response.sendRedirect(request.getContextPath()+"/home.jsp");
 			System.out.println(BG_YELLOW+BLUE+id+" 로그인 성공, 세션 정보 :" +session.getAttribute("loginId") +RESET);

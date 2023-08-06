@@ -157,9 +157,8 @@
 						<table class="table" style="margin-top: 20px;">
 							<thead>
 								<tr>
+									<th>문의번호</th>
 									<th>카테고리</th>
-									<th>번호</th>
-									<th>주문번호</th>
 									<th>문의제목</th>
 									<th>등록일</th>
 									<th>답변여부</th>
@@ -169,11 +168,10 @@
 						        <%
 									for(HashMap<String, Object> m : qnaList){
 								%>
-										<tr onclick = "location.href='<%=request.getContextPath()%>/admin_question/adminQnADetail.jsp?qNo=<%=(Integer) m.get("qNo")%>&qCategory=<%=(String) m.get("qCategory")%>'">
-											<td><%=(String) m.get("qCategory")%></td>
+										<tr onclick = "location.href='<%=request.getContextPath()%>/admin_question/adminQnADetail.jsp?qNo=<%=(Integer) m.get("qNo")%>&qCategory=<%=(String) m.get("qCategory")%>'" class="selectTr">
 											<td><%=(Integer) m.get("rnum")%></td>
-											<td><%=(Integer) m.get("qNo")%></td>
-											<td><%=(String) m.get("qTitle")%></td>
+											<td><%=(String) m.get("qCategory")%></td>
+											<td class="titleTd"><%=(String) m.get("qTitle")%></td>
 											<td><%=((String) m.get("qCreatedate")).substring(0,10)%></td>
 											<%
 												if((Integer) m.get("aNoCnt") > 0){

@@ -63,8 +63,6 @@
 	
 	if(categoryCk == true){
 		System.out.println(BG_YELLOW+BLUE+categoryCk+"<-- adminCategoryAddAction.jsp categoryCk 중복카테고리"+RESET);
-		response.sendRedirect(request.getContextPath()+"/admin_category/adminCategoryList.jsp");
-		return;	
 	} else {
 		System.out.println(BG_YELLOW+BLUE+categoryCk+"<-- adminCategoryAddAction.jsp categoryCk"+RESET);
 		
@@ -81,9 +79,7 @@
 			System.out.println(BG_YELLOW+BLUE+addRow+"<-- adminCategoryAddAction.jsp error addRow"+RESET);
 		}
 	} 
-	
-	
-	
+
 	// redirection adminCategoryList.jsp
 	response.sendRedirect(request.getContextPath()+"/admin_category/adminCategoryList.jsp");
 %>
