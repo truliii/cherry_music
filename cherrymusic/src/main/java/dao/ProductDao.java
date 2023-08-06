@@ -1075,6 +1075,59 @@ public class ProductDao {
 		
 		return list;
 	}
+	
+	// syj : 상품정보 수정
+	public int modifyProduct(Product product) throws Exception {
 		
+		// 유효성 검사
+		if(product == null) {
+			System.out.println("입력 error");
+			return 0;
+		}
+		
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "UPDATE product set category_name = ?, product_name = ?, product_price = ?, product_status = ?, product_info = ?, "
+					+ "product_stock = ?, updatedate = now() where product_no = ?";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, product.getCategoryName());
+		stmt.setString(2, product.getProductName());
+		stmt.setInt(3, product.getProductPrice());
+		stmt.setString(4, product.getProductStatus());
+		stmt.setString(5, product.getProductInfo());
+		stmt.setInt(6, product.getProductStock());
+		stmt.setInt(7, product.getProductNo());
+		
+		int row = stmt.executeUpdate();
+		
+		return row;
+	}
+	
+	// syj : 상품 이미지 정보 수정
+	public int modifyProductImg(ProductImg productImg) throws Exception {
+		// 유효성 검사
+		if(productImg == null) {
+			System.out.println("입력 error");
+			return 0;
+		}
+		
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String productImgSql = "UPDATE product_img set product_ori_filename = ?, product_save_filename = ?, product_filetype = ?, "
+							+ "updatedate = now() where product_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(productImgSql);
+		
+		stmt.setString(1, productImg.getProductOriFilename());
+		stmt.setString(2, productImg.getProductSaveFileName());
+		stmt.setString(3, productImg.getProductFiletype());
+		stmt.setInt(4, productImg.getProductNo());
+		
+		int row = stmt.executeUpdate();
+		
+		return row;
+	}
 }
 

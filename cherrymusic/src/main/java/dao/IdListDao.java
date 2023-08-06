@@ -57,27 +57,30 @@ public class IdListDao {
 	}
 	
 	// 조회(로그인, 회원탈퇴)
-	public boolean selectIdList(IdList idList) throws Exception {
+	public IdList selectIdList(IdList idList) throws Exception {
 		
 		// 유효성 검사
 		if(idList == null) {
 			System.out.println("입력 error");
-			return false;
+			return null;
 		}
 		
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "SELECT id FROM id_list WHERE id = ? and last_pw = PASSWORD(?)";
+		String sql = "SELECT id, active FROM id_list WHERE id = ? and last_pw = PASSWORD(?)";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, idList.getId());
 		stmt.setString(2, idList.getLastPw());
 		
 		ResultSet rs = stmt.executeQuery();
+		IdList selectIdList = null;
 		if(rs.next()) {
-			return true;
+			selectIdList = new IdList();
+			selectIdList.setId(rs.getString("id"));
+			selectIdList.setActive(rs.getString("active"));
 		}
-		return false;
+		return selectIdList;
 	}
 	
 	// 수정(last_pw)
@@ -143,26 +146,26 @@ public class IdListDao {
 	}
 	
 	// 조회(중복id) false: 사용가능, true: 사용불가
-		public boolean checkMemberId(String idCheck) throws Exception {
-			
-			// 유효성 검사
-			if(idCheck == null) {
-				System.out.println("입력 error");
-				return false;
-			}
-			
-			DBUtil dbUtil = new DBUtil();
-			Connection conn = dbUtil.getConnection();
-			
-			String sql = "SELECT id FROM id_list WHERE id = ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, idCheck);
-			
-			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) {
-				return true;
-			}
+	public boolean checkMemberId(String idCheck) throws Exception {
+		
+		// 유효성 검사
+		if(idCheck == null) {
+			System.out.println("입력 error");
 			return false;
 		}
+		
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT id FROM id_list WHERE id = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, idCheck);
+		
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			return true;
+		}
+		return false;
+	}
 	
 }
