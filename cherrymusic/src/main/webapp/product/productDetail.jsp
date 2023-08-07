@@ -179,8 +179,8 @@
 					<div>
 						<table class="table">
 							<tr>
-								<th>상품번호</th>
-								<td><%=productNo%></td>
+								<th width="10%">상품번호</th>
+								<td width="90%"><%=productNo%></td>
 							</tr>
 							<tr>
 								<th>카테고리</th>
@@ -271,7 +271,7 @@
 					<!-- 상품 수정, 삭제, 목록 버튼 
 						* 주문한 상품이 있으면 수정, 삭제 불가
 					-->
-					<div class="text-right">
+					<div class="text-right mb-5">
 						<%
 							if(ordersCnt == 0){
 						%>

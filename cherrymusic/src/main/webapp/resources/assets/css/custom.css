@@ -20,7 +20,7 @@
 }
 
 /*adminNav*/
-.nav,.nav-pills,.nav-fill {
+#adminNav {
 	border : 1px solid #eee;
 	background-color: #eee;
 	border-radius : 3px;

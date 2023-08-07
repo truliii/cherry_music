@@ -143,13 +143,13 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th>상품번호</th>
-									<th>카테고리</th>
-									<th>상품명</th>
-									<th>가격</th>
-									<th>상태</th>
-									<th>재고</th>
-									<th>판매량</th>
+									<th width="10%">상품번호</th>
+									<th width="10%">카테고리</th>
+									<th width="40%">상품명</th>
+									<th width="10%">가격</th>
+									<th width="10%">상태</th>
+									<th width="10%">재고</th>
+									<th width="10%">판매량</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -193,7 +193,7 @@
 					<%
 						if(sList == null){ 
 					%>
-				    <div class="d-flex justify-content-center">
+				    <div class="d-flex justify-content-center mb-3">
 						<ul class="pagination">
 							<!-- 첫페이지 -->
 							<li class="page-item">

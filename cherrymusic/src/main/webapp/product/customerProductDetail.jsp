@@ -87,10 +87,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="slider-zoom">
-                            <%-- <a href="<%request.getContextPath()%>/review/reviewImg/<%=product.get("saveFilename")%>" class="cloud-zoom" rel="transparentImage: 'data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==', useWrapper: false, showTitle: false, zoomWidth:'500', zoomHeight:'500', adjustY:0, adjustX:10" id="cloudZoom">
-                                <img alt="Detail Zoom thumbs image" src="<%=request.getContextPath()%>/review/reviewImg/panda_fav.png" style="width: 100%;">
-                            </a> --%>
-                            <img src="<%=request.getContextPath()%>/review/reviewImg/panada_fav.png"> 
+                            <img class="pr-3" src="<%=request.getContextPath()%>/product/productImg/<%=product.get("productSaveFilename")%>"> 
                         </div>
                     </div>
                     
