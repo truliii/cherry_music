@@ -73,27 +73,25 @@
 		maxPage = lastPage;
 	}
 	
-	// 상품조회 method(판매량 순)
-	ArrayList<HashMap<String, Object>> cntList = pDao.selectSumCntByPage(true, beginRow, rowPerPage);
-	
-	// param("search") 값 저장 변수
-	String search = "";
-	// 검색된 값 저장 변수 초기화
+	// 리스트 받을 변수값 초기화
+	ArrayList<HashMap<String, Object>> cntList = null;
 	ArrayList<Product> sList = null;
 	
-	// 요청값(search) 유효성 검사
-	if(request.getParameter("search") != null) {
-		search = request.getParameter("search");
-		System.out.println(search +"<--productList.jsp search");
-		// 상품명 검색 method
-		sList = pDao.searchProduct(search);
-		
-		if(sList != null){
-			System.out.println(sList+"<--productList.jsp sList");
-		} else{
-			System.out.println(sList+"<--productList.jsp 검색된 상품명 없음");
-		}
-	} 
+	// 검색 여부를 나타내는 변수
+	boolean isSearch = false; 
+	
+	// 검색어 유무에 따른 분기
+	String search = request.getParameter("search");
+	if (search != null && !search.isEmpty()) {
+	    // 검색어가 있는 경우 상품명 검색 수행
+	    isSearch = true;
+	    System.out.println(search + "<--productList.jsp search");
+	    sList = pDao.searchProduct(search);
+	} else {
+	    // 검색 결과가 없거나 검색 조건이 없는 경우 판매량 순으로 상품 조회
+	    cntList = pDao.selectSumCntByPage(true, beginRow, rowPerPage);
+	    System.out.println(search + "<--productList.jsp search");
+	}
 %>
 <!DOCTYPE html>
 <html>
