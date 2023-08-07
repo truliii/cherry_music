@@ -347,9 +347,9 @@
 	    let selectedDate = new Date(selectedDStart);
 
 	    if (selectedDate <= today) {
-	        return true;
-	    } else {
 	        return false;
+	    } else {
+	        return true;
 	    }
 	}
 	
