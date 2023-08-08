@@ -121,7 +121,7 @@
 		                        <img src="<%=request.getContextPath()%>/resources/assets/img/category<%=num%>.jpg">
 		                        <div class="card-img-overlay d-flex align-items-center justify-content-center">
 		                            <!-- <h4 class="card-title">Vegetables</h4> -->
-		                            <a href="<%=request.getContextPath()%>/resources/shop.html" class="btn btn-primary btn-lg"><%=c.getCategoryName()%></a>
+		                            <a href="<%=request.getContextPath()%>/product/categoryProduct.jsp?categoryName=<%=c.getCategoryName()%>" class="btn btn-primary btn-lg"><%=c.getCategoryName()%></a>
 		                        </div>
 		                    </div>
 	                </div>
