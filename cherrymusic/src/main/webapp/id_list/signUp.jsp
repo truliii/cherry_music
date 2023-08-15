@@ -116,6 +116,9 @@
                                 	<div class="form-group col-md-3">
                                 		<input type="text" name="zip" id="sample6_postcode" placeholder="우편번호" class="form-control">
                                 	</div>
+                                	<div>
+                                		<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn btn-primary">
+                                	</div>
                                     <div class="form-group col-md-12">
 										<input type="text" name="add1" id="sample6_address" placeholder="주소" class="form-control">
 										<input type="text" name="add2" id="sample6_detailAddress" placeholder="상세주소" class="form-control">
